@@ -1,0 +1,26 @@
+{
+  "description": "Raspberry Pi 4 Model B (4 GB) on Raspberry Pi OS 64-bit, kernel 6.6: arm64, 4 KiB pages, 39-bit VA, no swap, no DMI, device tree, THP madvise",
+  "now": "2025-03-08T09:15:00Z",
+  "uname": {
+    "machine": "aarch64",
+    "release": "6.6.51+rpt-rpi-v8"
+  },
+  "page_size": 4096,
+  "deny": [
+    "/proc/slabinfo"
+  ],
+  "env": {
+    "XDG_SESSION_TYPE": "tty"
+  },
+  "commands": {
+    "lsblk --json --bytes --output NAME,TYPE,SIZE,FSTYPE": {
+      "stdout": "_cmd/lsblk.json"
+    },
+    "ip -json -4 address show": {
+      "stdout": "_cmd/ip-addr.json"
+    },
+    "tc -json -statistics qdisc show": {
+      "stdout": "_cmd/tc-qdisc.json"
+    }
+  }
+}

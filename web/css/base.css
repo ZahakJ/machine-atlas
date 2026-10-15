@@ -1,0 +1,329 @@
+/*
+ * Base: reset, page typography, focus, and the application layout grid.
+ * Load order: tokens.css, base.css, components.css, sims.css.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--topbar-height) + var(--space-4));
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: var(--text-md);
+  line-height: var(--leading-ui);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: break-word;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  line-height: var(--leading-tight);
+  font-weight: 650;
+  text-wrap: balance;
+}
+
+p, ul, ol, dl, figure, blockquote, pre, table {
+  margin: 0;
+}
+
+img, svg {
+  max-width: 100%;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  color: var(--accent-strong);
+  text-decoration-thickness: 2px;
+}
+
+/* Ids are full of underscores, which sit exactly where an underline does:
+ * links in code text drop their underline below the descenders, so
+ * "cpu.address_bits" never reads as "cpu.address bits". */
+a code,
+a.mono,
+a > .mono {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.32em;
+  text-decoration-skip-ink: none;
+}
+
+a:has(> code) {
+  text-underline-offset: 0.32em;
+}
+
+/* One visible focus style everywhere, never removed. */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+::selection {
+  background: var(--accent-wash);
+  color: var(--ink);
+}
+
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  font-variant-ligatures: none;
+}
+
+:not(pre) > code {
+  padding: 0.08em 0.32em;
+  border-radius: var(--radius-sm);
+  background: var(--paper-sunken);
+  border: 1px solid var(--rule);
+  white-space: break-spaces;
+}
+
+kbd {
+  padding: 0.05em 0.4em;
+  border: 1px solid var(--rule-strong);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--paper-raised);
+  font-size: 0.85em;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: var(--space-6) 0;
+}
+
+/* Numbers that line up in columns. */
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-ligatures: none;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-3);
+  top: -100px;
+  z-index: 100;
+  padding: var(--space-2) var(--space-3);
+  background: var(--paper-raised);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+}
+
+.skip-link:focus {
+  top: var(--space-3);
+}
+
+/*
+ * .prose — reading text. Serif, ~70 characters per line, a vertical rhythm of
+ * one line between blocks. Lessons, explanations and long sim notes use it.
+ */
+.prose {
+  max-width: var(--measure);
+  font-family: var(--font-prose);
+  font-size: var(--text-prose);
+  line-height: var(--leading-prose);
+  hanging-punctuation: first;
+}
+
+.prose > * + * {
+  margin-top: calc(var(--rhythm) * 0.75);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.4em;
+}
+
+.prose li + li {
+  margin-top: 0.35em;
+}
+
+.prose li::marker {
+  color: var(--ink-faint);
+}
+
+.prose h3 {
+  margin-top: var(--rhythm);
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+}
+
+.prose h4 {
+  margin-top: calc(var(--rhythm) * 0.75);
+  font-family: var(--font-ui);
+  font-size: var(--text-md);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+
+.prose blockquote {
+  padding-left: var(--space-4);
+  border-left: 3px solid var(--rule-strong);
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose strong {
+  font-weight: 700;
+}
+
+/* Lead paragraph of a lesson or page. */
+.lede {
+  font-family: var(--font-prose);
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: var(--measure);
+}
+
+/* Small interface caption under or beside something. */
+.caption {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.eyebrow {
+  font-size: var(--text-xs);
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/*
+ * .app — the application frame.
+ *   <body class="app">
+ *     <header class="topbar">…</header>
+ *     <div class="mode-banner">…</div>
+ *     <div class="layout">
+ *       <nav class="layout__rail">…</nav>
+ *       <main class="layout__main">…</main>
+ *       <aside class="inspector">…</aside>
+ *     </div>
+ * Wide (≥ 1100px): rail | main, inspector overlays from the right and docks
+ * as a third column at ≥ 1440px. Narrow: one column; the rail collapses into
+ * a <details> above the lesson (see .rail-toggle).
+ */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: var(--space-5) var(--gutter) var(--space-8);
+}
+
+.layout__main {
+  min-width: 0;
+}
+
+@media (min-width: 1100px) {
+  .layout {
+    grid-template-columns: var(--rail-width) minmax(0, 1fr);
+    gap: var(--space-7);
+    padding-inline: var(--space-6);
+  }
+
+  .layout__rail {
+    position: sticky;
+    top: calc(var(--topbar-height) + var(--space-4));
+    align-self: start;
+    max-height: calc(100vh - var(--topbar-height) - var(--space-6));
+    overflow-y: auto;
+  }
+}
+
+@media (min-width: 1440px) {
+  .layout--with-inspector {
+    grid-template-columns: var(--rail-width) minmax(0, 1fr) var(--inspector-width);
+    max-width: 1680px;
+  }
+}
+
+/* A centred page without a rail (overview, inspect). */
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--gutter) var(--space-8);
+}
+
+@media (min-width: 1100px) {
+  .page {
+    padding-inline: var(--space-6);
+  }
+}
+
+/* Vertical stacks with consistent spacing. */
+.stack > * + * {
+  margin-top: var(--space-4);
+}
+
+.stack-lg > * + * {
+  margin-top: var(--space-6);
+}
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    /* "none", not a tiny duration: a duration on every element makes the
+       default transition-property "all" animate inherited properties such
+       as visibility, which keeps a just-opened panel unfocusable for a
+       moment. */
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

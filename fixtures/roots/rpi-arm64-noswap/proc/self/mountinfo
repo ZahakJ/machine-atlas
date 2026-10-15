@@ -1,0 +1,17 @@
+20 1 179:2 / / rw,noatime shared:1 - ext4 /dev/mmcblk0p2 rw
+21 20 0:21 / /sys rw,nosuid,nodev,noexec,relatime shared:2 - sysfs sysfs rw
+22 20 0:22 / /proc rw,nosuid,nodev,noexec,relatime shared:3 - proc proc rw
+23 20 0:5 / /dev rw,nosuid,nodev shared:4 - devtmpfs devtmpfs rw,size=4096k,nr_inodes=1048576,mode=755,inode64
+24 20 0:6 / /sys/kernel/security rw,nosuid,nodev,noexec,relatime shared:5 - securityfs securityfs rw
+25 20 0:23 / /dev/shm rw,nosuid,nodev shared:6 - tmpfs tmpfs rw,inode64
+26 20 0:24 / /dev/pts rw,nosuid,nodev shared:7 - devpts devpts rw,gid=5,mode=620,ptmxmode=000
+27 20 0:25 / /run rw,nosuid,nodev shared:8 - tmpfs tmpfs rw,size=1625072k,nr_inodes=819200,mode=755,inode64
+28 20 0:26 / /sys/fs/cgroup rw,nosuid,nodev shared:9 - cgroup2 cgroup2 rw,nsdelegate,memory_recursiveprot
+29 20 0:28 / /sys/fs/bpf rw,nosuid,nodev,noexec,relatime shared:10 - bpf bpf rw,mode=700
+30 20 0:30 / /proc/sys/fs/binfmt_misc rw,nosuid,nodev shared:11 - autofs systemd-1 rw,fd=32,pgrp=1,timeout=0,minproto=5,maxproto=5,direct
+31 20 0:20 / /dev/mqueue rw,nosuid,nodev shared:12 - mqueue mqueue rw
+32 20 0:7 / /sys/kernel/debug rw,nosuid,nodev shared:13 - debugfs debugfs rw
+33 20 0:32 / /sys/fs/fuse/connections rw,nosuid,nodev shared:14 - fusectl fusectl rw
+34 20 0:33 / /sys/kernel/config rw,nosuid,nodev shared:15 - configfs configfs rw
+35 20 179:1 / /boot/firmware rw,relatime shared:16 - vfat /dev/mmcblk0p1 rw,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,errors=remount-ro
+36 20 0:38 / /run/user/1000 rw,relatime shared:17 - tmpfs tmpfs rw,size=388640k,nr_inodes=97160,mode=700,uid=1000,gid=1000

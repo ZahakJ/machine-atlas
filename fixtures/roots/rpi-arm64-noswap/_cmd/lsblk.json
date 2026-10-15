@@ -1,0 +1,24 @@
+{
+   "blockdevices": [
+      {
+         "name": "mmcblk0",
+         "type": "disk",
+         "size": 31914983424,
+         "fstype": null,
+         "children": [
+            {
+               "name": "mmcblk0p1",
+               "type": "part",
+               "size": 536870912,
+               "fstype": "vfat"
+            },
+            {
+               "name": "mmcblk0p2",
+               "type": "part",
+               "size": 31373918208,
+               "fstype": "ext4"
+            }
+         ]
+      }
+   ]
+}

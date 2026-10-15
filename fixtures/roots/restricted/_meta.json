@@ -1,0 +1,48 @@
+{
+  "description": "Hardened Debian 12 mini PC (kernel 6.1): sysfs restricted to root, /proc mounted with hidepid, atlas run as a service, permission failures everywhere",
+  "now": "2025-02-11T22:05:51Z",
+  "uname": {
+    "machine": "x86_64",
+    "release": "6.1.0-28-amd64"
+  },
+  "page_size": 4096,
+  "deny": [
+    "/proc/1",
+    "/proc/slabinfo",
+    "/proc/zoneinfo",
+    "/proc/buddyinfo",
+    "/proc/pressure",
+    "/proc/schedstat",
+    "/sys/block",
+    "/sys/class",
+    "/sys/devices/system/cpu",
+    "/sys/devices/system/memory",
+    "/sys/devices/system/node",
+    "/sys/firmware",
+    "/sys/kernel",
+    "/sys/module",
+    "/proc/net/tcp",
+    "/proc/net/tcp6",
+    "/proc/net/udp",
+    "/proc/net/udp6",
+    "/proc/net/unix",
+    "/proc/net/route",
+    "/proc/net/ipv6_route",
+    "/sys/dev"
+  ],
+  "env": {},
+  "commands": {
+    "lsblk --json --bytes --output NAME,TYPE,SIZE,FSTYPE": {
+      "exit": 32,
+      "stderr": "lsblk: failed to access sysfs directory: /sys/dev/block: Permission denied\n"
+    },
+    "ip -json -4 address show": {
+      "exit": 1,
+      "stderr": "Cannot open netlink socket: Permission denied\n"
+    },
+    "tc -json -statistics qdisc show": {
+      "exit": 1,
+      "stderr": "Cannot open netlink socket: Permission denied\n"
+    }
+  }
+}

@@ -1,0 +1,1775 @@
+{
+  "id": "cpu-addressing",
+  "title": "How many bits is an address, really?",
+  "summary": "Virtual and physical addresses, pages, and the tree of page tables the MMU walks to translate every memory access.",
+  "subsystem": "memory",
+  "kind": "core",
+  "order": 1,
+  "prerequisites": [],
+  "next": [
+    "virtual-address-spaces"
+  ],
+  "deeper": [
+    "planned:page-table-internals",
+    "planned:tlb-and-pcid"
+  ],
+  "version_notes": [
+    {
+      "applies": "Linux ≥ 4.14 (x86-64)",
+      "text": "5-level paging became available (CONFIG_X86_5LEVEL). Since 4.17 one kernel image chooses 4 or 5 levels at boot from the CPU's LA57 support, the no5lvl boot option forces 4, and /proc/cpuinfo lists la57 only when the kernel enabled 5-level paging."
+    },
+    {
+      "applies": "Linux ≥ 5.0 (arm64)",
+      "text": "With 64 KiB pages a kernel can offer 52-bit user addresses, but mmap returns addresses above 2^48 only to programs that ask for them with a hint, so ordinary processes keep a 48-bit layout."
+    }
+  ],
+  "references": [
+    {
+      "title": "Intel 64 and IA-32 Architectures Software Developer's Manual, Volume 3A, Chapter 4: Paging",
+      "url": "https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html",
+      "kind": "spec"
+    },
+    {
+      "title": "Linux kernel documentation: Memory management on x86-64",
+      "url": "https://docs.kernel.org/arch/x86/x86_64/mm.html",
+      "kind": "kernel-doc"
+    },
+    {
+      "title": "Linux kernel documentation: 5-level paging",
+      "url": "https://docs.kernel.org/arch/x86/x86_64/5level-paging.html",
+      "kind": "kernel-doc"
+    },
+    {
+      "title": "Linux kernel documentation: Memory layout on AArch64 Linux",
+      "url": "https://docs.kernel.org/arch/arm64/memory.html",
+      "kind": "kernel-doc"
+    },
+    {
+      "title": "Linux kernel documentation: Page tables",
+      "url": "https://docs.kernel.org/mm/page_tables.html",
+      "kind": "kernel-doc"
+    },
+    {
+      "title": "Arm Architecture Reference Manual for A-profile architecture, chapter D8: The AArch64 Virtual Memory System Architecture",
+      "url": "https://developer.arm.com/documentation/ddi0487/latest",
+      "kind": "spec"
+    },
+    {
+      "title": "The RISC-V Instruction Set Manual, Volume II: Privileged Architecture (Sv39, Sv48, Sv57)",
+      "url": "https://github.com/riscv/riscv-isa-manual/releases",
+      "kind": "spec"
+    }
+  ],
+  "sections": [
+    {
+      "id": "question",
+      "title": "Question",
+      "blocks": [
+        {
+          "t": "branch",
+          "label": "derived",
+          "fact": "derived.env.arch_family",
+          "expect": "x86",
+          "chosen": "else",
+          "then": [
+            {
+              "t": "p",
+              "label": "observed",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "A pointer on this "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "kernel.arch",
+                  "display": "aarch64",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": " machine is 64 bits wide, yet its processor ("
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.model_name",
+                  "display": "not available (absent)",
+                  "status": "absent",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": ") reports that it translates only "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.address_bits.virtual",
+                  "display": "not available (absent)",
+                  "status": "absent",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": " of a virtual address, and that a physical address has "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.address_bits.physical",
+                  "display": "not available (absent)",
+                  "status": "absent",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": ". Where did the other bits of the pointer go, and why are there two different widths at all?"
+                }
+              ]
+            }
+          ],
+          "else": [
+            {
+              "t": "p",
+              "label": "derived",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "A pointer on this "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "kernel.arch",
+                  "display": "aarch64",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": " machine is 64 bits wide, but the processor does not say how many of those bits it translates: unlike x86 CPUs, it publishes no address widths to unprivileged programs. From the highest address the kernel gave Machine Atlas's probe process, the kernel here appears to translate addresses "
+                },
+                {
+                  "t": "chip",
+                  "kind": "derived",
+                  "ref": "derived.paging.va_bits",
+                  "display": "39 bits",
+                  "status": "ok",
+                  "label": "derived"
+                },
+                {
+                  "t": "text",
+                  "s": " wide. Where did the other bits of the pointer go, and what decides how many are used?"
+                }
+              ]
+            }
+          ],
+          "unknown": [
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "When architecture family (derived.env.arch_family) cannot be determined, this text names the reason and where Machine Atlas looked."
+                }
+              ]
+            }
+          ],
+          "generated_unknown": true
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "The two widths are not one quantity measured twice. They describe two different kinds of address, and the gap between them, and between either of them and 64, is the subject of this lesson."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "why-it-exists",
+      "title": "Why it exists",
+      "blocks": [
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "A program needs addresses that stay valid wherever its data happens to sit in RAM, that no other program can reach, and that outnumber the bytes of RAM, so it can put code at the bottom of its range, the stack near the top, and leave the space between empty. The hardware needs the opposite: names for actual bytes on memory chips and device registers, densely packed."
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "Translation separates the two. Every address a program uses is a "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "virtual address"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": ", and the CPU converts it into a "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "physical address"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " on every instruction fetch, load and store, billions of times a second. That rules out asking the kernel each time. Translation is done by hardware in each core, the memory management unit (MMU), from tables the kernel prepares in advance: the kernel decides the mapping, the MMU applies it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "how-it-works",
+      "title": "How it works",
+      "blocks": [
+        {
+          "t": "h",
+          "label": "general",
+          "level": 3,
+          "inl": [
+            {
+              "t": "text",
+              "s": "Pages and offsets"
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "derived",
+          "inl": [
+            {
+              "t": "text",
+              "s": "Translating each byte separately would need one table entry per byte. Instead, memory is translated in "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "pages"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": ": fixed-size, aligned blocks of addresses. A page here is "
+            },
+            {
+              "t": "chip",
+              "kind": "obs",
+              "ref": "kernel.page_size_bytes",
+              "display": "4 KiB",
+              "status": "ok",
+              "label": "observed"
+            },
+            {
+              "t": "text",
+              "s": ". Within a page, the low bits of an address pass through translation unchanged; there are log2(page size) of them, "
+            },
+            {
+              "t": "chip",
+              "kind": "derived",
+              "ref": "derived.paging.offset_bits",
+              "display": "12 bits",
+              "status": "ok",
+              "label": "derived"
+            },
+            {
+              "t": "text",
+              "s": " here. Only the bits above them, the virtual page number, are translated, into a physical "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "frame"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " number: the page-sized slot of RAM that holds the data."
+            }
+          ]
+        },
+        {
+          "t": "h",
+          "label": "general",
+          "level": 3,
+          "inl": [
+            {
+              "t": "text",
+              "s": "A tree of tables"
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "derived",
+          "inl": [
+            {
+              "t": "text",
+              "s": "One flat table indexed by virtual page number would be enormous: 48-bit addresses with 4 KiB pages need 2^36 entries of 8 bytes, 512 GiB for every process. So the table is a tree. Each table in it occupies exactly one page and holds page size ÷ 8 entries, so each level of the tree is indexed by a fixed slice of the address, "
+            },
+            {
+              "t": "chip",
+              "kind": "derived",
+              "ref": "derived.paging.index_bits",
+              "display": "9 bits",
+              "status": "ok",
+              "label": "derived"
+            },
+            {
+              "t": "text",
+              "s": " here. The top slice indexes the root table, whose entry gives the physical address of a table one level down, indexed by the next slice, and so on until the last level, whose entry holds the frame number and the permissions. A part of the address space that is not mapped needs no tables below its empty entry, which is what makes the tree affordable for the sparse way programs use addresses."
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "The split is a property of the architecture, the page size and the address width the kernel was configured for. The configurations Linux offers:"
+            }
+          ]
+        },
+        {
+          "t": "table",
+          "label": "general",
+          "head": [
+            [
+              {
+                "t": "text",
+                "s": "format"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "s": "page size"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "s": "index bits per level"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "s": "levels"
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "s": "translated bits"
+              }
+            ]
+          ],
+          "rows": [
+            [
+              [
+                {
+                  "t": "text",
+                  "s": "x86-64, 4-level"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "4 KiB"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "9"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "4"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "9+9+9+9+12 = 48"
+                }
+              ]
+            ],
+            [
+              [
+                {
+                  "t": "text",
+                  "s": "x86-64, 5-level (LA57)"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "4 KiB"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "9"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "5"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "57"
+                }
+              ]
+            ],
+            [
+              [
+                {
+                  "t": "text",
+                  "s": "arm64, 4 KiB granule"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "4 KiB"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "9"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "3 / 4 / 5"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "39 / 48 / 52 (LPA2)"
+                }
+              ]
+            ],
+            [
+              [
+                {
+                  "t": "text",
+                  "s": "arm64, 16 KiB granule"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "16 KiB"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "11"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "2 / 3 / 4 / 4"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "36 / 47 / 48 / 52 (LPA2)"
+                }
+              ]
+            ],
+            [
+              [
+                {
+                  "t": "text",
+                  "s": "arm64, 64 KiB granule"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "64 KiB"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "13"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "2 / 3 / 3"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "42 / 48 / 52 (LVA)"
+                }
+              ]
+            ],
+            [
+              [
+                {
+                  "t": "text",
+                  "s": "RISC-V Sv39 / Sv48 / Sv57"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "4 KiB"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "9"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "3 / 4 / 5"
+                }
+              ],
+              [
+                {
+                  "t": "text",
+                  "s": "39 / 48 / 57"
+                }
+              ]
+            ]
+          ]
+        },
+        {
+          "t": "h",
+          "label": "general",
+          "level": 3,
+          "inl": [
+            {
+              "t": "text",
+              "s": "Canonical addresses"
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "The bits above the translated width are not free for other uses. On x86-64 and RISC-V they must all be copies of the top translated bit, which makes the address "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "canonical"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": ". With 48 bits, user space runs from "
+            },
+            {
+              "t": "code",
+              "s": "0x0000_0000_0000_0000"
+            },
+            {
+              "t": "text",
+              "s": " to "
+            },
+            {
+              "t": "code",
+              "s": "0x0000_7fff_ffff_ffff"
+            },
+            {
+              "t": "text",
+              "s": " and the kernel's half starts at "
+            },
+            {
+              "t": "code",
+              "s": "0xffff_8000_0000_0000"
+            },
+            {
+              "t": "text",
+              "s": "; everything in between is a hole that can never be mapped. Touching it is refused before any table is read: on x86-64 with a general protection fault rather than a page fault, on RISC-V with a page-fault exception. arm64 states the rule differently: bit 55 of the address selects the tree, the user root register TTBR0_EL1 when it is 0 and the kernel's TTBR1_EL1 when it is 1, so each half has its own tree, and the bits between the translated width and bit 55 must all equal bit 55 or the access takes a translation fault. Linux also turns on "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "top-byte ignore"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " for user space, so the top 8 bits of a user pointer are not part of the address at all and may carry a tag."
+            }
+          ]
+        },
+        {
+          "t": "h",
+          "label": "general",
+          "level": 3,
+          "inl": [
+            {
+              "t": "text",
+              "s": "The root register and the walker"
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "The tree's root is a physical address held in a register: CR3 on x86-64, TTBR0_EL1 and TTBR1_EL1 on arm64, satp on RISC-V. Switching to another process loads a different root, and with it a different address space. On an access, the MMU's walker reads one entry per level, through the ordinary data caches, without the kernel. If an entry is missing or forbids the access (a write to a read-only page, a user-mode access to a kernel page), the CPU raises a page fault and the kernel takes over, the subject of a later lesson."
+            }
+          ]
+        },
+        {
+          "t": "h",
+          "label": "general",
+          "level": 3,
+          "inl": [
+            {
+              "t": "text",
+              "s": "The TLB"
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "A walk costs up to one memory read per level, and each can miss the caches. To avoid paying that on every access, the MMU keeps completed translations in the "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "translation lookaside buffer"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": ", the TLB. A hit translates with no memory reads at all, and because programs touch the same pages over and over, a TLB of a few thousand entries satisfies almost every access. Its "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "reach"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " is the number of entries times the page size: 2 048 entries of 4 KiB pages cover only 8 MiB, so a program working across gigabytes misses often."
+            }
+          ]
+        },
+        {
+          "t": "h",
+          "label": "general",
+          "level": 3,
+          "inl": [
+            {
+              "t": "text",
+              "s": "Huge pages"
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "derived",
+          "inl": [
+            {
+              "t": "text",
+              "s": "A leaf entry may sit higher in the tree. An entry one level above the last maps, as a single page, the whole range a last-level table would have mapped: "
+            },
+            {
+              "t": "chip",
+              "kind": "derived",
+              "ref": "derived.paging.leaf_table_span_bytes",
+              "display": "2 MiB",
+              "status": "ok",
+              "label": "derived"
+            },
+            {
+              "t": "text",
+              "s": " with this page size. An entry two levels above the last maps "
+            },
+            {
+              "t": "chip",
+              "kind": "derived",
+              "ref": "derived.paging.upper_entry_span_bytes",
+              "display": "1 GiB",
+              "status": "ok",
+              "label": "derived"
+            },
+            {
+              "t": "text",
+              "s": ". One TLB entry then covers that whole range and the walk is one or two levels shorter. Whether the largest size may be used depends on the CPU; on x86-64 it is advertised by the pdpe1gb flag."
+            }
+          ]
+        },
+        {
+          "t": "h",
+          "label": "general",
+          "level": 3,
+          "inl": [
+            {
+              "t": "text",
+              "s": "Physical address bits"
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "The physical address width bounds the frame number a page-table entry can hold, and so the physical address space the CPU can name: RAM and device registers (memory-mapped I/O) together, sized for the largest machine the design supports. It says nothing about how much RAM is fitted."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "on-this-machine",
+      "title": "On this machine",
+      "blocks": [
+        {
+          "t": "evidence",
+          "label": "observed",
+          "title": "The address format of this machine",
+          "rows": [
+            {
+              "ref": "kernel.arch",
+              "kind": "obs",
+              "caption": "Machine architecture",
+              "display": "aarch64",
+              "unit": "",
+              "status": "ok",
+              "label": "observed",
+              "source": "uname(2) (machine)",
+              "collected_at": "2025-03-08T09:15:00Z"
+            },
+            {
+              "ref": "cpu.model_name",
+              "kind": "obs",
+              "caption": "CPU model",
+              "display": "not available (absent)",
+              "unit": "",
+              "status": "absent",
+              "label": "observed",
+              "source": "/proc/cpuinfo (model name)",
+              "collected_at": "2025-03-08T09:15:00Z"
+            },
+            {
+              "ref": "cpu.address_bits.virtual",
+              "kind": "obs",
+              "caption": "Virtual address bits the CPU reports",
+              "display": "not available (absent)",
+              "unit": "bits",
+              "status": "absent",
+              "label": "observed",
+              "source": "/proc/cpuinfo (address sizes)",
+              "collected_at": "2025-03-08T09:15:00Z"
+            },
+            {
+              "ref": "cpu.address_bits.physical",
+              "kind": "obs",
+              "caption": "Physical address bits the CPU reports",
+              "display": "not available (absent)",
+              "unit": "bits",
+              "status": "absent",
+              "label": "observed",
+              "source": "/proc/cpuinfo (address sizes)",
+              "collected_at": "2025-03-08T09:15:00Z"
+            },
+            {
+              "ref": "kernel.page_size_bytes",
+              "kind": "obs",
+              "caption": "Base page size",
+              "display": "4 KiB",
+              "unit": "bytes",
+              "status": "ok",
+              "label": "observed",
+              "source": "getpagesize(2)",
+              "collected_at": "2025-03-08T09:15:00Z"
+            },
+            {
+              "ref": "cpu.flags.la57",
+              "kind": "obs",
+              "caption": "5-level paging in use",
+              "display": "not available (unsupported here)",
+              "unit": "",
+              "status": "unsupported",
+              "label": "observed",
+              "source": "/proc/cpuinfo (flags)",
+              "collected_at": "2025-03-08T09:15:00Z"
+            },
+            {
+              "ref": "cpu.flags.pdpe1gb",
+              "kind": "obs",
+              "caption": "1 GiB page support",
+              "display": "not available (unsupported here)",
+              "unit": "",
+              "status": "unsupported",
+              "label": "observed",
+              "source": "/proc/cpuinfo (flags)",
+              "collected_at": "2025-03-08T09:15:00Z"
+            },
+            {
+              "ref": "derived.paging.offset_bits",
+              "kind": "derived",
+              "caption": "Page offset bits",
+              "display": "12 bits",
+              "unit": "bits",
+              "status": "ok",
+              "label": "derived",
+              "source": "derived: log2(kernel.page_size_bytes)",
+              "collected_at": ""
+            },
+            {
+              "ref": "derived.paging.index_bits",
+              "kind": "derived",
+              "caption": "Index bits per level",
+              "display": "9 bits",
+              "unit": "bits",
+              "status": "ok",
+              "label": "derived",
+              "source": "derived: log2(kernel.page_size_bytes / 8): a table fills one page with 8-byte entries",
+              "collected_at": ""
+            },
+            {
+              "ref": "derived.paging.levels",
+              "kind": "derived",
+              "caption": "Page table levels",
+              "display": "3",
+              "unit": "count",
+              "status": "ok",
+              "label": "derived",
+              "source": "derived: aarch64 with 4 KiB pages: virtual address bits are not reported unprivileged, so they are inferred from the highest user address the probe mapped (0x7fd31c8000), which lies within 2^39; of the widths Linux offers here (39, 48) the narrowest that fits is 39 bits, and (39 − 12 offset bits) / 9 index bits per level gives 3 levels. A kernel configured wider (52-bit arm64, Sv57) keeps user mappings within this range by default and reads the same",
+              "collected_at": ""
+            },
+            {
+              "ref": "derived.paging.va_bits",
+              "kind": "derived",
+              "caption": "Virtual address bits in use",
+              "display": "39 bits",
+              "unit": "bits",
+              "status": "ok",
+              "label": "derived",
+              "source": "derived: aarch64 with 4 KiB pages: virtual address bits are not reported unprivileged, so they are inferred from the highest user address the probe mapped (0x7fd31c8000), which lies within 2^39; of the widths Linux offers here (39, 48) the narrowest that fits is 39 bits, and (39 − 12 offset bits) / 9 index bits per level gives 3 levels. A kernel configured wider (52-bit arm64, Sv57) keeps user mappings within this range by default and reads the same",
+              "collected_at": ""
+            },
+            {
+              "ref": "derived.paging.profile",
+              "kind": "derived",
+              "caption": "Paging profile",
+              "display": "arm64-4k-39",
+              "unit": "",
+              "status": "ok",
+              "label": "derived",
+              "source": "derived: aarch64 with 4 KiB pages: virtual address bits are not reported unprivileged, so they are inferred from the highest user address the probe mapped (0x7fd31c8000), which lies within 2^39; of the widths Linux offers here (39, 48) the narrowest that fits is 39 bits, and (39 − 12 offset bits) / 9 index bits per level gives 3 levels. A kernel configured wider (52-bit arm64, Sv57) keeps user mappings within this range by default and reads the same",
+              "collected_at": ""
+            },
+            {
+              "ref": "derived.paging.user_space_bytes",
+              "kind": "derived",
+              "caption": "User address space size",
+              "display": "512 GiB",
+              "unit": "bytes",
+              "status": "ok",
+              "label": "derived",
+              "source": "derived: 2^39 bytes: the user part of a 39-bit address space (aarch64 with 4 KiB pages: virtual address bits are not reported unprivileged, so they are inferred from the highest user address the probe mapped (0x7fd31c8000), which lies within 2^39; of the widths Linux offers here (39, 48) the narrowest that fits is 39 bits, and (39 − 12 offset bits) / 9 index bits per level gives 3 levels. A kernel configured wider (52-bit arm64, Sv57) keeps user mappings within this range by default and reads the same)",
+              "collected_at": ""
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "derived",
+          "inl": [
+            {
+              "t": "text",
+              "s": "Machine Atlas infers that this kernel walks "
+            },
+            {
+              "t": "chip",
+              "kind": "derived",
+              "ref": "derived.paging.levels",
+              "display": "3",
+              "status": "ok",
+              "label": "derived"
+            },
+            {
+              "t": "text",
+              "s": " levels of page table to translate addresses "
+            },
+            {
+              "t": "chip",
+              "kind": "derived",
+              "ref": "derived.paging.va_bits",
+              "display": "39 bits",
+              "status": "ok",
+              "label": "derived"
+            },
+            {
+              "t": "text",
+              "s": " wide. That figure is derived, not read: no unprivileged interface reports the level count as such, so the inspector shows the rule and the observations behind it."
+            }
+          ]
+        },
+        {
+          "t": "branch",
+          "label": "derived",
+          "fact": "derived.env.arch_family",
+          "expect": "x86",
+          "chosen": "else",
+          "then": [
+            {
+              "t": "branch",
+              "label": "general",
+              "fact": "cpu.flags.la57",
+              "expect": null,
+              "chosen": "unknown",
+              "then": [
+                {
+                  "t": "p",
+                  "label": "general",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "This kernel lists the la57 flag. Since Linux 4.17, /proc/cpuinfo shows la57 only when the kernel actually enabled 5-level paging: a kernel running four levels, because it was built without 5-level support or booted with "
+                    },
+                    {
+                      "t": "code",
+                      "s": "no5lvl"
+                    },
+                    {
+                      "t": "text",
+                      "s": ", clears the flag. The virtual address width the CPU reports, "
+                    },
+                    {
+                      "t": "chip",
+                      "kind": "obs",
+                      "ref": "cpu.address_bits.virtual",
+                      "display": "not available (absent)",
+                      "status": "absent",
+                      "label": "observed"
+                    },
+                    {
+                      "t": "text",
+                      "s": ", is its own capability, unaffected by how the kernel booted; Machine Atlas infers five levels from the flag alone, because the flag records the kernel's choice and the width only the CPU's ability, and the rule in the inspector says so."
+                    }
+                  ]
+                }
+              ],
+              "else": [
+                {
+                  "t": "p",
+                  "label": "general",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "This kernel does not list the la57 flag, so it runs 4-level paging: 9 + 9 + 9 + 9 index bits above the 12-bit offset, 48 bits in all. That alone does not say whether the CPU could walk five levels, because since Linux 4.17 the kernel hides la57 whenever it is not using 5-level paging. The CPU's own capability is its reported "
+                    },
+                    {
+                      "t": "chip",
+                      "kind": "obs",
+                      "ref": "cpu.address_bits.virtual",
+                      "display": "not available (absent)",
+                      "status": "absent",
+                      "label": "observed"
+                    },
+                    {
+                      "t": "text",
+                      "s": " of virtual address: 48 means four levels is all it has, 57 would mean it supports a fifth level this kernel does not use."
+                    }
+                  ]
+                }
+              ],
+              "unknown": [
+                {
+                  "t": "p",
+                  "label": "general",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "Machine Atlas could not determine 5-level paging in use (cpu.flags.la57) on this machine: not available (unsupported here), source /proc/cpuinfo (flags)."
+                    }
+                  ]
+                }
+              ],
+              "generated_unknown": true
+            }
+          ],
+          "else": [
+            {
+              "t": "p",
+              "label": "derived",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "On "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "kernel.arch",
+                  "display": "aarch64",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": ", /proc/cpuinfo has no address sizes line, so the CPU's widths read as "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.address_bits.virtual",
+                  "display": "not available (absent)",
+                  "status": "absent",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": ". The width above comes instead from the page size and the highest address the probe process saw: the kernel places a process's stack just below the top of user space, so the narrowest width Linux can be configured with for this page size that still lies above the stack is the one in use. A wider width would also fit the address, but it would put the top of user space, and the stack, far higher."
+                }
+              ]
+            }
+          ],
+          "unknown": [
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "When architecture family (derived.env.arch_family) cannot be determined, this text names the reason and where Machine Atlas looked."
+                }
+              ]
+            }
+          ],
+          "generated_unknown": true
+        },
+        {
+          "t": "p",
+          "label": "derived",
+          "inl": [
+            {
+              "t": "text",
+              "s": "User programs on this machine can address "
+            },
+            {
+              "t": "chip",
+              "kind": "derived",
+              "ref": "derived.paging.user_space_bytes",
+              "display": "512 GiB",
+              "status": "ok",
+              "label": "derived"
+            },
+            {
+              "t": "text",
+              "s": ": the user part of the translated range. It is a ceiling on address space, not on memory, and it is far larger than anything they will touch."
+            }
+          ]
+        },
+        {
+          "t": "branch",
+          "label": "general",
+          "fact": "cpu.address_bits.physical",
+          "expect": null,
+          "chosen": "unknown",
+          "then": [
+            {
+              "t": "p",
+              "label": "observed",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "The CPU can name "
+                },
+                {
+                  "t": "chip",
+                  "kind": "derived",
+                  "ref": "derived.cpu.phys_addressable_bytes",
+                  "display": "not determined",
+                  "status": "unknown",
+                  "label": "derived"
+                },
+                {
+                  "t": "text",
+                  "s": " of physical address space, while the kernel manages "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "mem.meminfo.MemTotal",
+                  "display": "3.71 GiB",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": " of RAM. The difference is the headroom of the address format, not memory that is missing."
+                }
+              ]
+            }
+          ],
+          "else": [],
+          "unknown": [
+            {
+              "t": "p",
+              "label": "observed",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "This CPU does not report its physical address width to unprivileged programs, so the contrast with the "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "mem.meminfo.MemTotal",
+                  "display": "3.71 GiB",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": " of RAM the kernel manages cannot be drawn from here. On arm64 the width is in the ID_AA64MMFR0_EL1 register, which user space cannot read directly."
+                }
+              ]
+            }
+          ],
+          "generated_unknown": false
+        }
+      ]
+    },
+    {
+      "id": "see-it",
+      "title": "See it",
+      "blocks": [
+        {
+          "t": "sim",
+          "label": "simulated",
+          "name": "translation-walker"
+        },
+        {
+          "t": "p",
+          "label": "derived",
+          "inl": [
+            {
+              "t": "text",
+              "s": "The simulator splits an address into per-level indices for a paging profile, starting with the one inferred here, "
+            },
+            {
+              "t": "chip",
+              "kind": "derived",
+              "ref": "derived.paging.profile",
+              "display": "arm64-4k-39",
+              "status": "ok",
+              "label": "derived"
+            },
+            {
+              "t": "text",
+              "s": ". The index arithmetic is exact; the table contents and frame numbers it shows are invented."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "predict",
+      "title": "Predict",
+      "blocks": [
+        {
+          "t": "predict",
+          "label": "general",
+          "question": [
+            {
+              "t": "p",
+              "label": "observed",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "With pages of "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "kernel.page_size_bytes",
+                  "display": "4 KiB",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": " and 8-byte entries, how much virtual address space does one complete last-level page table map? And how much does one entry in the level above it map?"
+                }
+              ]
+            }
+          ],
+          "options": [
+            [
+              {
+                "t": "text",
+                "s": "One table maps a single page; one entry above maps a whole table's worth."
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "s": "One table maps entries × page size; one entry above maps exactly the same range."
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "s": "One table maps entries × page size; one entry above maps entries times that again."
+              }
+            ]
+          ],
+          "reveal": [
+            {
+              "t": "p",
+              "label": "derived",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "A last-level table holds page size ÷ 8 entries of one page each, so it maps "
+                },
+                {
+                  "t": "chip",
+                  "kind": "derived",
+                  "ref": "derived.paging.leaf_table_span_bytes",
+                  "display": "2 MiB",
+                  "status": "ok",
+                  "label": "derived"
+                },
+                {
+                  "t": "text",
+                  "s": ". An entry one level up points at exactly one such table, so it covers the same "
+                },
+                {
+                  "t": "chip",
+                  "kind": "derived",
+                  "ref": "derived.paging.leaf_table_span_bytes",
+                  "display": "2 MiB",
+                  "status": "ok",
+                  "label": "derived"
+                },
+                {
+                  "t": "text",
+                  "s": ", which is why a leaf entry at that level makes a huge page of exactly that size. It is a whole table at that level, not one entry, that covers "
+                },
+                {
+                  "t": "chip",
+                  "kind": "derived",
+                  "ref": "derived.paging.upper_entry_span_bytes",
+                  "display": "1 GiB",
+                  "status": "ok",
+                  "label": "derived"
+                },
+                {
+                  "t": "text",
+                  "s": ", the next huge page size up."
+                }
+              ]
+            },
+            {
+              "t": "branch",
+              "label": "observed",
+              "fact": "kernel.page_size_bytes",
+              "expect": "4096",
+              "chosen": "then",
+              "then": [
+                {
+                  "t": "p",
+                  "label": "observed",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "With 4 KiB pages these are the 2 MiB and 1 GiB huge pages familiar from x86-64."
+                    }
+                  ]
+                }
+              ],
+              "else": [
+                {
+                  "t": "p",
+                  "label": "general",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "Pages larger than 4 KiB make both spans grow quickly: 16 KiB pages give 32 MiB and 64 GiB, 64 KiB pages give 512 MiB and 4 TiB. Sizes that large are hard to use, so arm64 also offers a contiguous bit that lets a run of adjacent entries share one TLB entry."
+                    }
+                  ]
+                }
+              ],
+              "unknown": [
+                {
+                  "t": "p",
+                  "label": "general",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "When base page size (kernel.page_size_bytes) cannot be determined, this text names the reason and where Machine Atlas looked."
+                    }
+                  ]
+                }
+              ],
+              "generated_unknown": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "try-it",
+      "title": "Try it",
+      "blocks": [
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "Three read-only commands show the inputs to everything above:"
+            }
+          ]
+        },
+        {
+          "t": "code",
+          "label": "general",
+          "lang": "sh",
+          "text": "grep -m1 'address sizes' /proc/cpuinfo\ngetconf PAGE_SIZE\npython3 -c 'import ctypes; b = ctypes.create_string_buffer(8); print(hex(ctypes.addressof(b)))'"
+        },
+        {
+          "t": "p",
+          "label": "derived",
+          "inl": [
+            {
+              "t": "text",
+              "s": "The first prints the CPU's two widths on x86 and nothing on arm64 or RISC-V. The second should print "
+            },
+            {
+              "t": "chip",
+              "kind": "obs",
+              "ref": "kernel.page_size_bytes",
+              "display": "4096",
+              "status": "ok",
+              "label": "observed"
+            },
+            {
+              "t": "text",
+              "s": ". The third prints the address of a small buffer in Python's heap; expect it below "
+            },
+            {
+              "t": "chip",
+              "kind": "derived",
+              "ref": "derived.paging.user_space_bytes",
+              "display": "0x8000000000",
+              "status": "ok",
+              "label": "derived"
+            },
+            {
+              "t": "text",
+              "s": ", the top of user space. Decompose it in the simulator, then run the command again: the address changes, for reasons the next lesson explains."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "limits",
+      "title": "Limits",
+      "blocks": [
+        {
+          "t": "callout",
+          "label": "general",
+          "kind": "misconception",
+          "title": "64-bit means 2^64 bytes are addressable",
+          "blocks": [
+            {
+              "t": "p",
+              "label": "derived",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "A 64-bit register can hold a 64-bit pointer, but only "
+                },
+                {
+                  "t": "chip",
+                  "kind": "derived",
+                  "ref": "derived.paging.va_bits",
+                  "display": "39 bits",
+                  "status": "ok",
+                  "label": "derived"
+                },
+                {
+                  "t": "text",
+                  "s": " of it are translated here; the rest must follow the canonical rule. No current processor translates all 64 bits, because the page tables, the TLB and the walker would all grow for address space nobody needs."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "t": "callout",
+          "label": "general",
+          "kind": "misconception",
+          "title": "Physical address bits tell you how much RAM is fitted",
+          "blocks": [
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "They say how large a physical address can be, a limit of the processor design. Installed RAM is a fraction of it and is reported elsewhere; MemTotal is what the kernel manages after firmware and the kernel itself have taken their share."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "t": "callout",
+          "label": "general",
+          "kind": "misconception",
+          "title": "The kernel walks the page tables on every access",
+          "blocks": [
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "The kernel writes the page tables and the MMU reads them. Most accesses do not walk at all, because the TLB already holds the translation. The kernel is involved only when a walk fails and the CPU raises a page fault."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "t": "callout",
+          "label": "general",
+          "kind": "cannot",
+          "title": "What these measurements cannot establish",
+          "blocks": [
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "An unprivileged program cannot read the page tables, the root register or the TLB. Everything above about this machine's translation is inferred from what is visible: the architecture, the page size, CPU flags and, where the CPU publishes nothing, the addresses the probe process was given."
+                }
+              ]
+            },
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "On x86-64 the la57 flag in /proc/cpuinfo reflects what the kernel enabled and the address sizes line what the CPU can do; neither is read from the page tables themselves, which is why the level count is a derived fact with its rule shown rather than an observation. Elsewhere it rests on where the kernel put the stack."
+                }
+              ]
+            },
+            {
+              "t": "branch",
+              "label": "derived",
+              "fact": "derived.env.kind",
+              "expect": "vm-guest",
+              "chosen": "else",
+              "then": [
+                {
+                  "t": "p",
+                  "label": "general",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "Machine Atlas found evidence that it runs in a virtual machine. There, the \"physical\" addresses the guest kernel manages are themselves translated again, by a second stage of page tables the hypervisor controls, and nothing inside the guest can see that stage or what it costs."
+                    }
+                  ]
+                }
+              ],
+              "else": [
+                {
+                  "t": "p",
+                  "label": "derived",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "If this system runs inside a virtual machine that hides itself, the \"physical\" addresses the kernel manages are themselves translated again by a second stage of page tables the hypervisor controls, and nothing inside the guest can see that stage."
+                    }
+                  ]
+                }
+              ],
+              "unknown": [
+                {
+                  "t": "p",
+                  "label": "general",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "When environment kind (derived.env.kind) cannot be determined, this text names the reason and where Machine Atlas looked."
+                    }
+                  ]
+                }
+              ],
+              "generated_unknown": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "go-deeper",
+      "title": "Go deeper",
+      "blocks": [
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "Next, "
+            },
+            {
+              "t": "link",
+              "kind": "lesson",
+              "href": "virtual-address-spaces",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "virtual address spaces"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " follows one page-table tree per process and what the kernel puts in it. In Explore, the "
+            },
+            {
+              "t": "link",
+              "kind": "component",
+              "href": "cpu-mmu",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "MMU"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": ", the "
+            },
+            {
+              "t": "link",
+              "kind": "component",
+              "href": "tlb",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "TLB"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " and the "
+            },
+            {
+              "t": "link",
+              "kind": "component",
+              "href": "page-tables",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "page tables"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " show how these pieces depend on each other. Two planned lessons go further: page-table internals (the bits of an entry and how Linux's generic levels map onto each architecture) and the TLB with PCID (what invalidating translations on other CPUs costs)."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "uses": [
+    {
+      "id": "cpu.address_bits.physical",
+      "kind": "obs",
+      "status": "absent"
+    },
+    {
+      "id": "cpu.address_bits.virtual",
+      "kind": "obs",
+      "status": "absent"
+    },
+    {
+      "id": "cpu.flags.la57",
+      "kind": "obs",
+      "status": "unsupported"
+    },
+    {
+      "id": "cpu.flags.pdpe1gb",
+      "kind": "obs",
+      "status": "unsupported"
+    },
+    {
+      "id": "cpu.model_name",
+      "kind": "obs",
+      "status": "absent"
+    },
+    {
+      "id": "derived.cpu.phys_addressable_bytes",
+      "kind": "derived",
+      "status": "unknown"
+    },
+    {
+      "id": "derived.env.arch_family",
+      "kind": "derived",
+      "status": "ok"
+    },
+    {
+      "id": "derived.env.kind",
+      "kind": "derived",
+      "status": "ok"
+    },
+    {
+      "id": "derived.paging.index_bits",
+      "kind": "derived",
+      "status": "ok"
+    },
+    {
+      "id": "derived.paging.leaf_table_span_bytes",
+      "kind": "derived",
+      "status": "ok"
+    },
+    {
+      "id": "derived.paging.levels",
+      "kind": "derived",
+      "status": "ok"
+    },
+    {
+      "id": "derived.paging.offset_bits",
+      "kind": "derived",
+      "status": "ok"
+    },
+    {
+      "id": "derived.paging.profile",
+      "kind": "derived",
+      "status": "ok"
+    },
+    {
+      "id": "derived.paging.upper_entry_span_bytes",
+      "kind": "derived",
+      "status": "ok"
+    },
+    {
+      "id": "derived.paging.user_space_bytes",
+      "kind": "derived",
+      "status": "ok"
+    },
+    {
+      "id": "derived.paging.va_bits",
+      "kind": "derived",
+      "status": "ok"
+    },
+    {
+      "id": "kernel.arch",
+      "kind": "obs",
+      "status": "ok"
+    },
+    {
+      "id": "kernel.page_size_bytes",
+      "kind": "obs",
+      "status": "ok"
+    },
+    {
+      "id": "mem.meminfo.MemTotal",
+      "kind": "obs",
+      "status": "ok"
+    }
+  ],
+  "coverage": {
+    "ok": 13,
+    "total": 19
+  }
+}

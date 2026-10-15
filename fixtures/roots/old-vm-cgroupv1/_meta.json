@@ -1,0 +1,27 @@
+{
+  "description": "KVM guest running CentOS 7 with a 4.19 kernel: no PSI, no MGLRU, cgroup v1, a nearly empty DMA zone, lsblk too old for --json",
+  "now": "2024-11-05T11:20:44Z",
+  "uname": {
+    "machine": "x86_64",
+    "release": "4.19.113-300.el7.x86_64"
+  },
+  "page_size": 4096,
+  "deny": [
+    "/proc/slabinfo"
+  ],
+  "env": {},
+  "commands": {
+    "lsblk --json --bytes --output NAME,TYPE,SIZE,FSTYPE": {
+      "exit": 1,
+      "stderr": "lsblk: unrecognized option '--json'\nTry 'lsblk --help' for more information.\n"
+    },
+    "ip -json -4 address show": {
+      "exit": 255,
+      "stderr": "Option \"-json\" is unknown, try \"ip -help\".\n"
+    },
+    "tc -json -statistics qdisc show": {
+      "exit": 255,
+      "stderr": "Option \"-json\" is unknown, try \"tc -help\".\n"
+    }
+  }
+}

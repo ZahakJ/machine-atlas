@@ -1,0 +1,87 @@
+/* Layout for the development pages only; the application never loads this. */
+
+.dev-narrow {
+  max-width: 24rem;
+}
+
+.kit-theme {
+  padding: var(--space-6) var(--gutter) var(--space-8);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.kit-theme + .kit-theme {
+  border-top: 6px double var(--rule-strong);
+}
+
+.kit-theme__label {
+  max-width: 1200px;
+  margin: 0 auto var(--space-5);
+}
+
+.kit {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.kit > section + section {
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--rule);
+}
+
+.kit h2.kit__h {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.kit__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.kit__two {
+  display: grid;
+  gap: var(--space-5);
+}
+
+@media (min-width: 900px) {
+  .kit__two {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+/* Show the drawer and the topbar in place rather than fixed to the viewport. */
+.kit .inspector {
+  position: relative;
+  z-index: auto;
+  transform: none;
+  visibility: visible;
+  width: 100%;
+  max-width: var(--inspector-width);
+  max-height: 32rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2);
+}
+
+.kit .topbar {
+  position: relative;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+.kit .rail {
+  max-width: var(--rail-width);
+}
+
+.kit .layout {
+  padding: 0;
+}

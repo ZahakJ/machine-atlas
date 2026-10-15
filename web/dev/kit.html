@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Component kit (dev)</title>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/sims.css">
+<link rel="stylesheet" href="dev.css">
+<script type="module" src="kit.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#light">Skip to the components</a>
+
+<div class="kit-theme" data-theme="light" id="light">
+<p class="kit-theme__label eyebrow">Light theme · every component · <a href="sims.html">simulations page</a></p>
+<div class="kit" id="specimen">
+
+<section>
+  <h2 class="kit__h">Top bar and mode banners</h2>
+  <div class="stack">
+    <header class="topbar">
+      <a class="topbar__brand" href="#">Machine Atlas</a>
+      <nav class="tabs" aria-label="Views">
+        <a class="tab" href="#" aria-current="page">Learn</a>
+        <a class="tab" href="#">Explore</a>
+        <a class="tab" href="#">Inspect</a>
+      </nav>
+      <div class="topbar__tools">
+        <button class="btn btn--small btn--quiet" type="button">Theme</button>
+      </div>
+    </header>
+    <div class="mode-banner" data-mode="live" role="status">
+      <strong class="mode-banner__mode">Live</strong>
+      <span>Collected from this machine at 12:00:03, 4 minutes ago.</span>
+      <button class="btn btn--quiet btn--small" type="button">Collect again</button>
+    </div>
+    <div class="mode-banner" data-mode="snapshot" role="status">
+      <strong class="mode-banner__mode">Snapshot</strong>
+      <span>Captured 3 days ago — not this machine’s current state.</span>
+      <button class="btn btn--quiet btn--small" type="button">Return to live</button>
+    </div>
+    <div class="mode-banner" data-mode="fixture" role="status">
+      <strong class="mode-banner__mode">Fixture</strong>
+      <span>Demonstration data (rpi-arm64-noswap), not your machine.</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2 class="kit__h">Provenance badges and status pills</h2>
+  <div class="stack">
+    <div class="kit__row">
+      <span class="badge" data-label="observed">Observed</span>
+      <span class="badge" data-label="derived">Derived</span>
+      <span class="badge" data-label="general">General</span>
+      <span class="badge" data-label="simulated">Simulated</span>
+    </div>
+    <div class="kit__row">
+      <span class="status" data-status="ok">ok</span>
+      <span class="status" data-status="absent">absent</span>
+      <span class="status" data-status="permission_denied">permission denied</span>
+      <span class="status" data-status="unsupported">unsupported</span>
+      <span class="status" data-status="failed">failed</span>
+      <span class="status" data-status="not_collected">not collected</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2 class="kit__h">Journey rail and lesson</h2>
+  <div class="layout">
+    <nav class="rail layout__rail" aria-label="Memory journey">
+      <p class="rail__heading">The memory journey</p>
+      <ol class="rail__list">
+        <li class="rail__item" data-state="done"><a class="rail__link" href="#"><span class="rail__marker">1</span><span class="rail__title">CPU addressing</span><span class="rail__note">Read</span></a></li>
+        <li class="rail__item" data-state="done"><a class="rail__link" href="#"><span class="rail__marker">2</span><span class="rail__title">Virtual address spaces</span><span class="rail__note">Read</span></a></li>
+        <li class="rail__item" data-state="current"><a class="rail__link" href="#" aria-current="step"><span class="rail__marker">3</span><span class="rail__title">Mappings</span><span class="rail__note">Reading now</span></a></li>
+        <li class="rail__item" data-state="ready"><a class="rail__link" href="#"><span class="rail__marker">4</span><span class="rail__title">Page faults</span><span class="rail__note">Ready</span></a></li>
+        <li class="rail__item" data-state="locked"><a class="rail__link" href="#"><span class="rail__marker">5</span><span class="rail__title">Physical memory</span><span class="rail__note">Needs: page faults</span></a></li>
+      </ol>
+      <p class="rail__heading">Branches</p>
+      <ul class="rail__list">
+        <li class="rail__item" data-state="relevant"><a class="rail__link" href="#"><span class="rail__marker"></span><span class="rail__title">Transparent huge pages</span><span class="rail__note">Relevant: THP is on here</span></a></li>
+        <li class="rail__item" data-state="available"><a class="rail__link" href="#"><span class="rail__marker"></span><span class="rail__title">NUMA placement</span><span class="rail__note">Available: one node here</span></a></li>
+        <li class="rail__item" data-state="planned"><a class="rail__link" href="#"><span class="rail__marker"></span><span class="rail__title">userfaultfd</span><span class="rail__note">Not written yet</span></a></li>
+      </ul>
+    </nav>
+
+    <article class="lesson layout__main">
+      <header class="lesson__header">
+        <p class="eyebrow">Lesson 4 · Memory</p>
+        <h1 class="lesson__title">Page faults: memory that appears when you touch it</h1>
+        <p class="lede">A program can ask for 64 MiB and receive it instantly, yet none of it exists until the first byte is written.</p>
+        <div class="lesson__meta"><span>Evidence: 11 of 12 available</span><span>About 12 minutes</span></div>
+      </header>
+
+      <section class="lesson__section" id="kit-question">
+        <h2 class="section-heading"><span class="section-heading__no">1</span> Question</h2>
+        <div class="labelled">
+          <span class="badge" data-label="observed">Observed</span>
+          <p class="prose">The probe child mapped <button class="chip" type="button" data-kind="obs" data-status="ok">64 MiB</button> of anonymous memory and never touched it. Its resident size grew by <button class="chip" type="button" data-kind="derived" data-status="ok">0 B</button>. The slab count reads <button class="chip" type="button" data-kind="obs" data-status="permission_denied">not available (permission denied)</button>.</p>
+        </div>
+        <div class="labelled">
+          <span class="badge" data-label="general">General</span>
+          <div class="prose">
+            <p>When a program asks for memory with <code>mmap</code>, the kernel records a promise: a range of virtual addresses and what should back them. It does not find a single physical frame. The first access to each page traps into the kernel, which only then allocates a frame, fills it and installs the page-table entry.</p>
+            <ul><li>a <em>minor</em> fault needs no I/O;</li><li>a <strong>major</strong> fault waits for a disk read.</li></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="lesson__section">
+        <h2 class="section-heading"><span class="section-heading__no">4</span> On this machine</h2>
+        <div class="table-wrap">
+          <table class="evidence">
+            <caption>What this machine reports</caption>
+            <thead><tr><th>Value</th><th>What it is</th><th>Source</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="evidence__value"><button class="chip" type="button" data-kind="obs" data-status="ok">15.5 GiB</button></td><td>Memory the kernel manages <span class="badge" data-label="observed">Observed</span></td><td class="evidence__source"><code>/proc/meminfo</code> MemTotal<br>12:00:03</td><td><span class="status" data-status="ok">ok</span></td></tr>
+              <tr><td class="evidence__value"><button class="chip" type="button" data-kind="derived" data-status="ok">2,049</button></td><td>Faults while writing 8 MiB <span class="badge" data-label="derived">Derived</span></td><td class="evidence__source">minflt after − before</td><td><span class="status" data-status="ok">ok</span></td></tr>
+              <tr><td class="evidence__value"><button class="chip" type="button" data-kind="obs" data-status="permission_denied">not available</button></td><td>Slab caches <span class="badge" data-label="observed">Observed</span></td><td class="evidence__source"><code>/proc/slabinfo</code></td><td><span class="status" data-status="permission_denied">permission denied</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrap">
+          <table class="datatable">
+            <caption>mem.zones</caption>
+            <thead><tr><th>Node</th><th>Zone</th><th class="num">Free</th><th class="num">Min</th><th class="num">Low</th><th class="num">High</th></tr></thead>
+            <tbody>
+              <tr><td>0</td><td>DMA32</td><td class="num">181,204</td><td class="num">3,121</td><td class="num">3,901</td><td class="num">4,681</td></tr>
+              <tr><td>0</td><td>Normal</td><td class="num">1,402,977</td><td class="num">14,210</td><td class="num">17,762</td><td class="num">21,314</td></tr>
+            </tbody>
+          </table>
+          <p class="datatable__foot">Pages of 4 KiB. Showing 2 of 2 rows.</p>
+        </div>
+        <div class="branch" data-chosen="else">
+          <p class="branch__why">Shown because <button class="chip" type="button" data-kind="derived" data-status="ok">false</button> is the value of derived.swap.configured here.</p>
+          <div class="prose"><p>There is no swap here, so an anonymous page can never leave memory: reclaim can only take file pages.</p></div>
+          <details class="branch__alt">
+            <summary>On a machine with swap this would read…</summary>
+            <div class="prose"><p>This machine has swap, so cold anonymous pages can be written out to make room for useful cache.</p></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="lesson__section">
+        <h2 class="section-heading"><span class="section-heading__no">6</span> Predict</h2>
+        <section class="predict">
+          <p class="predict__kind">Predict</p>
+          <div class="prose"><p>The probe writes one byte to each page of an 8 MiB region. How many minor faults do you expect?</p></div>
+          <fieldset class="predict__options">
+            <legend class="visually-hidden">Your prediction</legend>
+            <label class="option"><input type="radio" name="kit-p"> About 2,048: one per 4 KiB page.</label>
+            <label class="option"><input type="radio" name="kit-p"> About 4: one per 2 MiB huge page.</label>
+            <label class="option"><input type="radio" name="kit-p"> None: the memory was allocated already.</label>
+          </fieldset>
+          <details class="predict__reveal">
+            <summary>Reveal what happened here</summary>
+            <div class="prose"><p>With THP set to <code>always</code>, most of the region was mapped by huge pages, so far fewer faults occurred.</p></div>
+          </details>
+        </section>
+      </section>
+
+      <section class="lesson__section">
+        <h2 class="section-heading"><span class="section-heading__no">7</span> Try it</h2>
+        <section class="experiment">
+          <p class="experiment__kind">Experiment · opt-in</p>
+          <h3 class="experiment__title">How many faults does touching 32 MiB take?</h3>
+          <ol class="prose"><li>Map two 32 MiB anonymous regions.</li><li>Touch every page twice and count minor faults.</li><li>Release the regions.</li></ol>
+          <dl class="experiment__resources">
+            <div><dt>Memory</dt><dd>about 64 MiB</dd></div>
+            <div><dt>Disk</dt><dd>none</dd></div>
+            <div><dt>Time</dt><dd>under 2 s</dd></div>
+          </dl>
+          <p class="experiment__not">It does not change any setting, write any file or touch other processes.</p>
+          <label class="experiment__ack"><input type="checkbox"> I understand what this does and want to run it.</label>
+          <div class="cluster"><button class="btn btn--primary" type="button" disabled>Run experiment</button></div>
+        </section>
+        <figure class="code">
+          <figcaption class="code__caption">shell</figcaption>
+          <pre><code>grep -m1 'address sizes' /proc/cpuinfo
+getconf PAGE_SIZE</code></pre>
+        </figure>
+      </section>
+
+      <section class="lesson__section">
+        <h2 class="section-heading"><span class="section-heading__no">8</span> Limits</h2>
+        <aside class="callout" data-kind="misconception">
+          <p class="callout__kind">Misconception</p>
+          <h3 class="callout__title">“64-bit means 2⁶⁴ bytes are addressable.”</h3>
+          <div class="prose"><p>Only 48 or 57 bits are translated; the rest must copy the top translated bit.</p></div>
+        </aside>
+        <aside class="callout" data-kind="cannot">
+          <p class="callout__kind">What this cannot establish</p>
+          <div class="prose"><p>An unprivileged program cannot read the real page tables, so frame numbers here are hidden.</p></div>
+        </aside>
+        <aside class="callout" data-kind="version">
+          <p class="callout__kind">Version note · Linux ≥ 6.1</p>
+          <div class="prose"><p>The Multi-Gen LRU may replace the two-list model described here.</p></div>
+        </aside>
+      </section>
+    </article>
+  </div>
+</section>
+
+<section>
+  <h2 class="kit__h">Overview cards</h2>
+  <div class="card-grid">
+    <section class="card card--feature" data-status="implemented">
+      <header class="card__header"><h3 class="card__title">Memory</h3><span class="status" data-status="ok">implemented</span></header>
+      <p class="card__body">Virtual addresses, mappings, faults, frames, cache, reclaim and swap.</p>
+      <dl class="facts">
+        <div><dt>MemTotal</dt><dd>15.5 GiB</dd></div>
+        <div><dt>Swap</dt><dd>8 GiB</dd></div>
+        <div><dt>THP</dt><dd>always</dd></div>
+      </dl>
+      <footer class="card__footer"><a href="#">Start the journey →</a></footer>
+    </section>
+    <section class="card" data-status="overview">
+      <header class="card__header"><h3 class="card__title">Storage</h3><span class="status" data-status="not_collected">overview</span></header>
+      <p class="card__body">Block devices, partitions, filesystems and mounts.</p>
+      <dl class="facts"><div><dt>Block devices</dt><dd>2</dd></div></dl>
+    </section>
+    <section class="card" data-status="planned">
+      <header class="card__header"><h3 class="card__title">Networking</h3><span class="status" data-status="unsupported">planned</span></header>
+      <p class="card__body">Interfaces, routing, DNS and sockets. Not written yet.</p>
+    </section>
+  </div>
+</section>
+
+<section>
+  <h2 class="kit__h">Inspector drawer, buttons, inputs</h2>
+  <div class="kit__two">
+    <aside class="inspector" aria-labelledby="kit-insp" data-open="true">
+      <header class="inspector__header">
+        <p class="eyebrow">Observation</p>
+        <h2 class="inspector__title" id="kit-insp"><code>mem.meminfo.MemTotal</code></h2>
+        <button class="btn btn--icon btn--quiet" type="button" aria-label="Close inspector">✕</button>
+      </header>
+      <div class="inspector__body">
+        <div>
+          <p class="inspector__value">15.5 GiB</p>
+          <p class="inspector__exact">16,642,486,272 bytes</p>
+        </div>
+        <div class="kit__row"><span class="badge" data-label="observed">Observed</span><span class="status" data-status="ok">ok</span></div>
+        <dl class="facts">
+          <div><dt>Source</dt><dd>/proc/meminfo · MemTotal</dd></div>
+          <div><dt>Kind</dt><dd>live</dd></div>
+          <div><dt>Scope</dt><dd>kernel</dd></div>
+          <div><dt>Collected</dt><dd>2026-01-15 12:00:03Z</dd></div>
+        </dl>
+        <aside class="callout" data-kind="cannot"><p class="callout__kind">Caveat</p><div class="prose"><p>Excludes memory reserved by firmware and the kernel image.</p></div></aside>
+      </div>
+    </aside>
+    <div class="stack-lg">
+      <div class="kit__row">
+        <button class="btn btn--primary" type="button">Primary</button>
+        <button class="btn" type="button">Default</button>
+        <button class="btn btn--quiet" type="button">Quiet</button>
+        <button class="btn btn--small" type="button">Small</button>
+        <button class="btn" type="button" aria-pressed="true">Pressed</button>
+        <button class="btn" type="button" disabled>Disabled</button>
+        <button class="btn btn--icon" type="button" aria-label="Close">✕</button>
+      </div>
+      <div class="field">
+        <label class="field__label" for="kit-in">Virtual address</label>
+        <input class="input mono" id="kit-in" value="0x7ffd_5e8c_3a10">
+        <p class="field__hint">Hexadecimal, up to 64 bits.</p>
+      </div>
+      <div class="field">
+        <label class="field__label" for="kit-bad">Invalid input</label>
+        <input class="input mono" id="kit-bad" value="0xzz" aria-invalid="true">
+        <p class="field__error">Only hexadecimal digits 0–9 and a–f are allowed.</p>
+      </div>
+      <div class="field">
+        <label class="field__label" for="kit-sel">Select</label>
+        <select class="select" id="kit-sel"><option>x86-64, 4-level paging</option><option>arm64, 4 KiB granule, 39-bit VA</option></select>
+      </div>
+      <div class="kit__row">
+        <label class="check"><input type="checkbox" checked> Swap area present</label>
+        <div class="segmented" role="radiogroup" aria-label="Page size">
+          <label><input type="radio" name="kit-seg" checked> 4 KiB</label>
+          <label><input type="radio" name="kit-seg"> 2 MiB</label>
+          <label><input type="radio" name="kit-seg"> 1 GiB</label>
+        </div>
+      </div>
+      <div class="kit__row">
+        <button class="btn" type="button" data-open-dialog>Open dialog</button>
+        <button class="btn" type="button" data-open-drawer>Open drawer</button>
+      </div>
+      <p class="empty">Nothing matches this filter.</p>
+    </div>
+  </div>
+  <dialog class="dialog" aria-labelledby="kit-dlg-title">
+    <form method="dialog">
+      <header class="dialog__header"><h2 id="kit-dlg-title">Export snapshot</h2></header>
+      <div class="dialog__body">
+        <p class="prose">Redaction replaces 3 values before writing. Review them first.</p>
+        <div class="table-wrap"><table class="datatable"><thead><tr><th>Id</th><th>Before</th><th>After</th></tr></thead>
+          <tbody><tr><td><code>os.hostname</code></td><td class="mono">example-host</td><td class="mono">&lt;redacted:hostname&gt;</td></tr></tbody></table></div>
+      </div>
+      <footer class="dialog__footer"><button class="btn" value="cancel">Cancel</button><button class="btn btn--primary" value="ok">Export</button></footer>
+    </form>
+  </dialog>
+</section>
+
+</div>
+</div>
+
+<div class="kit-theme" data-theme="dark" id="dark">
+  <p class="kit-theme__label eyebrow">Dark theme · the same components</p>
+</div>
+
+<aside class="inspector" id="kit-drawer" aria-labelledby="kit-drawer-title" data-open="false">
+  <header class="inspector__header">
+    <p class="eyebrow">Derived fact</p>
+    <h2 class="inspector__title" id="kit-drawer-title"><code>derived.paging.levels</code></h2>
+    <button class="btn btn--icon btn--quiet" type="button" aria-label="Close inspector" data-close-drawer>✕</button>
+  </header>
+  <div class="inspector__body"><p class="inspector__value">4</p><p class="caption">The real drawer: fixed to the right edge of the viewport.</p></div>
+</aside>
+</body>
+</html>

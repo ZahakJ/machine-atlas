@@ -1,0 +1,229 @@
+/*
+ * Design tokens: every colour, font, size and timing the UI uses.
+ *
+ * Themes. Light is the default. The dark palette applies when the system
+ * prefers dark and the page has not chosen light, or when any element carries
+ * data-theme="dark". Because the palettes are set on [data-theme] as well as
+ * :root, a subtree can be themed independently (the component kit shows both
+ * themes side by side this way).
+ *
+ * Fonts. System stacks only: the CSP forbids external resources, and a
+ * textbook should not wait for a font download. Serif for prose, sans for
+ * interface, monospace for values and addresses.
+ */
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Surfaces: warm paper, so long reading does not glare. */
+  --paper: #f8f6f1;
+  --paper-raised: #fffdf9;
+  --paper-sunken: #efece4;
+  --paper-inset: #e7e3d9;
+  --scrim: rgb(30 28 24 / 0.32);
+
+  /* Text. --ink-soft passes 4.5:1 on every surface above. */
+  --ink: #1f1d1a;
+  --ink-soft: #57524a;
+  --ink-faint: #7a746a;
+  --rule: #dcd6ca;
+  --rule-strong: #bdb5a6;
+
+  --accent: #2c5d8f;
+  --accent-strong: #1f4870;
+  --accent-wash: #e3ecf5;
+  --on-accent: #ffffff;
+  --focus: #c2410c;
+
+  /* Provenance labels: hue plus shape plus text (see .badge). */
+  --observed: #1d6b4f;
+  --observed-wash: #dcefe6;
+  --derived: #2c5d8f;
+  --derived-wash: #e3ecf5;
+  --general: #5f5a52;
+  --general-wash: #ebe8e1;
+  --simulated: #8a5a00;
+  --simulated-wash: #f7ead0;
+
+  /* Observation statuses. */
+  --status-ok: #1d6b4f;
+  --status-absent: #5f5a52;
+  --status-denied: #a3361f;
+  --status-unsupported: #5b4a8a;
+  --status-failed: #b42318;
+  --status-skipped: #6f6a60;
+
+  /* Callouts. */
+  --misconception: #a3361f;
+  --misconception-wash: #f8e6df;
+  --cannot: #5b4a8a;
+  --cannot-wash: #ebe6f4;
+  --version: #6f6a60;
+  --version-wash: #ece9e2;
+
+  /* Simulation frames: distinct in lightness as well as hue. */
+  --frame-free: #fffdf9;
+  --frame-file: #8fb4d9;
+  --frame-dirty: #e0a458;
+  --frame-anon: #8a6bb8;
+  --frame-swap: #8a6bb8;
+  --frame-ink: #1f1d1a;
+  --frame-anon-ink: #ffffff;
+
+  --shadow-1: 0 1px 2px rgb(40 32 20 / 0.06), 0 1px 1px rgb(40 32 20 / 0.04);
+  --shadow-2: 0 2px 6px rgb(40 32 20 / 0.08), 0 8px 24px rgb(40 32 20 / 0.08);
+  --shadow-3: 0 12px 40px rgb(40 32 20 / 0.18);
+  --scroll-shadow: rgb(40 32 20 / 0.16);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #17181b;
+    --paper-raised: #1f2024;
+    --paper-sunken: #121315;
+    --paper-inset: #2a2b30;
+    --scrim: rgb(0 0 0 / 0.55);
+    --ink: #e8e4dc;
+    --ink-soft: #b3ada2;
+    --ink-faint: #8c877e;
+    --rule: #33343a;
+    --rule-strong: #4a4b52;
+    --accent: #8db8e8;
+    --accent-strong: #b3d0f0;
+    --accent-wash: #1e2a38;
+    --on-accent: #10161d;
+    --focus: #fb923c;
+    --observed: #6fcba4;
+    --observed-wash: #16302a;
+    --derived: #8db8e8;
+    --derived-wash: #1e2a38;
+    --general: #b3ada2;
+    --general-wash: #2a2a2d;
+    --simulated: #e9b45a;
+    --simulated-wash: #33280f;
+    --status-ok: #6fcba4;
+    --status-absent: #a39d92;
+    --status-denied: #f0937a;
+    --status-unsupported: #b9a6ec;
+    --status-failed: #ff8a7a;
+    --status-skipped: #8c877e;
+    --misconception: #f0937a;
+    --misconception-wash: #351d17;
+    --cannot: #b9a6ec;
+    --cannot-wash: #241f35;
+    --version: #b3ada2;
+    --version-wash: #26262a;
+    --frame-free: #1f2024;
+    --frame-file: #4f7fae;
+    --frame-dirty: #c5862f;
+    --frame-anon: #9b7fd0;
+    --frame-swap: #9b7fd0;
+    --frame-ink: #10111a;
+    --frame-anon-ink: #10111a;
+    --shadow-1: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow-2: 0 2px 8px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.3);
+    --shadow-3: 0 12px 40px rgb(0 0 0 / 0.6);
+    --scroll-shadow: rgb(0 0 0 / 0.55);
+  }
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #17181b;
+  --paper-raised: #1f2024;
+  --paper-sunken: #121315;
+  --paper-inset: #2a2b30;
+  --scrim: rgb(0 0 0 / 0.55);
+  --ink: #e8e4dc;
+  --ink-soft: #b3ada2;
+  --ink-faint: #8c877e;
+  --rule: #33343a;
+  --rule-strong: #4a4b52;
+  --accent: #8db8e8;
+  --accent-strong: #b3d0f0;
+  --accent-wash: #1e2a38;
+  --on-accent: #10161d;
+  --focus: #fb923c;
+  --observed: #6fcba4;
+  --observed-wash: #16302a;
+  --derived: #8db8e8;
+  --derived-wash: #1e2a38;
+  --general: #b3ada2;
+  --general-wash: #2a2a2d;
+  --simulated: #e9b45a;
+  --simulated-wash: #33280f;
+  --status-ok: #6fcba4;
+  --status-absent: #a39d92;
+  --status-denied: #f0937a;
+  --status-unsupported: #b9a6ec;
+  --status-failed: #ff8a7a;
+  --status-skipped: #8c877e;
+  --misconception: #f0937a;
+  --misconception-wash: #351d17;
+  --cannot: #b9a6ec;
+  --cannot-wash: #241f35;
+  --version: #b3ada2;
+  --version-wash: #26262a;
+  --frame-free: #1f2024;
+  --frame-file: #4f7fae;
+  --frame-dirty: #c5862f;
+  --frame-anon: #9b7fd0;
+  --frame-swap: #9b7fd0;
+  --frame-ink: #10111a;
+  --frame-anon-ink: #10111a;
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-2: 0 2px 8px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.3);
+  --shadow-3: 0 12px 40px rgb(0 0 0 / 0.6);
+  --scroll-shadow: rgb(0 0 0 / 0.55);
+}
+
+:root {
+  /* Type. */
+  --font-prose: "Iowan Old Style", "Charter", "Bitstream Charter", "Sitka Text", "Source Serif 4", "Source Serif Pro", "Noto Serif", Cambria, Georgia, serif;
+  --font-ui: system-ui, -apple-system, "Segoe UI", "Noto Sans", Cantarell, Ubuntu, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Mono", "DejaVu Sans Mono", "Liberation Mono", Menlo, Consolas, monospace;
+
+  --text-xs: 0.75rem;   /* 12px: tiny labels, badges */
+  --text-sm: 0.875rem;  /* 14px: interface */
+  --text-md: 1rem;      /* 16px: interface body */
+  --text-prose: 1.125rem; /* 18px: reading text */
+  --text-lg: 1.375rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.25rem;
+  --leading-prose: 1.62;
+  --leading-ui: 1.45;
+  --leading-tight: 1.2;
+
+  /* Space: a 4px base with a reading rhythm of one prose line (~29px). */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --rhythm: calc(var(--text-prose) * var(--leading-prose));
+
+  /* About 70 characters of the prose face. */
+  --measure: 68ch;
+  --gutter: 16px;
+  --rail-width: 17rem;
+  --inspector-width: 24rem;
+  --topbar-height: 3.25rem;
+
+  --radius-sm: 4px;
+  --radius: 8px;
+  --radius-lg: 14px;
+
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --duration: 180ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration: 0ms;
+  }
+}

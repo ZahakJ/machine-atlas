@@ -1,0 +1,21 @@
+atlas (4231, #threads: 9)
+-------------------------------------------------------------------
+se.exec_start                                :     528641089.999999
+se.vruntime                                  :        195597.203299
+se.sum_exec_runtime                          :             4.102773
+se.nr_migrations                             :                    3
+nr_switches                                  :                   33
+nr_voluntary_switches                        :                   19
+nr_involuntary_switches                      :                    0
+se.load.weight                               :               112640
+se.avg.load_sum                              :                46931
+se.avg.runnable_sum                          :              1302112
+se.avg.util_sum                              :              1302112
+se.avg.load_avg                              :                  110
+se.avg.runnable_avg                          :                   27
+se.avg.util_avg                              :                   27
+se.avg.last_update_time                      :      528641089998975
+policy                                       :                    3
+prio                                         :                   30
+clock-delta                                  :                   41
+mm->numa_scan_seq                            :                    0

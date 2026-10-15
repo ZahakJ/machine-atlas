@@ -1,0 +1,2173 @@
+{
+  "id": "cpu-topology",
+  "title": "How many CPUs does this machine have, really?",
+  "summary": "Packages, cores and hardware threads, the caches each one shares, hybrid cores, and how Linux numbers logical CPUs and groups them for the scheduler.",
+  "subsystem": "cpu",
+  "kind": "core",
+  "order": 1,
+  "prerequisites": [
+    "cpu-addressing"
+  ],
+  "next": [
+    "cpu-frequency"
+  ],
+  "deeper": [
+    "planned:cpu-caches",
+    "planned:numa-placement",
+    "planned:load-balancing-and-sched-domains"
+  ],
+  "version_notes": [
+    {
+      "applies": "Linux ≥ 4.19",
+      "text": "/sys/devices/system/cpu/smt/control and smt/active, added with the L1TF mitigations, report and switch simultaneous multithreading at run time."
+    },
+    {
+      "applies": "Linux ≥ 5.2",
+      "text": "topology/die_id and die_cpus_list describe dies, for packages that hold more than one."
+    },
+    {
+      "applies": "Linux ≥ 5.13",
+      "text": "On hybrid Intel processors /sys/devices/cpu_core/cpus and /sys/devices/cpu_atom/cpus list the performance and efficiency cores, because the two kinds have different performance counters."
+    },
+    {
+      "applies": "Linux ≥ 5.16",
+      "text": "topology/cluster_id and cluster_cpus_list describe clusters of cores that share an L2 cache or other resources below the package level."
+    }
+  ],
+  "references": [
+    {
+      "title": "Linux kernel documentation: How CPU topology info is exported via sysfs",
+      "url": "https://docs.kernel.org/admin-guide/cputopology.html",
+      "kind": "kernel-doc"
+    },
+    {
+      "title": "Linux kernel documentation: x86 Topology",
+      "url": "https://docs.kernel.org/arch/x86/topology.html",
+      "kind": "kernel-doc"
+    },
+    {
+      "title": "Linux kernel documentation: Scheduler Domains",
+      "url": "https://docs.kernel.org/scheduler/sched-domains.html",
+      "kind": "kernel-doc"
+    },
+    {
+      "title": "Linux kernel documentation: Capacity Aware Scheduling",
+      "url": "https://docs.kernel.org/scheduler/sched-capacity.html",
+      "kind": "kernel-doc"
+    },
+    {
+      "title": "Linux kernel documentation: L1TF, L1 Terminal Fault (SMT control)",
+      "url": "https://docs.kernel.org/admin-guide/hw-vuln/l1tf.html",
+      "kind": "kernel-doc"
+    },
+    {
+      "title": "Linux kernel documentation: CPU hotplug in the Kernel (possible, present and online)",
+      "url": "https://docs.kernel.org/core-api/cpu_hotplug.html",
+      "kind": "kernel-doc"
+    },
+    {
+      "title": "lscpu(1)",
+      "url": "https://man7.org/linux/man-pages/man1/lscpu.1.html",
+      "kind": "man-page"
+    },
+    {
+      "title": "Intel 64 and IA-32 Architectures Software Developer's Manual, Volume 3A, Chapter 10: Multiple-Processor Management (topology enumeration with CPUID)",
+      "url": "https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html",
+      "kind": "spec"
+    },
+    {
+      "title": "Arm Architecture Reference Manual for A-profile architecture: MPIDR_EL1, the multiprocessor affinity register",
+      "url": "https://developer.arm.com/documentation/ddi0487/latest",
+      "kind": "spec"
+    }
+  ],
+  "sections": [
+    {
+      "id": "question",
+      "title": "Question",
+      "blocks": [
+        {
+          "t": "branch",
+          "label": "observed",
+          "fact": "cpu.logical_count",
+          "expect": null,
+          "chosen": "then",
+          "then": [
+            {
+              "t": "p",
+              "label": "observed",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "This machine reports "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.logical_count",
+                  "display": "16",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": " logical CPUs: that is the number "
+                },
+                {
+                  "t": "code",
+                  "s": "nproc"
+                },
+                {
+                  "t": "text",
+                  "s": " prints and the number of rows in a CPU usage view. Yet it has "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.core_count",
+                  "display": "8",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": " physical cores; the most hardware threads any one core runs is "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.threads_per_core",
+                  "display": "2",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": "; and the number of packages, the chips in sockets, is "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.socket_count",
+                  "display": "1",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": ". Which of these numbers is \"how many CPUs\" this machine has, and why does Linux count the smallest unit rather than the chips you could hold in your hand?"
+                }
+              ]
+            },
+            {
+              "t": "branch",
+              "label": "observed",
+              "fact": "cpu.model_name",
+              "expect": null,
+              "chosen": "then",
+              "then": [
+                {
+                  "t": "p",
+                  "label": "observed",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "The processor calls itself "
+                    },
+                    {
+                      "t": "chip",
+                      "kind": "obs",
+                      "ref": "cpu.model_name",
+                      "display": "Intel(R) Core(TM) i7-10700K CPU @ 3.80GHz",
+                      "status": "ok",
+                      "label": "observed"
+                    },
+                    {
+                      "t": "text",
+                      "s": "."
+                    }
+                  ]
+                }
+              ],
+              "else": [],
+              "unknown": [
+                {
+                  "t": "p",
+                  "label": "observed",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "The processor gives no model name here ("
+                    },
+                    {
+                      "t": "chip",
+                      "kind": "obs",
+                      "ref": "cpu.model_name",
+                      "display": "Intel(R) Core(TM) i7-10700K CPU @ 3.80GHz",
+                      "status": "ok",
+                      "label": "observed"
+                    },
+                    {
+                      "t": "text",
+                      "s": "): arm64 kernels identify a core only by implementer and part numbers."
+                    }
+                  ]
+                }
+              ],
+              "generated_unknown": false
+            }
+          ],
+          "else": [],
+          "unknown": [
+            {
+              "t": "p",
+              "label": "observed",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "Machine Atlas could not count the logical CPUs here ("
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.logical_count",
+                  "display": "16",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": "). A machine usually reports one figure that "
+                },
+                {
+                  "t": "code",
+                  "s": "nproc"
+                },
+                {
+                  "t": "text",
+                  "s": " prints, and a processor built from fewer cores and fewer packages than that. Which of these numbers is \"how many CPUs\" a machine has, and why does Linux count the smallest unit rather than the chips you could hold in your hand?"
+                }
+              ]
+            }
+          ],
+          "generated_unknown": false
+        }
+      ]
+    },
+    {
+      "id": "why-it-exists",
+      "title": "Why it exists",
+      "blocks": [
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "For thirty years a faster computer meant a faster clock. Around 2005 that stopped: each smaller transistor still switched faster, but no longer at lower power, and a chip that runs faster than about 4 GHz turns too much of its power into heat to cool. What kept growing was the number of transistors. Designers spent them on more complete processors on one chip, called "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "cores"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": ", each able to run its own program."
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "A single core is also idle more often than it looks. When an instruction waits a hundred nanoseconds for memory, the execution units behind it have nothing to do. "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "Simultaneous multithreading"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " (SMT; Intel calls it Hyper-Threading) gives one core two sets of registers, so it can run two instruction streams and fill one stream's stalls with the other's work. To the operating system each set looks like a separate processor."
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "So a modern machine is a nest: packages hold cores, cores hold hardware threads, and caches are shared at every level in between. Linux schedules onto the innermost unit, the hardware thread, and calls each one a "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "logical CPU"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": ". But where a task runs matters: two tasks on sibling threads compete for one core, a task moved to another core leaves its cached data behind, and on some processors one core is simply faster than another. The scheduler needs the nest, and the kernel publishes it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "how-it-works",
+      "title": "How it works",
+      "blocks": [
+        {
+          "t": "h",
+          "label": "general",
+          "level": 3,
+          "inl": [
+            {
+              "t": "text",
+              "s": "Packages, dies, cores and threads"
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "A "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "package"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " is what sits in a socket. It may contain several "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "dies"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " (separate pieces of silicon, such as the chiplets of an AMD Ryzen or EPYC), each die several "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "cores"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": ", and each core one or more "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "hardware threads"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": ". Firmware describes this nest to the kernel at boot: x86 processors report it through the CPUID instruction (leaves 0xB and 0x1F) and the ACPI tables, arm64 systems through the MPIDR register, ACPI's PPTT table or the device tree."
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "The kernel numbers the logical CPUs in the order firmware lists them, and that order rarely matches the nest. Intel and AMD desktops usually list the first thread of every core before any second thread, so CPU 0 and CPU "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "n"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " + 0 are siblings on an "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "n"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": "-core part, not CPU 0 and CPU 1. Each CPU's directory in "
+            },
+            {
+              "t": "code",
+              "s": "/sys/devices/system/cpu/cpuN/topology"
+            },
+            {
+              "t": "text",
+              "s": " gives its "
+            },
+            {
+              "t": "code",
+              "s": "physical_package_id"
+            },
+            {
+              "t": "text",
+              "s": ", "
+            },
+            {
+              "t": "code",
+              "s": "die_id"
+            },
+            {
+              "t": "text",
+              "s": ", "
+            },
+            {
+              "t": "code",
+              "s": "core_id"
+            },
+            {
+              "t": "text",
+              "s": " and "
+            },
+            {
+              "t": "code",
+              "s": "thread_siblings_list"
+            },
+            {
+              "t": "text",
+              "s": ". Only the sibling list identifies a core reliably: core ids are labels that can repeat in every package and skip numbers."
+            }
+          ]
+        },
+        {
+          "t": "h",
+          "label": "general",
+          "level": 3,
+          "inl": [
+            {
+              "t": "text",
+              "s": "What two hardware threads share"
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "Sibling threads have separate registers and instruction pointers, and share almost everything else: the decoders, the execution units, the L1 and L2 caches and the core's TLB. When one thread stalls on memory the other uses the idle units, which typically adds 10 to 30 percent of throughput to the core, far from doubling it. When both are busy with the same kind of work, each runs noticeably slower than it would alone."
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "Sharing also leaks. Several speculative-execution attacks, such as L1TF and MDS, let one thread infer data the sibling thread touched in shared buffers. That is why the kernel can switch SMT off at run time: "
+            },
+            {
+              "t": "code",
+              "s": "/sys/devices/system/cpu/smt/control"
+            },
+            {
+              "t": "text",
+              "s": " reads "
+            },
+            {
+              "t": "code",
+              "s": "on"
+            },
+            {
+              "t": "text",
+              "s": ", "
+            },
+            {
+              "t": "code",
+              "s": "off"
+            },
+            {
+              "t": "text",
+              "s": ", "
+            },
+            {
+              "t": "code",
+              "s": "forceoff"
+            },
+            {
+              "t": "text",
+              "s": " (disabled on the command line), "
+            },
+            {
+              "t": "code",
+              "s": "notsupported"
+            },
+            {
+              "t": "text",
+              "s": " (no SMT) or "
+            },
+            {
+              "t": "code",
+              "s": "notimplemented"
+            },
+            {
+              "t": "text",
+              "s": " (this architecture cannot switch it)."
+            }
+          ]
+        },
+        {
+          "t": "h",
+          "label": "general",
+          "level": 3,
+          "inl": [
+            {
+              "t": "text",
+              "s": "Caches, and who shares them"
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "Each core has its own small, fast L1 caches, one for data and one for instructions, a few tens of kilobytes answering in about a nanosecond. Behind them is a larger L2, private to a core on most designs and shared by a cluster of four cores on others (Intel's efficiency cores, many arm designs). The last level, L3, is megabytes in size and shared by all the cores of a package or of one chiplet. Caches move memory in lines of 64 bytes."
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "For every CPU, "
+            },
+            {
+              "t": "code",
+              "s": "/sys/devices/system/cpu/cpuN/cache/indexK"
+            },
+            {
+              "t": "text",
+              "s": " lists each cache it uses with its level, type, size and "
+            },
+            {
+              "t": "code",
+              "s": "shared_cpu_list"
+            },
+            {
+              "t": "text",
+              "s": ". Two CPUs that list the same L3 can hand each other data through it; two that share only main memory pay a trip to RAM, and on a multi-socket machine possibly across the link between sockets."
+            }
+          ]
+        },
+        {
+          "t": "h",
+          "label": "general",
+          "level": 3,
+          "inl": [
+            {
+              "t": "text",
+              "s": "Hybrid processors"
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "Some processors mix cores of different designs: large "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "performance"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " cores and small, power-efficient "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "efficiency"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " cores (Intel since Alder Lake; arm's big.LITTLE and DynamIQ). The scheduler must then place demanding tasks on fast cores and background work on slow ones. The kernel describes the difference as a "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "capacity"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " per CPU, 1024 for the fastest, published in "
+            },
+            {
+              "t": "code",
+              "s": "cpu_capacity"
+            },
+            {
+              "t": "text",
+              "s": " on arm64 and RISC-V, and on hybrid x86 it lists the two kinds in "
+            },
+            {
+              "t": "code",
+              "s": "/sys/devices/cpu_core/cpus"
+            },
+            {
+              "t": "text",
+              "s": " and "
+            },
+            {
+              "t": "code",
+              "s": "/sys/devices/cpu_atom/cpus"
+            },
+            {
+              "t": "text",
+              "s": "."
+            }
+          ]
+        },
+        {
+          "t": "h",
+          "label": "general",
+          "level": 3,
+          "inl": [
+            {
+              "t": "text",
+              "s": "Possible, present and online"
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "Linux distinguishes CPUs that could ever exist in this boot ("
+            },
+            {
+              "t": "code",
+              "s": "possible"
+            },
+            {
+              "t": "text",
+              "s": ", for which per-CPU memory is reserved), CPUs that are there ("
+            },
+            {
+              "t": "code",
+              "s": "present"
+            },
+            {
+              "t": "text",
+              "s": "), and CPUs that are running ("
+            },
+            {
+              "t": "code",
+              "s": "online"
+            },
+            {
+              "t": "text",
+              "s": "). A CPU can be taken offline by writing 0 to its "
+            },
+            {
+              "t": "code",
+              "s": "online"
+            },
+            {
+              "t": "text",
+              "s": " file, and virtual machines can hot-plug CPUs, so these lists can differ."
+            }
+          ]
+        },
+        {
+          "t": "h",
+          "label": "general",
+          "level": 3,
+          "inl": [
+            {
+              "t": "text",
+              "s": "What the scheduler builds from it"
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "At boot, and whenever CPUs come or go, the scheduler builds "
+            },
+            {
+              "t": "em",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "scheduling domains"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": ": nested groups of CPUs that share something. Typically the smallest domain is the SMT siblings of one core, the next the cores sharing a cache, then the package, then NUMA nodes. Load balancing works from the inside out: it moves work between siblings readily, between packages reluctantly, because every move leaves cached data behind. The same nest is what "
+            },
+            {
+              "t": "code",
+              "s": "lscpu"
+            },
+            {
+              "t": "text",
+              "s": " and "
+            },
+            {
+              "t": "code",
+              "s": "taskset"
+            },
+            {
+              "t": "text",
+              "s": " describe."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "on-this-machine",
+      "title": "On this machine",
+      "blocks": [
+        {
+          "t": "evidence",
+          "label": "observed",
+          "title": "The counts",
+          "rows": [
+            {
+              "ref": "cpu.model_name",
+              "kind": "obs",
+              "caption": "CPU model",
+              "display": "Intel(R) Core(TM) i7-10700K CPU @ 3.80GHz",
+              "unit": "",
+              "status": "ok",
+              "label": "observed",
+              "source": "/proc/cpuinfo (model name)",
+              "collected_at": "2025-01-20T19:42:10Z"
+            },
+            {
+              "ref": "cpu.logical_count",
+              "kind": "obs",
+              "caption": "Logical CPUs: hardware threads Linux schedules on",
+              "display": "16",
+              "unit": "count",
+              "status": "ok",
+              "label": "observed",
+              "source": "/sys/devices/system/cpu",
+              "collected_at": "2025-01-20T19:42:10Z"
+            },
+            {
+              "ref": "cpu.core_count",
+              "kind": "obs",
+              "caption": "Physical cores",
+              "display": "8",
+              "unit": "count",
+              "status": "ok",
+              "label": "observed",
+              "source": "/sys/devices/system/cpu",
+              "collected_at": "2025-01-20T19:42:10Z"
+            },
+            {
+              "ref": "cpu.socket_count",
+              "kind": "obs",
+              "caption": "Packages (sockets)",
+              "display": "1",
+              "unit": "count",
+              "status": "ok",
+              "label": "observed",
+              "source": "/sys/devices/system/cpu",
+              "collected_at": "2025-01-20T19:42:10Z"
+            },
+            {
+              "ref": "cpu.threads_per_core",
+              "kind": "obs",
+              "caption": "Most hardware threads on one core",
+              "display": "2",
+              "unit": "count",
+              "status": "ok",
+              "label": "observed",
+              "source": "/sys/devices/system/cpu",
+              "collected_at": "2025-01-20T19:42:10Z"
+            },
+            {
+              "ref": "derived.cpu.smt",
+              "kind": "derived",
+              "caption": "Simultaneous multithreading",
+              "display": "yes",
+              "unit": "",
+              "status": "ok",
+              "label": "derived",
+              "source": "derived: cpu.threads_per_core \u003e 1",
+              "collected_at": ""
+            },
+            {
+              "ref": "cpu.smt.control",
+              "kind": "obs",
+              "caption": "SMT control",
+              "display": "on",
+              "unit": "",
+              "status": "ok",
+              "label": "observed",
+              "source": "/sys/devices/system/cpu/smt/control",
+              "collected_at": "2025-01-20T19:42:10Z"
+            },
+            {
+              "ref": "cpu.smt.active",
+              "kind": "obs",
+              "caption": "SMT active",
+              "display": "yes",
+              "unit": "",
+              "status": "ok",
+              "label": "observed",
+              "source": "/sys/devices/system/cpu/smt/active",
+              "collected_at": "2025-01-20T19:42:10Z"
+            },
+            {
+              "ref": "derived.cpu.hybrid",
+              "kind": "derived",
+              "caption": "Cores of different kinds",
+              "display": "no",
+              "unit": "",
+              "status": "ok",
+              "label": "derived",
+              "source": "derived: true when /sys/devices/cpu_core/cpus lists performance cores (hybrid x86), or when cpu_capacity differs between CPUs (arm big.LITTLE and similar); false when neither; here no hybrid core list exists and the kernel publishes no CPU capacities, so the cores are taken to be alike",
+              "collected_at": ""
+            }
+          ]
+        },
+        {
+          "t": "diagram",
+          "label": "observed",
+          "name": "cpu-topology"
+        },
+        {
+          "t": "branch",
+          "label": "derived",
+          "fact": "derived.cpu.smt",
+          "expect": null,
+          "chosen": "then",
+          "then": [
+            {
+              "t": "p",
+              "label": "derived",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "Cores here run "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.threads_per_core",
+                  "display": "2",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": " hardware threads, so the "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.logical_count",
+                  "display": "16",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": " logical CPUs come from only "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.core_count",
+                  "display": "8",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": " cores. Two tasks placed on siblings of one core share its execution units; placed on different cores, each has a core to itself. The "
+                },
+                {
+                  "t": "code",
+                  "s": "thread_siblings"
+                },
+                {
+                  "t": "text",
+                  "s": " column of the table below names each CPU's siblings."
+                }
+              ]
+            }
+          ],
+          "else": [
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "Each core here runs a single hardware thread, so every logical CPU is a whole core with its own execution units and private caches."
+                }
+              ]
+            }
+          ],
+          "unknown": [
+            {
+              "t": "p",
+              "label": "observed",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "Whether cores here run more than one hardware thread could not be determined ("
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.threads_per_core",
+                  "display": "2",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": "). Where they do, two logical CPUs that are siblings share one core's execution units and caches."
+                }
+              ]
+            }
+          ],
+          "generated_unknown": false
+        },
+        {
+          "t": "branch",
+          "label": "observed",
+          "fact": "cpu.smt.control",
+          "expect": "on",
+          "chosen": "then",
+          "then": [
+            {
+              "t": "p",
+              "label": "observed",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "SMT control reads "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.smt.control",
+                  "display": "on",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": ": the kernel may run sibling threads, and an administrator could switch them off at run time."
+                }
+              ]
+            }
+          ],
+          "else": [
+            {
+              "t": "p",
+              "label": "observed",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "SMT control reads "
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.smt.control",
+                  "display": "on",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": ": "
+                },
+                {
+                  "t": "code",
+                  "s": "notsupported"
+                },
+                {
+                  "t": "text",
+                  "s": " means the processor, or the virtual machine's description of it, has no SMT; "
+                },
+                {
+                  "t": "code",
+                  "s": "notimplemented"
+                },
+                {
+                  "t": "text",
+                  "s": " that this architecture cannot switch it at run time; "
+                },
+                {
+                  "t": "code",
+                  "s": "off"
+                },
+                {
+                  "t": "text",
+                  "s": " or "
+                },
+                {
+                  "t": "code",
+                  "s": "forceoff"
+                },
+                {
+                  "t": "text",
+                  "s": " that it was switched off."
+                }
+              ]
+            }
+          ],
+          "unknown": [
+            {
+              "t": "p",
+              "label": "observed",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "SMT control could not be read here ("
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.smt.control",
+                  "display": "on",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": "): the kernel predates it (4.19), or "
+                },
+                {
+                  "t": "code",
+                  "s": "/sys/devices/system/cpu"
+                },
+                {
+                  "t": "text",
+                  "s": " is restricted."
+                }
+              ]
+            }
+          ],
+          "generated_unknown": false
+        },
+        {
+          "t": "datatable",
+          "label": "observed",
+          "ref": "cpu.topology",
+          "status": "ok",
+          "columns": [
+            "cpu",
+            "package",
+            "die",
+            "core_id",
+            "thread_siblings",
+            "core_type",
+            "capacity"
+          ],
+          "rows": [
+            [
+              "0",
+              "0",
+              "0",
+              "0",
+              "0,8",
+              "—",
+              "—"
+            ],
+            [
+              "1",
+              "0",
+              "0",
+              "1",
+              "1,9",
+              "—",
+              "—"
+            ],
+            [
+              "2",
+              "0",
+              "0",
+              "2",
+              "2,10",
+              "—",
+              "—"
+            ],
+            [
+              "3",
+              "0",
+              "0",
+              "3",
+              "3,11",
+              "—",
+              "—"
+            ],
+            [
+              "4",
+              "0",
+              "0",
+              "4",
+              "4,12",
+              "—",
+              "—"
+            ],
+            [
+              "5",
+              "0",
+              "0",
+              "5",
+              "5,13",
+              "—",
+              "—"
+            ],
+            [
+              "6",
+              "0",
+              "0",
+              "6",
+              "6,14",
+              "—",
+              "—"
+            ],
+            [
+              "7",
+              "0",
+              "0",
+              "7",
+              "7,15",
+              "—",
+              "—"
+            ],
+            [
+              "8",
+              "0",
+              "0",
+              "0",
+              "0,8",
+              "—",
+              "—"
+            ],
+            [
+              "9",
+              "0",
+              "0",
+              "1",
+              "1,9",
+              "—",
+              "—"
+            ],
+            [
+              "10",
+              "0",
+              "0",
+              "2",
+              "2,10",
+              "—",
+              "—"
+            ],
+            [
+              "11",
+              "0",
+              "0",
+              "3",
+              "3,11",
+              "—",
+              "—"
+            ],
+            [
+              "12",
+              "0",
+              "0",
+              "4",
+              "4,12",
+              "—",
+              "—"
+            ],
+            [
+              "13",
+              "0",
+              "0",
+              "5",
+              "5,13",
+              "—",
+              "—"
+            ],
+            [
+              "14",
+              "0",
+              "0",
+              "6",
+              "6,14",
+              "—",
+              "—"
+            ],
+            [
+              "15",
+              "0",
+              "0",
+              "7",
+              "7,15",
+              "—",
+              "—"
+            ]
+          ],
+          "total": 16
+        },
+        {
+          "t": "branch",
+          "label": "derived",
+          "fact": "derived.cpu.hybrid",
+          "expect": null,
+          "chosen": "else",
+          "then": [
+            {
+              "t": "branch",
+              "label": "general",
+              "fact": "cpu.hybrid.performance_cpus",
+              "expect": null,
+              "chosen": "unknown",
+              "then": [
+                {
+                  "t": "p",
+                  "label": "general",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "The cores are not all alike here: logical CPUs "
+                    },
+                    {
+                      "t": "chip",
+                      "kind": "obs",
+                      "ref": "cpu.hybrid.performance_cpus",
+                      "display": "not available (absent)",
+                      "status": "absent",
+                      "label": "observed"
+                    },
+                    {
+                      "t": "text",
+                      "s": " are on performance cores and "
+                    },
+                    {
+                      "t": "chip",
+                      "kind": "obs",
+                      "ref": "cpu.hybrid.efficiency_cpus",
+                      "display": "not available (absent)",
+                      "status": "absent",
+                      "label": "observed"
+                    },
+                    {
+                      "t": "text",
+                      "s": " on efficiency cores, marked in the "
+                    },
+                    {
+                      "t": "code",
+                      "s": "core_type"
+                    },
+                    {
+                      "t": "text",
+                      "s": " column. The scheduler tends to place demanding tasks on the performance cores and lets the efficiency cores carry background work, and a task that moves between the two kinds changes speed."
+                    }
+                  ]
+                }
+              ],
+              "else": [
+                {
+                  "t": "p",
+                  "label": "general",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "The cores are not all alike here: the kernel gives the CPUs different capacities, shown in the "
+                    },
+                    {
+                      "t": "code",
+                      "s": "capacity"
+                    },
+                    {
+                      "t": "text",
+                      "s": " column (1024 is the fastest). The scheduler tends to place demanding tasks on high-capacity CPUs and lets the others carry background work, and a task that moves between them changes speed."
+                    }
+                  ]
+                }
+              ],
+              "unknown": [
+                {
+                  "t": "p",
+                  "label": "general",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "Machine Atlas could not determine performance cores (cpu.hybrid.performance_cpus) on this machine: not available (absent), source /sys/devices/cpu_core/cpus."
+                    }
+                  ]
+                }
+              ],
+              "generated_unknown": true
+            }
+          ],
+          "else": [
+            {
+              "t": "p",
+              "label": "derived",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "The cores here are all of one kind: no hybrid core lists exist, and where the kernel publishes a capacity per CPU, every CPU has the same one. All else equal, a task runs equally fast on any of them."
+                }
+              ]
+            }
+          ],
+          "unknown": [
+            {
+              "t": "p",
+              "label": "observed",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "Whether the cores here are all alike could not be determined, because the per-CPU topology could not be read ("
+                },
+                {
+                  "t": "chip",
+                  "kind": "obs",
+                  "ref": "cpu.topology",
+                  "display": "16 rows",
+                  "status": "ok",
+                  "label": "observed"
+                },
+                {
+                  "t": "text",
+                  "s": ")."
+                }
+              ]
+            }
+          ],
+          "generated_unknown": false
+        },
+        {
+          "t": "h",
+          "label": "general",
+          "level": 3,
+          "inl": [
+            {
+              "t": "text",
+              "s": "The caches"
+            }
+          ]
+        },
+        {
+          "t": "datatable",
+          "label": "observed",
+          "ref": "cpu.cache_domains",
+          "status": "ok",
+          "columns": [
+            "level",
+            "type",
+            "size_bytes",
+            "shared_cpu_list",
+            "cpus"
+          ],
+          "rows": [
+            [
+              "1",
+              "Data",
+              "32 KiB",
+              "0,8",
+              "2"
+            ],
+            [
+              "1",
+              "Data",
+              "32 KiB",
+              "1,9",
+              "2"
+            ],
+            [
+              "1",
+              "Data",
+              "32 KiB",
+              "2,10",
+              "2"
+            ],
+            [
+              "1",
+              "Data",
+              "32 KiB",
+              "3,11",
+              "2"
+            ],
+            [
+              "1",
+              "Data",
+              "32 KiB",
+              "4,12",
+              "2"
+            ],
+            [
+              "1",
+              "Data",
+              "32 KiB",
+              "5,13",
+              "2"
+            ],
+            [
+              "1",
+              "Data",
+              "32 KiB",
+              "6,14",
+              "2"
+            ],
+            [
+              "1",
+              "Data",
+              "32 KiB",
+              "7,15",
+              "2"
+            ],
+            [
+              "1",
+              "Instruction",
+              "32 KiB",
+              "0,8",
+              "2"
+            ],
+            [
+              "1",
+              "Instruction",
+              "32 KiB",
+              "1,9",
+              "2"
+            ],
+            [
+              "1",
+              "Instruction",
+              "32 KiB",
+              "2,10",
+              "2"
+            ],
+            [
+              "1",
+              "Instruction",
+              "32 KiB",
+              "3,11",
+              "2"
+            ],
+            [
+              "1",
+              "Instruction",
+              "32 KiB",
+              "4,12",
+              "2"
+            ],
+            [
+              "1",
+              "Instruction",
+              "32 KiB",
+              "5,13",
+              "2"
+            ],
+            [
+              "1",
+              "Instruction",
+              "32 KiB",
+              "6,14",
+              "2"
+            ],
+            [
+              "1",
+              "Instruction",
+              "32 KiB",
+              "7,15",
+              "2"
+            ],
+            [
+              "2",
+              "Unified",
+              "256 KiB",
+              "0,8",
+              "2"
+            ],
+            [
+              "2",
+              "Unified",
+              "256 KiB",
+              "1,9",
+              "2"
+            ],
+            [
+              "2",
+              "Unified",
+              "256 KiB",
+              "2,10",
+              "2"
+            ],
+            [
+              "2",
+              "Unified",
+              "256 KiB",
+              "3,11",
+              "2"
+            ],
+            [
+              "2",
+              "Unified",
+              "256 KiB",
+              "4,12",
+              "2"
+            ],
+            [
+              "2",
+              "Unified",
+              "256 KiB",
+              "5,13",
+              "2"
+            ],
+            [
+              "2",
+              "Unified",
+              "256 KiB",
+              "6,14",
+              "2"
+            ],
+            [
+              "2",
+              "Unified",
+              "256 KiB",
+              "7,15",
+              "2"
+            ],
+            [
+              "3",
+              "Unified",
+              "16 MiB",
+              "0-15",
+              "16"
+            ]
+          ],
+          "total": 25
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "Each row is one physical cache. A level with as many rows as cores is private to each core; a level with one row per package is shared by the whole package."
+            }
+          ]
+        },
+        {
+          "t": "h",
+          "label": "general",
+          "level": 3,
+          "inl": [
+            {
+              "t": "text",
+              "s": "Numbering and hot-plug"
+            }
+          ]
+        },
+        {
+          "t": "evidence",
+          "label": "observed",
+          "title": "Which CPUs exist",
+          "rows": [
+            {
+              "ref": "cpu.possible",
+              "kind": "obs",
+              "caption": "Possible CPUs",
+              "display": "0-15",
+              "unit": "",
+              "status": "ok",
+              "label": "observed",
+              "source": "/sys/devices/system/cpu/possible",
+              "collected_at": "2025-01-20T19:42:10Z"
+            },
+            {
+              "ref": "cpu.present",
+              "kind": "obs",
+              "caption": "Present CPUs",
+              "display": "0-15",
+              "unit": "",
+              "status": "ok",
+              "label": "observed",
+              "source": "/sys/devices/system/cpu/present",
+              "collected_at": "2025-01-20T19:42:10Z"
+            },
+            {
+              "ref": "cpu.online",
+              "kind": "obs",
+              "caption": "Online CPUs",
+              "display": "0-15",
+              "unit": "",
+              "status": "ok",
+              "label": "observed",
+              "source": "/sys/devices/system/cpu/online",
+              "collected_at": "2025-01-20T19:42:10Z"
+            },
+            {
+              "ref": "cpu.offline",
+              "kind": "obs",
+              "caption": "Offline CPUs (blank when none)",
+              "display": "",
+              "unit": "",
+              "status": "ok",
+              "label": "observed",
+              "source": "/sys/devices/system/cpu/offline",
+              "collected_at": "2025-01-20T19:42:10Z"
+            }
+          ]
+        },
+        {
+          "t": "branch",
+          "label": "derived",
+          "fact": "derived.env.kind",
+          "expect": "vm-guest",
+          "chosen": "else",
+          "then": [
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "Atlas found evidence of a virtual machine. Every figure above is the topology the hypervisor chose to present: the \"cores\" are threads of the host scheduled like any other, they may move between physical cores, and two of them may share one physical core without either knowing."
+                }
+              ]
+            }
+          ],
+          "else": [
+            {
+              "t": "p",
+              "label": "derived",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "The figures above are what the kernel was told at boot. On bare metal they describe the silicon; inside a virtual machine, which Machine Atlas found no evidence of here, they would describe whatever the hypervisor chose to present."
+                }
+              ]
+            }
+          ],
+          "unknown": [
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "Whether this system is a virtual machine could not be determined here. If it is, every figure above is the topology the hypervisor chose to present, not the physical cores underneath."
+                }
+              ]
+            }
+          ],
+          "generated_unknown": false
+        }
+      ]
+    },
+    {
+      "id": "predict",
+      "title": "Predict",
+      "blocks": [
+        {
+          "t": "predict",
+          "label": "general",
+          "question": [
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "Two programs each keep one hardware thread busy with arithmetic and little memory traffic. Will they finish sooner on two sibling threads of one core, or on two different cores?"
+                }
+              ]
+            }
+          ],
+          "options": [
+            [
+              {
+                "t": "text",
+                "s": "Sooner on siblings: they share a cache, so they help each other."
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "s": "Sooner on different cores: siblings compete for one core's execution units."
+              }
+            ],
+            [
+              {
+                "t": "text",
+                "s": "No difference: a logical CPU is a CPU."
+              }
+            ]
+          ],
+          "reveal": [
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "On different cores. Sibling threads share the execution units, so two arithmetic-heavy programs on one core each get roughly the share of the core the other leaves, typically 55 to 65 percent of their speed alone; on two cores each runs at full speed. The scheduler knows this, which is why it fills idle cores before idle siblings."
+                }
+              ]
+            },
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "The first answer is right for a different workload: two threads exchanging data through memory can benefit from sharing a core's L1 and L2, because a cache line written by one is already where the other reads it. The third is what the logical CPU count invites you to believe."
+                }
+              ]
+            },
+            {
+              "t": "branch",
+              "label": "derived",
+              "fact": "derived.cpu.smt",
+              "expect": null,
+              "chosen": "then",
+              "then": [
+                {
+                  "t": "p",
+                  "label": "derived",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "This machine has SMT, so the experiment below can show the difference."
+                    }
+                  ]
+                }
+              ],
+              "else": [
+                {
+                  "t": "p",
+                  "label": "general",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "This machine has no SMT, so every pair of logical CPUs here is a pair of cores; on a machine with SMT the difference shows clearly."
+                    }
+                  ]
+                }
+              ],
+              "unknown": [
+                {
+                  "t": "p",
+                  "label": "general",
+                  "inl": [
+                    {
+                      "t": "text",
+                      "s": "When simultaneous multithreading (derived.cpu.smt) cannot be determined, this text names the reason and where Machine Atlas looked."
+                    }
+                  ]
+                }
+              ],
+              "generated_unknown": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "try-it",
+      "title": "Try it",
+      "blocks": [
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "Read the topology the same way the kernel publishes it, without changing anything:"
+            }
+          ]
+        },
+        {
+          "t": "code",
+          "label": "general",
+          "lang": "sh",
+          "text": "lscpu -e=CPU,SOCKET,CORE,CACHE,ONLINE\ngrep . /sys/devices/system/cpu/cpu0/topology/*_list\ngrep . /sys/devices/system/cpu/cpu0/cache/index*/shared_cpu_list"
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "The first prints one line per logical CPU with its package, core and the caches it uses (L1d:L1i:L2:L3 by number). The second shows which CPUs share cpu0's core, die and package; the third which share each of its caches."
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "On a machine with SMT you can measure the prediction. Pick two siblings from the table above and two CPUs on different cores, and time the same busy loop pinned each way:"
+            }
+          ]
+        },
+        {
+          "t": "code",
+          "label": "general",
+          "lang": "sh",
+          "text": "time (taskset -c 0 sh -c 'i=0; while [ $i -lt 3000000 ]; do i=$((i+1)); done' \u0026 taskset -c SIBLING sh -c 'i=0; while [ $i -lt 3000000 ]; do i=$((i+1)); done' \u0026 wait)"
+        },
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "Replace SIBLING with cpu0's sibling, then with a CPU on another core. Expect the pair on one core to take noticeably longer; on a busy machine the difference is noisier."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "limits",
+      "title": "Limits",
+      "blocks": [
+        {
+          "t": "callout",
+          "label": "general",
+          "kind": "misconception",
+          "title": "nproc is the number of cores",
+          "blocks": [
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "code",
+                  "s": "nproc"
+                },
+                {
+                  "t": "text",
+                  "s": " counts the logical CPUs this process may run on: hardware threads, after affinity and cpusets have removed any. On a machine with SMT it is twice the number of cores; in a container with a CPU set it can be fewer than the machine has; and it ignores CPU quotas entirely."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "t": "callout",
+          "label": "general",
+          "kind": "misconception",
+          "title": "SMT doubles the processor",
+          "blocks": [
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "Two hardware threads share one core's execution units and caches. They add throughput only where one thread leaves units idle, typically 10 to 30 percent, and two busy siblings each run slower than one thread alone."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "t": "callout",
+          "label": "general",
+          "kind": "misconception",
+          "title": "Neighbouring CPU numbers are neighbours on the chip",
+          "blocks": [
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "Logical CPU numbers follow the order firmware lists the threads, which on most x86 machines puts all first threads before all second threads. Siblings, dies and packages must be read from the topology files, never inferred from the numbers."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "t": "callout",
+          "label": "general",
+          "kind": "cannot",
+          "title": "What these measurements cannot establish",
+          "blocks": [
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "Nothing here measures distance or speed. The topology says which CPUs share a core or a cache, not how long a cache line takes to travel between them, how hot each core runs, or how a hybrid core's speed compares beyond the capacity number the kernel was given."
+                }
+              ]
+            },
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "Inside a virtual machine the topology is a description chosen by the hypervisor, and nothing inside the guest can see the physical cores its virtual CPUs run on or which other guests share them."
+                }
+              ]
+            },
+            {
+              "t": "p",
+              "label": "general",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "The physical arrangement on the die, which cores sit next to which cache slice, is not published at all."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "go-deeper",
+      "title": "Go deeper",
+      "blocks": [
+        {
+          "t": "p",
+          "label": "general",
+          "inl": [
+            {
+              "t": "text",
+              "s": "Next, "
+            },
+            {
+              "t": "link",
+              "kind": "lesson",
+              "href": "cpu-frequency",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "frequency scaling"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " follows how fast each of these cores is allowed to run, and why that changes from moment to moment. In Explore, the "
+            },
+            {
+              "t": "link",
+              "kind": "component",
+              "href": "cpu-topology",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "CPU topology"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " and "
+            },
+            {
+              "t": "link",
+              "kind": "component",
+              "href": "cpu-caches",
+              "inl": [
+                {
+                  "t": "text",
+                  "s": "CPU caches"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "s": " components show what depends on this nest. Planned lessons cover CPU caches and cache lines in depth, NUMA placement, and how the scheduler's domains balance load between cores."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "uses": [
+    {
+      "id": "cpu.cache_domains",
+      "kind": "obs",
+      "status": "ok"
+    },
+    {
+      "id": "cpu.core_count",
+      "kind": "obs",
+      "status": "ok"
+    },
+    {
+      "id": "cpu.hybrid.efficiency_cpus",
+      "kind": "obs",
+      "status": "absent"
+    },
+    {
+      "id": "cpu.hybrid.performance_cpus",
+      "kind": "obs",
+      "status": "absent"
+    },
+    {
+      "id": "cpu.logical_count",
+      "kind": "obs",
+      "status": "ok"
+    },
+    {
+      "id": "cpu.model_name",
+      "kind": "obs",
+      "status": "ok"
+    },
+    {
+      "id": "cpu.offline",
+      "kind": "obs",
+      "status": "ok"
+    },
+    {
+      "id": "cpu.online",
+      "kind": "obs",
+      "status": "ok"
+    },
+    {
+      "id": "cpu.possible",
+      "kind": "obs",
+      "status": "ok"
+    },
+    {
+      "id": "cpu.present",
+      "kind": "obs",
+      "status": "ok"
+    },
+    {
+      "id": "cpu.smt.active",
+      "kind": "obs",
+      "status": "ok"
+    },
+    {
+      "id": "cpu.smt.control",
+      "kind": "obs",
+      "status": "ok"
+    },
+    {
+      "id": "cpu.socket_count",
+      "kind": "obs",
+      "status": "ok"
+    },
+    {
+      "id": "cpu.threads_per_core",
+      "kind": "obs",
+      "status": "ok"
+    },
+    {
+      "id": "cpu.topology",
+      "kind": "obs",
+      "status": "ok"
+    },
+    {
+      "id": "derived.cpu.hybrid",
+      "kind": "derived",
+      "status": "ok"
+    },
+    {
+      "id": "derived.cpu.smt",
+      "kind": "derived",
+      "status": "ok"
+    },
+    {
+      "id": "derived.env.kind",
+      "kind": "derived",
+      "status": "ok"
+    }
+  ],
+  "coverage": {
+    "ok": 16,
+    "total": 18
+  }
+}

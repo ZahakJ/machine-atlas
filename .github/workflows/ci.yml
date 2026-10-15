@@ -1,0 +1,69 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+# The workflow only reads the repository; nothing is published or written back.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      # The toolchain is the one go.mod names, so CI builds with the oldest Go
+      # the module promises to support.
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      # Only for the UI unit tests; there are no npm dependencies to install.
+      # node --test expands the quoted glob itself from Node 21 on.
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: gofmt
+        run: |
+          out="$(gofmt -l .)"
+          if [ -n "$out" ]; then echo "gofmt needed:"; echo "$out"; exit 1; fi
+
+      - name: go vet
+        run: go vet ./...
+
+      - name: go test
+        run: go test ./...
+
+      - name: web tests
+        run: node --test 'web/test/*.test.mjs'
+
+      - name: curriculum lint (strict)
+        run: go run ./cmd/atlas curriculum lint
+
+      - name: cross builds
+        run: |
+          GOOS=linux GOARCH=arm64 go build ./...
+          GOOS=darwin GOARCH=arm64 go build ./...
+          GOOS=linux GOARCH=riscv64 go build ./...
+
+      # A real collection on the runner, a cloud VM: every push exercises a
+      # second real machine besides the one the project is developed on. The
+      # snapshot is redacted by default and is not uploaded anywhere.
+      - name: collect this runner
+        run: |
+          go build -o atlas ./cmd/atlas
+          ./atlas collect -o snapshot.json
+          ./atlas snapshot validate snapshot.json
+
+      - name: bind lessons to the runner's snapshot
+        run: |
+          ./atlas lesson cpu-addressing --snapshot snapshot.json
+          ./atlas lesson page-faults --snapshot snapshot.json

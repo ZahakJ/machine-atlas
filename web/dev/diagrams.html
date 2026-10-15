@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'">
+<link rel="icon" href="data:,">
+<title>Diagrams (dev)</title>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/diagrams.css">
+<link rel="stylesheet" href="dev.css">
+<script type="module" src="diagrams.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="topbar__brand" href="kit.html">Machine Atlas</a>
+  <span class="caption">Diagrams, development page</span>
+  <div class="topbar__tools">
+    <button class="btn btn--small" type="button" data-set-theme="system">System</button>
+    <button class="btn btn--small" type="button" data-set-theme="light">Light</button>
+    <button class="btn btn--small" type="button" data-set-theme="dark">Dark</button>
+  </div>
+</header>
+<div class="mode-banner" data-mode="fixture" role="status">
+  <strong class="mode-banner__mode">Fixture data</strong>
+  <span>Snapshots of the demonstration roots in fixtures/roots, not a machine.</span>
+</div>
+<main class="page stack-lg">
+  <div class="cluster">
+    <div class="field dev-narrow">
+      <label class="field__label" for="fixture">Snapshot</label>
+      <select class="select" id="fixture">
+        <option value="desktop-x86_64">desktop-x86_64: swap, MGLRU, THP always</option>
+        <option value="rpi-arm64-noswap">rpi-arm64-noswap: arm64, 39-bit, no swap</option>
+        <option value="numa-server-la57">numa-server-la57: two nodes, 5-level paging</option>
+        <option value="restricted">restricted: permission denied everywhere</option>
+        <option value="empty">empty: no snapshot at all</option>
+      </select>
+    </div>
+    <div class="field dev-narrow">
+      <label class="field__label" for="only">Diagram</label>
+      <select class="select" id="only">
+        <option value="">All seven</option>
+      </select>
+    </div>
+  </div>
+  <div class="stack-lg" id="diagrams"></div>
+</main>
+</body>
+</html>

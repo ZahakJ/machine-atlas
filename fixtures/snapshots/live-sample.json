@@ -1,0 +1,6989 @@
+{
+  "schema": "machine-atlas/snapshot",
+  "schema_version": 1,
+  "app_version": "0.1.0",
+  "id": "sha256:68b4810f1b653b7bf1c3e6683f8b92543ece6bd7a5075d3c6f3677d784f62e73",
+  "created_at": "2026-10-06T19:21:10Z",
+  "collection": {
+    "mode": "live",
+    "fixture": "",
+    "privileged": false,
+    "started_at": "2026-10-06T19:21:10Z",
+    "finished_at": "2026-10-06T19:21:10Z",
+    "collectors": [
+      {
+        "id": "system.os-release",
+        "status": "partial",
+        "duration_ms": 0,
+        "observations": 4,
+        "error": ""
+      },
+      {
+        "id": "system.hostname",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 1,
+        "error": ""
+      },
+      {
+        "id": "system.kernel",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 6,
+        "error": ""
+      },
+      {
+        "id": "system.cpu",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 14,
+        "error": ""
+      },
+      {
+        "id": "system.init",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 2,
+        "error": ""
+      },
+      {
+        "id": "system.virt",
+        "status": "partial",
+        "duration_ms": 0,
+        "observations": 7,
+        "error": ""
+      },
+      {
+        "id": "system.block",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 1,
+        "error": ""
+      },
+      {
+        "id": "system.lsblk",
+        "status": "ok",
+        "duration_ms": 3,
+        "observations": 1,
+        "error": ""
+      },
+      {
+        "id": "system.mounts",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 1,
+        "error": ""
+      },
+      {
+        "id": "system.net",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 1,
+        "error": ""
+      },
+      {
+        "id": "system.session",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 4,
+        "error": ""
+      },
+      {
+        "id": "memory.meminfo",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 60,
+        "error": ""
+      },
+      {
+        "id": "memory.vmstat",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 198,
+        "error": ""
+      },
+      {
+        "id": "memory.zoneinfo",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 1,
+        "error": ""
+      },
+      {
+        "id": "memory.buddyinfo",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 1,
+        "error": ""
+      },
+      {
+        "id": "memory.swaps",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 1,
+        "error": ""
+      },
+      {
+        "id": "memory.sysctl",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 14,
+        "error": ""
+      },
+      {
+        "id": "memory.thp",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 4,
+        "error": ""
+      },
+      {
+        "id": "memory.lru_gen",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 1,
+        "error": ""
+      },
+      {
+        "id": "memory.zswap",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 1,
+        "error": ""
+      },
+      {
+        "id": "memory.zram",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 1,
+        "error": ""
+      },
+      {
+        "id": "memory.psi",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 8,
+        "error": ""
+      },
+      {
+        "id": "memory.numa",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 1,
+        "error": ""
+      },
+      {
+        "id": "memory.hugepages",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 1,
+        "error": ""
+      },
+      {
+        "id": "memory.block_size",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 1,
+        "error": ""
+      },
+      {
+        "id": "memory.slabinfo",
+        "status": "partial",
+        "duration_ms": 0,
+        "observations": 1,
+        "error": ""
+      },
+      {
+        "id": "memory.cgroup",
+        "status": "ok",
+        "duration_ms": 0,
+        "observations": 11,
+        "error": ""
+      },
+      {
+        "id": "probe",
+        "status": "ok",
+        "duration_ms": 9,
+        "observations": 20,
+        "error": ""
+      }
+    ]
+  },
+  "redaction": {
+    "applied": true,
+    "policy": "strict",
+    "classes": [
+      "freetext",
+      "hostname",
+      "serial",
+      "username"
+    ],
+    "replaced": 47
+  },
+  "observations": [
+    {
+      "id": "block.devices",
+      "value": [
+        {
+          "name": "<name-1>",
+          "removable": false,
+          "rotational": false,
+          "size_bytes": 2000398934016,
+          "type": "disk"
+        }
+      ],
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/block",
+        "detail": "*/size (512-byte sectors), queue/rotational, removable"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.block",
+      "note": "redacted (freetext)"
+    },
+    {
+      "id": "block.lsblk",
+      "value": [
+        {
+          "name": "<name-1>",
+          "size_bytes": 2000398934016,
+          "type": "disk"
+        },
+        {
+          "fstype": "vfat",
+          "name": "<name-2>",
+          "size_bytes": 104857600,
+          "type": "part"
+        },
+        {
+          "name": "<name-3>",
+          "size_bytes": 16777216,
+          "type": "part"
+        },
+        {
+          "fstype": "ntfs",
+          "name": "<name-4>",
+          "size_bytes": 1684142030848,
+          "type": "part"
+        },
+        {
+          "fstype": "ntfs",
+          "name": "<name-5>",
+          "size_bytes": 887095296,
+          "type": "part"
+        },
+        {
+          "fstype": "vfat",
+          "name": "<name-6>",
+          "size_bytes": 838860800,
+          "type": "part"
+        },
+        {
+          "fstype": "ext4",
+          "name": "<name-7>",
+          "size_bytes": 306016419840,
+          "type": "part"
+        },
+        {
+          "fstype": "swap",
+          "name": "<name-8>",
+          "size_bytes": 7717519360,
+          "type": "part"
+        }
+      ],
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "command",
+        "path": "lsblk --json --bytes --output NAME,TYPE,SIZE,FSTYPE"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.lsblk",
+      "note": "redacted (freetext)"
+    },
+    {
+      "id": "cpu.address_bits.physical",
+      "value": 48,
+      "unit": "bits",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/cpuinfo",
+        "field": "address sizes"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.cpu"
+    },
+    {
+      "id": "cpu.address_bits.virtual",
+      "value": 48,
+      "unit": "bits",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/cpuinfo",
+        "field": "address sizes"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.cpu"
+    },
+    {
+      "id": "cpu.caches",
+      "value": [
+        {
+          "level": 1,
+          "line_size_bytes": 64,
+          "shared_cpu_list": "0,8",
+          "size_bytes": 32768,
+          "type": "Data",
+          "ways": 8
+        },
+        {
+          "level": 1,
+          "line_size_bytes": 64,
+          "shared_cpu_list": "0,8",
+          "size_bytes": 32768,
+          "type": "Instruction",
+          "ways": 8
+        },
+        {
+          "level": 2,
+          "line_size_bytes": 64,
+          "shared_cpu_list": "0,8",
+          "size_bytes": 1048576,
+          "type": "Unified",
+          "ways": 8
+        },
+        {
+          "level": 3,
+          "line_size_bytes": 64,
+          "shared_cpu_list": "0-15",
+          "size_bytes": 100663296,
+          "type": "Unified",
+          "ways": 16
+        }
+      ],
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/devices/system/cpu/cpu0/cache",
+        "detail": "index*/level, type, size, coherency_line_size, ways_of_associativity, shared_cpu_list"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.cpu"
+    },
+    {
+      "id": "cpu.core_count",
+      "value": 8,
+      "unit": "count",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/devices/system/cpu",
+        "detail": "online, cpuN/topology/physical_package_id and thread_siblings_list"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.cpu"
+    },
+    {
+      "id": "cpu.flags.hypervisor",
+      "value": false,
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/cpuinfo",
+        "field": "flags",
+        "detail": "true when hypervisor is listed for the first processor"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.cpu"
+    },
+    {
+      "id": "cpu.flags.la57",
+      "value": false,
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/cpuinfo",
+        "field": "flags",
+        "detail": "true when la57 is listed for the first processor"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.cpu"
+    },
+    {
+      "id": "cpu.flags.pdpe1gb",
+      "value": true,
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/cpuinfo",
+        "field": "flags",
+        "detail": "true when pdpe1gb is listed for the first processor"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.cpu"
+    },
+    {
+      "id": "cpu.flags.pse",
+      "value": true,
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/cpuinfo",
+        "field": "flags",
+        "detail": "true when pse is listed for the first processor"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.cpu"
+    },
+    {
+      "id": "cpu.logical_count",
+      "value": 16,
+      "unit": "count",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/devices/system/cpu",
+        "detail": "online, cpuN/topology/physical_package_id and thread_siblings_list"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.cpu"
+    },
+    {
+      "id": "cpu.model_name",
+      "value": "<redacted:freetext>",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/cpuinfo",
+        "field": "model name"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.cpu",
+      "note": "redacted (freetext)"
+    },
+    {
+      "id": "cpu.online",
+      "value": "0-15",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/devices/system/cpu/online"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.cpu"
+    },
+    {
+      "id": "cpu.socket_count",
+      "value": 1,
+      "unit": "count",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/devices/system/cpu",
+        "detail": "online, cpuN/topology/physical_package_id and thread_siblings_list"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.cpu"
+    },
+    {
+      "id": "cpu.threads_per_core",
+      "value": 2,
+      "unit": "count",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/devices/system/cpu",
+        "detail": "online, cpuN/topology/physical_package_id and thread_siblings_list"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.cpu"
+    },
+    {
+      "id": "cpu.vendor",
+      "value": "AuthenticAMD",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/cpuinfo",
+        "field": "vendor_id"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.cpu"
+    },
+    {
+      "id": "init.pid1_comm",
+      "value": "systemd",
+      "kind": "static",
+      "scope": "namespace",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/1/comm"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.init"
+    },
+    {
+      "id": "init.systemd_booted",
+      "value": true,
+      "kind": "static",
+      "scope": "namespace",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/run/systemd/system",
+        "detail": "existence checked; the contents are not read"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.init"
+    },
+    {
+      "id": "kernel.arch",
+      "value": "x86_64",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "syscall",
+        "path": "uname",
+        "field": "machine"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.kernel"
+    },
+    {
+      "id": "kernel.boot_time",
+      "value": "2026-10-04T15:58:54Z",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/stat",
+        "field": "btime",
+        "detail": "seconds since the Unix epoch, converted to RFC 3339 UTC"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.kernel"
+    },
+    {
+      "id": "kernel.page_size_bytes",
+      "value": 4096,
+      "unit": "bytes",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "syscall",
+        "path": "getpagesize"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.kernel"
+    },
+    {
+      "id": "kernel.release",
+      "value": "7.1.8-arch1-3",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/sys/kernel/osrelease"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.kernel"
+    },
+    {
+      "id": "kernel.uptime_seconds",
+      "value": 184935.07,
+      "unit": "seconds",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/uptime",
+        "detail": "first field"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.kernel"
+    },
+    {
+      "id": "kernel.version_string",
+      "value": "<redacted:freetext>",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/version"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.kernel",
+      "note": "redacted (username); redacted (freetext)"
+    },
+    {
+      "id": "mem.buddyinfo",
+      "value": [
+        {
+          "node": 0,
+          "order0": 1,
+          "order1": 1,
+          "order10": 2,
+          "order2": 1,
+          "order3": 1,
+          "order4": 1,
+          "order5": 1,
+          "order6": 1,
+          "order7": 1,
+          "order8": 0,
+          "order9": 1,
+          "zone": "DMA"
+        },
+        {
+          "node": 0,
+          "order0": 858,
+          "order1": 639,
+          "order10": 0,
+          "order2": 548,
+          "order3": 407,
+          "order4": 247,
+          "order5": 128,
+          "order6": 75,
+          "order7": 40,
+          "order8": 10,
+          "order9": 4,
+          "zone": "DMA32"
+        },
+        {
+          "node": 0,
+          "order0": 41072,
+          "order1": 12105,
+          "order10": 0,
+          "order2": 2638,
+          "order3": 1933,
+          "order4": 1070,
+          "order5": 280,
+          "order6": 46,
+          "order7": 5,
+          "order8": 0,
+          "order9": 0,
+          "zone": "Normal"
+        }
+      ],
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/buddyinfo"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.buddyinfo"
+    },
+    {
+      "id": "mem.cgroup.events.high",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "cgroup",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/fs/cgroup/<cgroup>/memory.events",
+        "field": "high",
+        "detail": "<cgroup> is this process's cgroup, mem.cgroup.path"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.cgroup"
+    },
+    {
+      "id": "mem.cgroup.events.max",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "cgroup",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/fs/cgroup/<cgroup>/memory.events",
+        "field": "max",
+        "detail": "<cgroup> is this process's cgroup, mem.cgroup.path"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.cgroup"
+    },
+    {
+      "id": "mem.cgroup.events.oom",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "cgroup",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/fs/cgroup/<cgroup>/memory.events",
+        "field": "oom",
+        "detail": "<cgroup> is this process's cgroup, mem.cgroup.path"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.cgroup"
+    },
+    {
+      "id": "mem.cgroup.events.oom_kill",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "cgroup",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/fs/cgroup/<cgroup>/memory.events",
+        "field": "oom_kill",
+        "detail": "<cgroup> is this process's cgroup, mem.cgroup.path"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.cgroup"
+    },
+    {
+      "id": "mem.cgroup.memory.current",
+      "value": 5705060352,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "cgroup",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/fs/cgroup/<cgroup>/memory.current",
+        "detail": "<cgroup> is this process's cgroup, mem.cgroup.path"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.cgroup"
+    },
+    {
+      "id": "mem.cgroup.memory.high",
+      "value": "max",
+      "kind": "live",
+      "scope": "cgroup",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/fs/cgroup/<cgroup>/memory.high",
+        "detail": "<cgroup> is this process's cgroup, mem.cgroup.path; \"max\" means no limit"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.cgroup"
+    },
+    {
+      "id": "mem.cgroup.memory.max",
+      "value": "max",
+      "kind": "live",
+      "scope": "cgroup",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/fs/cgroup/<cgroup>/memory.max",
+        "detail": "<cgroup> is this process's cgroup, mem.cgroup.path; \"max\" means no limit"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.cgroup"
+    },
+    {
+      "id": "mem.cgroup.memory.swap_current",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "cgroup",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/fs/cgroup/<cgroup>/memory.swap.current",
+        "detail": "<cgroup> is this process's cgroup, mem.cgroup.path"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.cgroup"
+    },
+    {
+      "id": "mem.cgroup.memory.swap_max",
+      "value": "max",
+      "kind": "live",
+      "scope": "cgroup",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/fs/cgroup/<cgroup>/memory.swap.max",
+        "detail": "<cgroup> is this process's cgroup, mem.cgroup.path; \"max\" means no limit"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.cgroup"
+    },
+    {
+      "id": "mem.cgroup.path",
+      "value": "/user.slice/user-<uid>.slice/user@<uid>.service/app.slice/tmux-spawn-<uuid>.scope",
+      "kind": "static",
+      "scope": "cgroup",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/self/cgroup"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.cgroup",
+      "note": "redacted (serial, username)"
+    },
+    {
+      "id": "mem.cgroup.version",
+      "value": "v2",
+      "kind": "static",
+      "scope": "cgroup",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/self/cgroup"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.cgroup"
+    },
+    {
+      "id": "mem.hugepages.sizes",
+      "value": [
+        {
+          "free": 0,
+          "nr": 0,
+          "size_bytes": 2097152
+        },
+        {
+          "free": 0,
+          "nr": 0,
+          "size_bytes": 1073741824
+        }
+      ],
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/kernel/mm/hugepages/hugepages-*/",
+        "field": "nr_hugepages, free_hugepages"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.hugepages"
+    },
+    {
+      "id": "mem.lru_gen.enabled",
+      "value": "0x0007",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/kernel/mm/lru_gen/enabled"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.lru_gen"
+    },
+    {
+      "id": "mem.meminfo.Active",
+      "value": 12726165504,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Active",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Active_anon",
+      "value": 10288218112,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Active(anon)",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Active_file",
+      "value": 2437947392,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Active(file)",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.AnonHugePages",
+      "value": 3135242240,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "AnonHugePages",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.AnonPages",
+      "value": 13911310336,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "AnonPages",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Balloon",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Balloon",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Bounce",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Bounce",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Buffers",
+      "value": 2208952320,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Buffers",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Cached",
+      "value": 10786844672,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Cached",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.CmaFree",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "CmaFree",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.CmaTotal",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "CmaTotal",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.CommitLimit",
+      "value": 24121470976,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "CommitLimit",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Committed_AS",
+      "value": 79920115712,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Committed_AS",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.DirectMap1G",
+      "value": 1073741824,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "DirectMap1G",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.DirectMap2M",
+      "value": 6685720576,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "DirectMap2M",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.DirectMap4k",
+      "value": 26829062144,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "DirectMap4k",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Dirty",
+      "value": 10928128,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Dirty",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.FileHugePages",
+      "value": 220200960,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "FileHugePages",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.FilePmdMapped",
+      "value": 176160768,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "FilePmdMapped",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.GPUActive",
+      "value": 16252928,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "GPUActive",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.GPUReclaim",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "GPUReclaim",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.HardwareCorrupted",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "HardwareCorrupted",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.HugePages_Free",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "HugePages_Free"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.HugePages_Rsvd",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "HugePages_Rsvd"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.HugePages_Surp",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "HugePages_Surp"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.HugePages_Total",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "HugePages_Total"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Hugepagesize",
+      "value": 2097152,
+      "unit": "bytes",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Hugepagesize",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Hugetlb",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Hugetlb",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Inactive",
+      "value": 15068262400,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Inactive",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Inactive_anon",
+      "value": 6706335744,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Inactive(anon)",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Inactive_file",
+      "value": 8361926656,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Inactive(file)",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.KReclaimable",
+      "value": 1548238848,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "KReclaimable",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.KernelStack",
+      "value": 77283328,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "KernelStack",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Mapped",
+      "value": 3159703552,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Mapped",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.MemAvailable",
+      "value": 12502790144,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "MemAvailable",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.MemFree",
+      "value": 629854208,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "MemFree",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.MemTotal",
+      "value": 32807915520,
+      "unit": "bytes",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "MemTotal",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Mlocked",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Mlocked",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.NFS_Unstable",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "NFS_Unstable",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.PageTables",
+      "value": 246697984,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "PageTables",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Percpu",
+      "value": 21364736,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Percpu",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.SReclaimable",
+      "value": 1548238848,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "SReclaimable",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.SUnreclaim",
+      "value": 579891200,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "SUnreclaim",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.SecPageTables",
+      "value": 9785344,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "SecPageTables",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Shmem",
+      "value": 2001113088,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Shmem",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.ShmemHugePages",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "ShmemHugePages",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.ShmemPmdMapped",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "ShmemPmdMapped",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Slab",
+      "value": 2128130048,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Slab",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.SwapCached",
+      "value": 1063387136,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "SwapCached",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.SwapFree",
+      "value": 33763328,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "SwapFree",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.SwapTotal",
+      "value": 7717515264,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "SwapTotal",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Unaccepted",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Unaccepted",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Unevictable",
+      "value": 195571712,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Unevictable",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.VmallocChunk",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "VmallocChunk",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.VmallocTotal",
+      "value": 35184372087808,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "VmallocTotal",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.VmallocUsed",
+      "value": 236978176,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "VmallocUsed",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Writeback",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Writeback",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.WritebackTmp",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "WritebackTmp",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Zswap",
+      "value": 221851648,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Zswap",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.meminfo.Zswapped",
+      "value": 545943552,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/meminfo",
+        "field": "Zswapped",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.meminfo"
+    },
+    {
+      "id": "mem.memory_block_size_bytes",
+      "value": 134217728,
+      "unit": "bytes",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/devices/system/memory/block_size_bytes",
+        "detail": "hexadecimal without a 0x prefix"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.block_size"
+    },
+    {
+      "id": "mem.numa.nodes",
+      "value": [
+        {
+          "cpulist": "0-15",
+          "mem_free_bytes": 629854208,
+          "mem_total_bytes": 32807915520,
+          "node": 0
+        }
+      ],
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/devices/system/node/node*/",
+        "field": "meminfo, cpulist",
+        "detail": "sizes converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.numa"
+    },
+    {
+      "id": "mem.psi.full.avg10",
+      "value": 0,
+      "unit": "percent",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/pressure/memory",
+        "field": "full avg10"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.psi"
+    },
+    {
+      "id": "mem.psi.full.avg300",
+      "value": 0,
+      "unit": "percent",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/pressure/memory",
+        "field": "full avg300"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.psi"
+    },
+    {
+      "id": "mem.psi.full.avg60",
+      "value": 0,
+      "unit": "percent",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/pressure/memory",
+        "field": "full avg60"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.psi"
+    },
+    {
+      "id": "mem.psi.full.total_us",
+      "value": 85366646,
+      "unit": "microseconds",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/pressure/memory",
+        "field": "full total"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.psi"
+    },
+    {
+      "id": "mem.psi.some.avg10",
+      "value": 0,
+      "unit": "percent",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/pressure/memory",
+        "field": "some avg10"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.psi"
+    },
+    {
+      "id": "mem.psi.some.avg300",
+      "value": 0,
+      "unit": "percent",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/pressure/memory",
+        "field": "some avg300"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.psi"
+    },
+    {
+      "id": "mem.psi.some.avg60",
+      "value": 0,
+      "unit": "percent",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/pressure/memory",
+        "field": "some avg60"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.psi"
+    },
+    {
+      "id": "mem.psi.some.total_us",
+      "value": 91905465,
+      "unit": "microseconds",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/pressure/memory",
+        "field": "some total"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.psi"
+    },
+    {
+      "id": "mem.slabinfo.cache_count",
+      "value": null,
+      "kind": "live",
+      "scope": "kernel",
+      "status": "permission_denied",
+      "source": {
+        "type": "file",
+        "path": "/proc/slabinfo"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.slabinfo",
+      "note": "open /proc/slabinfo: permission denied"
+    },
+    {
+      "id": "mem.swap.areas",
+      "value": [
+        {
+          "name": "<name-1>",
+          "priority": -1,
+          "size_bytes": 7717515264,
+          "type": "partition",
+          "used_bytes": 7683751936
+        }
+      ],
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/swaps",
+        "detail": "sizes converted from kB; swap file paths are not kept"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.swaps",
+      "note": "redacted (freetext)"
+    },
+    {
+      "id": "mem.sysctl.kernel.randomize_va_space",
+      "value": 2,
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/sys/kernel/randomize_va_space"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.sysctl"
+    },
+    {
+      "id": "mem.sysctl.vm.dirty_background_bytes",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/sys/vm/dirty_background_bytes"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.sysctl"
+    },
+    {
+      "id": "mem.sysctl.vm.dirty_background_ratio",
+      "value": 10,
+      "unit": "percent",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/sys/vm/dirty_background_ratio"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.sysctl"
+    },
+    {
+      "id": "mem.sysctl.vm.dirty_bytes",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/sys/vm/dirty_bytes"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.sysctl"
+    },
+    {
+      "id": "mem.sysctl.vm.dirty_ratio",
+      "value": 20,
+      "unit": "percent",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/sys/vm/dirty_ratio"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.sysctl"
+    },
+    {
+      "id": "mem.sysctl.vm.max_map_count",
+      "value": 1048576,
+      "unit": "count",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/sys/vm/max_map_count"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.sysctl"
+    },
+    {
+      "id": "mem.sysctl.vm.min_free_kbytes",
+      "value": 69206016,
+      "unit": "bytes",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/sys/vm/min_free_kbytes",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.sysctl"
+    },
+    {
+      "id": "mem.sysctl.vm.nr_hugepages",
+      "value": 0,
+      "unit": "count",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/sys/vm/nr_hugepages"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.sysctl"
+    },
+    {
+      "id": "mem.sysctl.vm.overcommit_memory",
+      "value": 0,
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/sys/vm/overcommit_memory"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.sysctl"
+    },
+    {
+      "id": "mem.sysctl.vm.overcommit_ratio",
+      "value": 50,
+      "unit": "percent",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/sys/vm/overcommit_ratio"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.sysctl"
+    },
+    {
+      "id": "mem.sysctl.vm.page_cluster",
+      "value": 3,
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/sys/vm/page-cluster"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.sysctl"
+    },
+    {
+      "id": "mem.sysctl.vm.swappiness",
+      "value": 60,
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/sys/vm/swappiness"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.sysctl"
+    },
+    {
+      "id": "mem.sysctl.vm.vfs_cache_pressure",
+      "value": 100,
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/sys/vm/vfs_cache_pressure"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.sysctl"
+    },
+    {
+      "id": "mem.sysctl.vm.watermark_scale_factor",
+      "value": 10,
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/sys/vm/watermark_scale_factor"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.sysctl"
+    },
+    {
+      "id": "mem.thp.defrag",
+      "value": "madvise",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/kernel/mm/transparent_hugepage/defrag"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.thp"
+    },
+    {
+      "id": "mem.thp.enabled",
+      "value": "always",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/kernel/mm/transparent_hugepage/enabled"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.thp"
+    },
+    {
+      "id": "mem.thp.pmd_size_bytes",
+      "value": 2097152,
+      "unit": "bytes",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.thp"
+    },
+    {
+      "id": "mem.thp.shmem_enabled",
+      "value": "advise",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/kernel/mm/transparent_hugepage/shmem_enabled"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.thp"
+    },
+    {
+      "id": "mem.vmstat.allocstall_device",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "allocstall_device"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.allocstall_dma",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "allocstall_dma"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.allocstall_dma32",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "allocstall_dma32"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.allocstall_movable",
+      "value": 206805,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "allocstall_movable"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.allocstall_normal",
+      "value": 34783,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "allocstall_normal"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.balloon_deflate",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "balloon_deflate"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.balloon_inflate",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "balloon_inflate"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.balloon_migrate",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "balloon_migrate"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.cma_alloc_fail",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "cma_alloc_fail"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.cma_alloc_success",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "cma_alloc_success"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.compact_daemon_free_scanned",
+      "value": 9971278905,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "compact_daemon_free_scanned"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.compact_daemon_migrate_scanned",
+      "value": 9173924612,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "compact_daemon_migrate_scanned"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.compact_daemon_wake",
+      "value": 145713,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "compact_daemon_wake"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.compact_fail",
+      "value": 85588,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "compact_fail"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.compact_free_scanned",
+      "value": 10599870503,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "compact_free_scanned"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.compact_isolated",
+      "value": 907346444,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "compact_isolated"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.compact_migrate_scanned",
+      "value": 9743287867,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "compact_migrate_scanned"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.compact_stall",
+      "value": 118125,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "compact_stall"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.compact_success",
+      "value": 32537,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "compact_success"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.cow_ksm",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "cow_ksm"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.direct_map_level2_collapses",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "direct_map_level2_collapses"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.direct_map_level2_splits",
+      "value": 12777,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "direct_map_level2_splits"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.direct_map_level3_collapses",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "direct_map_level3_collapses"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.direct_map_level3_splits",
+      "value": 26,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "direct_map_level3_splits"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.drop_pagecache",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "drop_pagecache"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.drop_slab",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "drop_slab"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.htlb_buddy_alloc_fail",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "htlb_buddy_alloc_fail"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.htlb_buddy_alloc_success",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "htlb_buddy_alloc_success"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.ksm_swpin_copy",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "ksm_swpin_copy"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.kswapd_high_wmark_hit_quickly",
+      "value": 1736,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "kswapd_high_wmark_hit_quickly"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.kswapd_inodesteal",
+      "value": 352987,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "kswapd_inodesteal"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.kswapd_low_wmark_hit_quickly",
+      "value": 178636,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "kswapd_low_wmark_hit_quickly"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_active_anon",
+      "value": 2511863,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_active_anon"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_active_file",
+      "value": 595202,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_active_file"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_anon_pages",
+      "value": 3396316,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_anon_pages"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_anon_transparent_hugepages",
+      "value": 1495,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_anon_transparent_hugepages"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_balloon_pages",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_balloon_pages"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_dirtied",
+      "value": 118793368,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_dirtied"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_dirty",
+      "value": 2668,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_dirty"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_dirty_background_threshold",
+      "value": 272024,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_dirty_background_threshold"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_dirty_threshold",
+      "value": 544714,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_dirty_threshold"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_file_hugepages",
+      "value": 105,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_file_hugepages"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_file_pages",
+      "value": 3432418,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_file_pages"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_file_pmdmapped",
+      "value": 84,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_file_pmdmapped"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_foll_pin_acquired",
+      "value": 510309945,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_foll_pin_acquired"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_foll_pin_released",
+      "value": 510296022,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_foll_pin_released"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_free_cma",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_free_cma"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_free_pages",
+      "value": 153773,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_free_pages"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_free_pages_blocks",
+      "value": 4608,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_free_pages_blocks"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_gpu_active",
+      "value": 3968,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_gpu_active"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_gpu_reclaim",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_gpu_reclaim"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_hugetlb",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_hugetlb"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_inactive_anon",
+      "value": 1637289,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_inactive_anon"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_inactive_file",
+      "value": 2041486,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_inactive_file"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_iommu_pages",
+      "value": 2389,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_iommu_pages"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_isolated_anon",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_isolated_anon"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_isolated_file",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_isolated_file"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_kernel_file_pages",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_kernel_file_pages"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_kernel_misc_reclaimable",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_kernel_misc_reclaimable"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_kernel_stack",
+      "value": 75472,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_kernel_stack"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_mapped",
+      "value": 771412,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_mapped"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_memmap_boot_pages",
+      "value": 128512,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_memmap_boot_pages"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_memmap_pages",
+      "value": 48128,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_memmap_pages"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_mlock",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_mlock"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_page_table_pages",
+      "value": 60229,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_page_table_pages"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_sec_page_table_pages",
+      "value": 2389,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_sec_page_table_pages"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_shmem",
+      "value": 488553,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_shmem"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_shmem_hugepages",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_shmem_hugepages"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_shmem_pmdmapped",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_shmem_pmdmapped"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_slab_reclaimable",
+      "value": 377988,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_slab_reclaimable"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_slab_unreclaimable",
+      "value": 141575,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_slab_unreclaimable"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_swapcached",
+      "value": 259616,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_swapcached"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_throttled_written",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_throttled_written"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_unaccepted",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_unaccepted"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_unevictable",
+      "value": 47747,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_unevictable"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_unstable",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_unstable"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_vmalloc",
+      "value": 57856,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_vmalloc"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_vmscan_immediate_reclaim",
+      "value": 240,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_vmscan_immediate_reclaim"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_vmscan_write",
+      "value": 6795053,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_vmscan_write"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_writeback",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_writeback"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_written",
+      "value": 113203515,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_written"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_zone_active_anon",
+      "value": 2511796,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_zone_active_anon"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_zone_active_file",
+      "value": 595202,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_zone_active_file"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_zone_inactive_anon",
+      "value": 1637289,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_zone_inactive_anon"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_zone_inactive_file",
+      "value": 2041486,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_zone_inactive_file"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_zone_unevictable",
+      "value": 47747,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_zone_unevictable"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_zone_write_pending",
+      "value": 2668,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_zone_write_pending"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.nr_zspages",
+      "value": 54163,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "nr_zspages"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.numa_foreign",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "numa_foreign"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.numa_hint_faults",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "numa_hint_faults"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.numa_hint_faults_local",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "numa_hint_faults_local"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.numa_hit",
+      "value": 11981149945,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "numa_hit"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.numa_huge_pte_updates",
+      "value": 42,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "numa_huge_pte_updates"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.numa_interleave",
+      "value": 1435,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "numa_interleave"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.numa_local",
+      "value": 11978785624,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "numa_local"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.numa_miss",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "numa_miss"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.numa_other",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "numa_other"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.numa_pages_migrated",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "numa_pages_migrated"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.numa_pte_updates",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "numa_pte_updates"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.oom_kill",
+      "value": 13,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "oom_kill"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pageoutrun",
+      "value": 195783,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pageoutrun"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgactivate",
+      "value": 20674507,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgactivate"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgalloc_device",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgalloc_device"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgalloc_dma",
+      "value": 3840,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgalloc_dma"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgalloc_dma32",
+      "value": 542306805,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgalloc_dma32"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgalloc_movable",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgalloc_movable"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgalloc_normal",
+      "value": 16188972577,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgalloc_normal"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgdeactivate",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgdeactivate"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgdemote_direct",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgdemote_direct"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgdemote_khugepaged",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgdemote_khugepaged"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgdemote_kswapd",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgdemote_kswapd"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgdemote_proactive",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgdemote_proactive"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgfault",
+      "value": 12995944947,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgfault"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgfree",
+      "value": 16966592198,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgfree"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pginodesteal",
+      "value": 1469,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pginodesteal"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pglazyfree",
+      "value": 1295432,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pglazyfree"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pglazyfreed",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pglazyfreed"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgmajfault",
+      "value": 2868853,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgmajfault"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgmigrate_fail",
+      "value": 443970935,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgmigrate_fail"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgmigrate_success",
+      "value": 227877605,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgmigrate_success"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgpgin",
+      "value": 986584635,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgpgin"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgpgout",
+      "value": 441731169,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgpgout"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgpromote_candidate",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgpromote_candidate"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgpromote_candidate_nrl",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgpromote_candidate_nrl"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgpromote_success",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgpromote_success"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgrefill",
+      "value": 305732137,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgrefill"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgreuse",
+      "value": 549981636,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgreuse"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgrotated",
+      "value": 6249822,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgrotated"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgscan_anon",
+      "value": 20793100,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgscan_anon"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgscan_direct",
+      "value": 25795809,
+      "unit": "pages",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgscan_direct"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgscan_direct_throttle",
+      "value": 462,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgscan_direct_throttle"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgscan_file",
+      "value": 296838313,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgscan_file"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgscan_khugepaged",
+      "value": 401068,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgscan_khugepaged"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgscan_kswapd",
+      "value": 291417982,
+      "unit": "pages",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgscan_kswapd"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgscan_proactive",
+      "value": 16554,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgscan_proactive"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgskip_device",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgskip_device"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgskip_dma",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgskip_dma"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgskip_dma32",
+      "value": 4,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgskip_dma32"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgskip_movable",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgskip_movable"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgskip_normal",
+      "value": 511,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgskip_normal"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgsteal_anon",
+      "value": 9182640,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgsteal_anon"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgsteal_direct",
+      "value": 16792004,
+      "unit": "pages",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgsteal_direct"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgsteal_file",
+      "value": 285924544,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgsteal_file"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgsteal_khugepaged",
+      "value": 340978,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgsteal_khugepaged"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgsteal_kswapd",
+      "value": 277958124,
+      "unit": "pages",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgsteal_kswapd"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pgsteal_proactive",
+      "value": 16078,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pgsteal_proactive"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pswpin",
+      "value": 519003,
+      "unit": "pages",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pswpin"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.pswpout",
+      "value": 3076432,
+      "unit": "pages",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "pswpout"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.slabs_scanned",
+      "value": 118618305,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "slabs_scanned"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.swap_ra",
+      "value": 1256881,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "swap_ra"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.swap_ra_hit",
+      "value": 1126529,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "swap_ra_hit"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.swpin_zero",
+      "value": 125281,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "swpin_zero"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.swpout_zero",
+      "value": 366408,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "swpout_zero"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_collapse_alloc",
+      "value": 4663,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_collapse_alloc"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_collapse_alloc_failed",
+      "value": 663,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_collapse_alloc_failed"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_deferred_split_page",
+      "value": 44475,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_deferred_split_page"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_fault_alloc",
+      "value": 8471828,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_fault_alloc"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_fault_fallback",
+      "value": 9420730,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_fault_fallback"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_fault_fallback_charge",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_fault_fallback_charge"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_file_alloc",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_file_alloc"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_file_fallback",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_file_fallback"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_file_fallback_charge",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_file_fallback_charge"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_file_mapped",
+      "value": 2292372,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_file_mapped"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_migration_fail",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_migration_fail"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_migration_split",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_migration_split"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_migration_success",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_migration_success"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_scan_exceed_none_pte",
+      "value": 5758,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_scan_exceed_none_pte"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_scan_exceed_share_pte",
+      "value": 1,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_scan_exceed_share_pte"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_scan_exceed_swap_pte",
+      "value": 12894,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_scan_exceed_swap_pte"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_split_page",
+      "value": 1806,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_split_page"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_split_page_failed",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_split_page_failed"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_split_pmd",
+      "value": 364224,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_split_pmd"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_split_pud",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_split_pud"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_swpout",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_swpout"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_swpout_fallback",
+      "value": 748,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_swpout_fallback"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_underused_split_page",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_underused_split_page"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_zero_page_alloc",
+      "value": 1,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_zero_page_alloc"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.thp_zero_page_alloc_failed",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "thp_zero_page_alloc_failed"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.unevictable_pgs_cleared",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "unevictable_pgs_cleared"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.unevictable_pgs_culled",
+      "value": 60562,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "unevictable_pgs_culled"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.unevictable_pgs_mlocked",
+      "value": 11529,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "unevictable_pgs_mlocked"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.unevictable_pgs_munlocked",
+      "value": 11119,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "unevictable_pgs_munlocked"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.unevictable_pgs_rescued",
+      "value": 12808,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "unevictable_pgs_rescued"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.unevictable_pgs_scanned",
+      "value": 1280,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "unevictable_pgs_scanned"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.unevictable_pgs_stranded",
+      "value": 410,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "unevictable_pgs_stranded"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.workingset_activate_anon",
+      "value": 516047,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "workingset_activate_anon"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.workingset_activate_file",
+      "value": 4149703,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "workingset_activate_file"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.workingset_nodereclaim",
+      "value": 3686707,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "workingset_nodereclaim"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.workingset_nodes",
+      "value": 7687,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "workingset_nodes"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.workingset_refault_anon",
+      "value": 5707042,
+      "unit": "pages",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "workingset_refault_anon"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.workingset_refault_file",
+      "value": 87613243,
+      "unit": "pages",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "workingset_refault_file"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.workingset_restore_anon",
+      "value": 66723,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "workingset_restore_anon"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.workingset_restore_file",
+      "value": 14597450,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "workingset_restore_file"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.zone_reclaim_failed",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "zone_reclaim_failed"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.zone_reclaim_success",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "zone_reclaim_success"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.zswpin",
+      "value": 1998797,
+      "unit": "pages",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "zswpin"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.zswpout",
+      "value": 6392990,
+      "unit": "pages",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "zswpout"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.vmstat.zswpwb",
+      "value": 3076411,
+      "unit": "pages",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/vmstat",
+        "field": "zswpwb"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.vmstat"
+    },
+    {
+      "id": "mem.zones",
+      "value": [
+        {
+          "free": 2815,
+          "high": 14,
+          "low": 11,
+          "managed": 3840,
+          "min": 8,
+          "node": 0,
+          "present": 3999,
+          "spanned": 4095,
+          "zone": "DMA"
+        },
+        {
+          "free": 30160,
+          "high": 1636,
+          "low": 1239,
+          "managed": 436541,
+          "min": 842,
+          "node": 0,
+          "present": 453424,
+          "spanned": 1044480,
+          "zone": "DMA32"
+        },
+        {
+          "free": 120798,
+          "high": 31179,
+          "low": 23612,
+          "managed": 7569364,
+          "min": 16045,
+          "node": 0,
+          "present": 7724800,
+          "spanned": 7724800,
+          "zone": "Normal"
+        },
+        {
+          "free": 0,
+          "high": 32,
+          "low": 32,
+          "managed": 0,
+          "min": 32,
+          "node": 0,
+          "present": 0,
+          "spanned": 0,
+          "zone": "Movable"
+        },
+        {
+          "free": 0,
+          "high": 0,
+          "low": 0,
+          "managed": 0,
+          "min": 0,
+          "node": 0,
+          "present": 0,
+          "spanned": 3080192,
+          "zone": "Device"
+        }
+      ],
+      "unit": "pages",
+      "kind": "live",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/zoneinfo"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.zoneinfo"
+    },
+    {
+      "id": "mem.zram.devices",
+      "value": [],
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/block/zram*/disksize"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.zram"
+    },
+    {
+      "id": "mem.zswap.enabled",
+      "value": true,
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/module/zswap/parameters/enabled"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "memory.zswap"
+    },
+    {
+      "id": "mounts.filesystems",
+      "value": [
+        {
+          "device": "<device-1>",
+          "fstype": "ext4",
+          "mount_point": "/",
+          "source_kind": "block-device"
+        },
+        {
+          "fstype": "devtmpfs",
+          "mount_point": "/dev",
+          "source_kind": "tmpfs"
+        },
+        {
+          "fstype": "tmpfs",
+          "mount_point": "/dev/shm",
+          "source_kind": "tmpfs"
+        },
+        {
+          "fstype": "devpts",
+          "mount_point": "/dev/pts",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "sysfs",
+          "mount_point": "/sys",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "securityfs",
+          "mount_point": "/sys/kernel/security",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "cgroup2",
+          "mount_point": "/sys/fs/cgroup",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "pstore",
+          "mount_point": "/sys/fs/pstore",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "efivarfs",
+          "mount_point": "/sys/firmware/efi/efivars",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "bpf",
+          "mount_point": "/sys/fs/bpf",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "proc",
+          "mount_point": "/proc",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "tmpfs",
+          "mount_point": "/run",
+          "source_kind": "tmpfs"
+        },
+        {
+          "fstype": "autofs",
+          "mount_point": "/proc/sys/fs/binfmt_misc",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "mqueue",
+          "mount_point": "/dev/mqueue",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "hugetlbfs",
+          "mount_point": "/dev/hugepages",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "debugfs",
+          "mount_point": "/sys/kernel/debug",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "tracefs",
+          "mount_point": "/sys/kernel/tracing",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "configfs",
+          "mount_point": "/sys/kernel/config",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "fusectl",
+          "mount_point": "/sys/fs/fuse/connections",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "tmpfs",
+          "mount_point": "<path>",
+          "source_kind": "tmpfs"
+        },
+        {
+          "fstype": "binfmt_misc",
+          "mount_point": "/proc/sys/fs/binfmt_misc",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "tmpfs",
+          "mount_point": "/tmp",
+          "source_kind": "tmpfs"
+        },
+        {
+          "device": "<device-2>",
+          "fstype": "vfat",
+          "mount_point": "/boot",
+          "source_kind": "block-device"
+        },
+        {
+          "fstype": "tmpfs",
+          "mount_point": "<path>",
+          "source_kind": "tmpfs"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "nsfs",
+          "mount_point": "<path>",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "nsfs",
+          "mount_point": "<path>",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "nsfs",
+          "mount_point": "<path>",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "nsfs",
+          "mount_point": "<path>",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "nsfs",
+          "mount_point": "<path>",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "nsfs",
+          "mount_point": "<path>",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "nsfs",
+          "mount_point": "<path>",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "nsfs",
+          "mount_point": "<path>",
+          "source_kind": "pseudo"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "fuse.gvfsd-fuse",
+          "mount_point": "<path>",
+          "source_kind": "fuse"
+        },
+        {
+          "fstype": "fuse.portal",
+          "mount_point": "<path>",
+          "source_kind": "fuse"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "overlay",
+          "mount_point": "<path>",
+          "source_kind": "overlay"
+        },
+        {
+          "fstype": "nsfs",
+          "mount_point": "<path>",
+          "source_kind": "pseudo"
+        }
+      ],
+      "kind": "static",
+      "scope": "namespace",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/self/mountinfo",
+        "detail": "mount point, filesystem type and source; non-standard mount points replaced by <path>"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.mounts",
+      "note": "redacted (freetext)"
+    },
+    {
+      "id": "net.interfaces",
+      "value": [
+        {
+          "name": "<name-1>",
+          "operstate": "up",
+          "type": "bridge"
+        },
+        {
+          "name": "<name-1>",
+          "operstate": "up",
+          "type": "bridge"
+        },
+        {
+          "name": "<name-1>",
+          "operstate": "up",
+          "type": "bridge"
+        },
+        {
+          "name": "<name-1>",
+          "operstate": "up",
+          "type": "bridge"
+        },
+        {
+          "name": "<name-2>",
+          "operstate": "up",
+          "type": "bridge"
+        },
+        {
+          "name": "<name-3>",
+          "operstate": "down",
+          "type": "ethernet"
+        },
+        {
+          "name": "<name-4>",
+          "operstate": "unknown",
+          "type": "loopback"
+        },
+        {
+          "name": "<name-5>",
+          "operstate": "up",
+          "type": "virtual"
+        },
+        {
+          "name": "<name-5>",
+          "operstate": "up",
+          "type": "virtual"
+        },
+        {
+          "name": "<name-5>",
+          "operstate": "up",
+          "type": "virtual"
+        },
+        {
+          "name": "<name-5>",
+          "operstate": "up",
+          "type": "virtual"
+        },
+        {
+          "name": "<name-5>",
+          "operstate": "up",
+          "type": "virtual"
+        },
+        {
+          "name": "<name-5>",
+          "operstate": "up",
+          "type": "virtual"
+        },
+        {
+          "name": "<name-5>",
+          "operstate": "up",
+          "type": "virtual"
+        },
+        {
+          "name": "<name-6>",
+          "operstate": "up",
+          "type": "wireless"
+        }
+      ],
+      "kind": "live",
+      "scope": "namespace",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/class/net",
+        "detail": "*/type (ARPHRD number), */operstate, and whether wireless, bridge and device exist"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.net",
+      "note": "redacted (serial); redacted (freetext)"
+    },
+    {
+      "id": "os.hostname",
+      "value": "<redacted:hostname>",
+      "kind": "static",
+      "scope": "namespace",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/sys/kernel/hostname"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.hostname",
+      "note": "redacted (hostname)"
+    },
+    {
+      "id": "os.release.id",
+      "value": "arch",
+      "kind": "static",
+      "scope": "namespace",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/etc/os-release",
+        "field": "ID"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.os-release"
+    },
+    {
+      "id": "os.release.id_like",
+      "value": null,
+      "kind": "static",
+      "scope": "namespace",
+      "status": "absent",
+      "source": {
+        "type": "file",
+        "path": "/etc/os-release",
+        "field": "ID_LIKE"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.os-release",
+      "note": "os-release has no ID_LIKE line: the distribution names no parent"
+    },
+    {
+      "id": "os.release.name",
+      "value": "Arch Linux",
+      "kind": "static",
+      "scope": "namespace",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/etc/os-release",
+        "field": "NAME"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.os-release"
+    },
+    {
+      "id": "os.release.version_id",
+      "value": null,
+      "kind": "static",
+      "scope": "namespace",
+      "status": "absent",
+      "source": {
+        "type": "file",
+        "path": "/etc/os-release",
+        "field": "VERSION_ID"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.os-release",
+      "note": "os-release has no VERSION_ID line, as is usual for rolling releases"
+    },
+    {
+      "id": "probe.faults.majflt_after_touch",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "getrusage(RUSAGE_THREAD)",
+        "detail": "the probe touches anon-written between the two readings"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.faults.majflt_before_touch",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "getrusage(RUSAGE_THREAD)",
+        "detail": "the probe touches anon-written between the two readings"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.faults.minflt_after_touch",
+      "value": 2943,
+      "unit": "count",
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "getrusage(RUSAGE_THREAD)",
+        "detail": "the probe touches anon-written between the two readings"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.faults.minflt_before_touch",
+      "value": 895,
+      "unit": "count",
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "getrusage(RUSAGE_THREAD)",
+        "detail": "the probe touches anon-written between the two readings"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.layout.runs",
+      "value": [
+        {
+          "exe": "0x400000",
+          "heap": "0x33e0b000",
+          "heap_kind": "brk",
+          "mmap_base": "0x7f5ac9bfc000",
+          "run": 1,
+          "stack": "0x7ffcd02ec000"
+        },
+        {
+          "exe": "0x400000",
+          "heap": "0x1a8ea000",
+          "heap_kind": "brk",
+          "mmap_base": "0x7f543cd15000",
+          "run": 2,
+          "stack": "0x7ffe0afd8000"
+        }
+      ],
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "atlas __probe report",
+        "detail": "mmap_base is approximated by the end of the highest mapping below the stack"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.maps.highest_end",
+      "value": "0x7ffcd030d000",
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "/proc/<probe>/maps"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.maps.lowest_start",
+      "value": "0x400000",
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "/proc/<probe>/maps"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.maps.sample",
+      "value": [
+        {
+          "end": "0x7c4000",
+          "kind": "file",
+          "offset": "0x0",
+          "path": "atlas",
+          "perms": "r-xp",
+          "start": "0x400000"
+        },
+        {
+          "end": "0xd31000",
+          "kind": "file",
+          "offset": "0x3c4000",
+          "path": "atlas",
+          "perms": "r--p",
+          "start": "0x7c4000"
+        },
+        {
+          "end": "0xd9c000",
+          "kind": "file",
+          "offset": "0x931000",
+          "path": "atlas",
+          "perms": "rw-p",
+          "start": "0xd31000"
+        },
+        {
+          "end": "0x2ddf000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "",
+          "perms": "rw-p",
+          "start": "0xd9c000"
+        },
+        {
+          "end": "0x33e2c000",
+          "kind": "heap",
+          "offset": "0x0",
+          "path": "[heap]",
+          "perms": "rw-p",
+          "start": "0x33e0b000"
+        },
+        {
+          "end": "0x11c742000000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: heap reservation]",
+          "perms": "---p",
+          "start": "0x11c740000000"
+        },
+        {
+          "end": "0x11c742800000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: heap]",
+          "perms": "rw-p",
+          "start": "0x11c742000000"
+        },
+        {
+          "end": "0x11c744000000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: heap reservation]",
+          "perms": "---p",
+          "start": "0x11c742800000"
+        },
+        {
+          "end": "0x7f5a67000000",
+          "kind": "shmem",
+          "offset": "0x0",
+          "path": "memfd:atlas-probe (deleted)",
+          "perms": "rw-s",
+          "start": "0x7f5a66c00000"
+        },
+        {
+          "end": "0x7f5a67400000",
+          "kind": "file",
+          "offset": "0x0",
+          "path": "atlas",
+          "perms": "r--p",
+          "start": "0x7f5a67000000"
+        },
+        {
+          "end": "0x7f5a67800000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: atlas probe: anon-read]",
+          "perms": "rw-p",
+          "start": "0x7f5a67400000"
+        },
+        {
+          "end": "0x7f5a68000000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: atlas probe: anon-written]",
+          "perms": "rw-p",
+          "start": "0x7f5a67800000"
+        },
+        {
+          "end": "0x7f5a6c000000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: atlas probe: anon-untouched]",
+          "perms": "rw-p",
+          "start": "0x7f5a68000000"
+        },
+        {
+          "end": "0x7f5a6c021000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "",
+          "perms": "rw-p",
+          "start": "0x7f5a6c000000"
+        },
+        {
+          "end": "0x7f5a70000000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "",
+          "perms": "---p",
+          "start": "0x7f5a6c021000"
+        },
+        {
+          "end": "0x7f5a70021000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "",
+          "perms": "rw-p",
+          "start": "0x7f5a70000000"
+        },
+        {
+          "end": "0x7f5a74000000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "",
+          "perms": "---p",
+          "start": "0x7f5a70021000"
+        },
+        {
+          "end": "0x7f5a74021000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "",
+          "perms": "rw-p",
+          "start": "0x7f5a74000000"
+        },
+        {
+          "end": "0x7f5a78000000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "",
+          "perms": "---p",
+          "start": "0x7f5a74021000"
+        },
+        {
+          "end": "0x7f5a78021000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "",
+          "perms": "rw-p",
+          "start": "0x7f5a78000000"
+        },
+        {
+          "end": "0x7f5a7c000000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "",
+          "perms": "---p",
+          "start": "0x7f5a78021000"
+        },
+        {
+          "end": "0x7f5a7c021000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "",
+          "perms": "rw-p",
+          "start": "0x7f5a7c000000"
+        },
+        {
+          "end": "0x7f5a80000000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "",
+          "perms": "---p",
+          "start": "0x7f5a7c021000"
+        },
+        {
+          "end": "0x7f5a82ca0000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "",
+          "perms": "rw-p",
+          "start": "0x7f5a8049b000"
+        },
+        {
+          "end": "0x7f5a82e00000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: profiler hash buckets]",
+          "perms": "rw-p",
+          "start": "0x7f5a82ca0000"
+        },
+        {
+          "end": "0x7f5a84e00000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: heap index]",
+          "perms": "rw-p",
+          "start": "0x7f5a82e00000"
+        },
+        {
+          "end": "0x7f5a9718e000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: scavenge index]",
+          "perms": "---p",
+          "start": "0x7f5a84e00000"
+        },
+        {
+          "end": "0x7f5a9718f000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: scavenge index]",
+          "perms": "rw-p",
+          "start": "0x7f5a9718e000"
+        },
+        {
+          "end": "0x7f5aa4e00000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: scavenge index]",
+          "perms": "---p",
+          "start": "0x7f5a9718f000"
+        },
+        {
+          "end": "0x7f5ab718e000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: page summary]",
+          "perms": "---p",
+          "start": "0x7f5aa4e00000"
+        },
+        {
+          "end": "0x7f5ab718f000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: page alloc]",
+          "perms": "rw-p",
+          "start": "0x7f5ab718e000"
+        },
+        {
+          "end": "0x7f5ac7271000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: page summary]",
+          "perms": "---p",
+          "start": "0x7f5ab718f000"
+        },
+        {
+          "end": "0x7f5ac7272000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: page alloc]",
+          "perms": "rw-p",
+          "start": "0x7f5ac7271000"
+        },
+        {
+          "end": "0x7f5ac928e000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: page summary]",
+          "perms": "---p",
+          "start": "0x7f5ac7272000"
+        },
+        {
+          "end": "0x7f5ac928f000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: page alloc]",
+          "perms": "rw-p",
+          "start": "0x7f5ac928e000"
+        },
+        {
+          "end": "0x7f5ac9600000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: page summary]",
+          "perms": "---p",
+          "start": "0x7f5ac928f000"
+        },
+        {
+          "end": "0x7f5ac9700000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: page alloc index]",
+          "perms": "rw-p",
+          "start": "0x7f5ac9600000"
+        },
+        {
+          "end": "0x7f5ac9791000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: page summary]",
+          "perms": "---p",
+          "start": "0x7f5ac9700000"
+        },
+        {
+          "end": "0x7f5ac9792000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: page alloc]",
+          "perms": "rw-p",
+          "start": "0x7f5ac9791000"
+        },
+        {
+          "end": "0x7f5ac9800000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: page summary]",
+          "perms": "---p",
+          "start": "0x7f5ac9792000"
+        },
+        {
+          "end": "0x7f5ac9824000",
+          "kind": "file",
+          "offset": "0x0",
+          "path": "libc.so.6",
+          "perms": "r--p",
+          "start": "0x7f5ac9800000"
+        },
+        {
+          "end": "0x7f5ac999f000",
+          "kind": "file",
+          "offset": "0x24000",
+          "path": "libc.so.6",
+          "perms": "r-xp",
+          "start": "0x7f5ac9824000"
+        },
+        {
+          "end": "0x7f5ac9a15000",
+          "kind": "file",
+          "offset": "0x19f000",
+          "path": "libc.so.6",
+          "perms": "r--p",
+          "start": "0x7f5ac999f000"
+        },
+        {
+          "end": "0x7f5ac9a19000",
+          "kind": "file",
+          "offset": "0x214000",
+          "path": "libc.so.6",
+          "perms": "r--p",
+          "start": "0x7f5ac9a15000"
+        },
+        {
+          "end": "0x7f5ac9a1b000",
+          "kind": "file",
+          "offset": "0x218000",
+          "path": "libc.so.6",
+          "perms": "rw-p",
+          "start": "0x7f5ac9a19000"
+        },
+        {
+          "end": "0x7f5ac9a23000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "",
+          "perms": "rw-p",
+          "start": "0x7f5ac9a1b000"
+        },
+        {
+          "end": "0x7f5ac9ad5000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: immortal metadata]",
+          "perms": "rw-p",
+          "start": "0x7f5ac9a55000"
+        },
+        {
+          "end": "0x7f5ac9ae5000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: gc bits]",
+          "perms": "rw-p",
+          "start": "0x7f5ac9ad5000"
+        },
+        {
+          "end": "0x7f5ac9af5000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: allspans array]",
+          "perms": "rw-p",
+          "start": "0x7f5ac9ae5000"
+        },
+        {
+          "end": "0x7f5ac9b07000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: immortal metadata]",
+          "perms": "rw-p",
+          "start": "0x7f5ac9af5000"
+        },
+        {
+          "end": "0x7f5ac9b27000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: page alloc]",
+          "perms": "rw-p",
+          "start": "0x7f5ac9b07000"
+        },
+        {
+          "end": "0x7f5ac9b67000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "[anon: Go: immortal metadata]",
+          "perms": "rw-p",
+          "start": "0x7f5ac9b27000"
+        },
+        {
+          "end": "0x7f5ac9b6a000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "",
+          "perms": "rw-p",
+          "start": "0x7f5ac9b67000"
+        },
+        {
+          "end": "0x7f5ac9b6d000",
+          "kind": "file",
+          "offset": "0x0",
+          "path": "libresolv.so.2",
+          "perms": "r--p",
+          "start": "0x7f5ac9b6a000"
+        },
+        {
+          "end": "0x7f5ac9b76000",
+          "kind": "file",
+          "offset": "0x3000",
+          "path": "libresolv.so.2",
+          "perms": "r-xp",
+          "start": "0x7f5ac9b6d000"
+        },
+        {
+          "end": "0x7f5ac9b79000",
+          "kind": "file",
+          "offset": "0xc000",
+          "path": "libresolv.so.2",
+          "perms": "r--p",
+          "start": "0x7f5ac9b76000"
+        },
+        {
+          "end": "0x7f5ac9b7a000",
+          "kind": "file",
+          "offset": "0xf000",
+          "path": "libresolv.so.2",
+          "perms": "r--p",
+          "start": "0x7f5ac9b79000"
+        },
+        {
+          "end": "0x7f5ac9b7b000",
+          "kind": "file",
+          "offset": "0x10000",
+          "path": "libresolv.so.2",
+          "perms": "rw-p",
+          "start": "0x7f5ac9b7a000"
+        },
+        {
+          "end": "0x7f5ac9b7f000",
+          "kind": "anon",
+          "offset": "0x0",
+          "path": "",
+          "perms": "rw-p",
+          "start": "0x7f5ac9b7b000"
+        },
+        {
+          "end": "0x7f5ac9bb3000",
+          "kind": "file",
+          "offset": "0x0",
+          "path": "ld.so.cache",
+          "perms": "r--p",
+          "start": "0x7f5ac9b7f000"
+        },
+        {
+          "end": "0x7f5ac9bb7000",
+          "kind": "kernel",
+          "offset": "0x0",
+          "path": "[vvar]",
+          "perms": "r--p",
+          "start": "0x7f5ac9bb3000"
+        },
+        {
+          "end": "0x7f5ac9bb9000",
+          "kind": "kernel",
+          "offset": "0x0",
+          "path": "[vvar_vclock]",
+          "perms": "r--p",
+          "start": "0x7f5ac9bb7000"
+        },
+        {
+          "end": "0x7f5ac9bbb000",
+          "kind": "kernel",
+          "offset": "0x0",
+          "path": "[vdso]",
+          "perms": "r-xp",
+          "start": "0x7f5ac9bb9000"
+        },
+        {
+          "end": "0x7f5ac9bbc000",
+          "kind": "file",
+          "offset": "0x0",
+          "path": "ld-linux-x86-64.so.2",
+          "perms": "r--p",
+          "start": "0x7f5ac9bbb000"
+        }
+      ],
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "/proc/<probe>/maps"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.maps.vma_count",
+      "value": 71,
+      "unit": "count",
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "/proc/<probe>/maps"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.pagemap.pfn_visible",
+      "value": false,
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "/proc/self/pagemap"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.regions",
+      "value": [
+        {
+          "anon_huge_bytes": 0,
+          "anonymous_bytes": 0,
+          "backing": "anon",
+          "end": "0x7f5a6c000000",
+          "name": "anon-untouched",
+          "pages_present": 0,
+          "pages_swapped": 0,
+          "pages_total": 16384,
+          "path": "[anon: atlas probe: anon-untouched]",
+          "perms": "rw-p",
+          "private_clean_bytes": 0,
+          "private_dirty_bytes": 0,
+          "pss_bytes": 0,
+          "rss_bytes": 0,
+          "shared_clean_bytes": 0,
+          "shared_dirty_bytes": 0,
+          "size_bytes": 67108864,
+          "start": "0x7f5a68000000",
+          "swap_bytes": 0,
+          "touched_bytes": 0
+        },
+        {
+          "anon_huge_bytes": 0,
+          "anonymous_bytes": 8388608,
+          "backing": "anon",
+          "end": "0x7f5a68000000",
+          "name": "anon-written",
+          "pages_present": 2048,
+          "pages_swapped": 0,
+          "pages_total": 2048,
+          "path": "[anon: atlas probe: anon-written]",
+          "perms": "rw-p",
+          "private_clean_bytes": 0,
+          "private_dirty_bytes": 8388608,
+          "pss_bytes": 8388608,
+          "rss_bytes": 8388608,
+          "shared_clean_bytes": 0,
+          "shared_dirty_bytes": 0,
+          "size_bytes": 8388608,
+          "start": "0x7f5a67800000",
+          "swap_bytes": 0,
+          "touched_bytes": 8388608
+        },
+        {
+          "anon_huge_bytes": 0,
+          "anonymous_bytes": 0,
+          "backing": "anon",
+          "end": "0x7f5a67800000",
+          "name": "anon-read",
+          "pages_present": 1024,
+          "pages_swapped": 0,
+          "pages_total": 1024,
+          "path": "[anon: atlas probe: anon-read]",
+          "perms": "rw-p",
+          "private_clean_bytes": 0,
+          "private_dirty_bytes": 0,
+          "pss_bytes": 0,
+          "rss_bytes": 0,
+          "shared_clean_bytes": 0,
+          "shared_dirty_bytes": 0,
+          "size_bytes": 4194304,
+          "start": "0x7f5a67400000",
+          "swap_bytes": 0,
+          "touched_bytes": 4194304
+        },
+        {
+          "anon_huge_bytes": 0,
+          "anonymous_bytes": 0,
+          "backing": "file",
+          "end": "0x7f5a67400000",
+          "name": "file-private",
+          "pages_present": 1024,
+          "pages_swapped": 0,
+          "pages_total": 1024,
+          "path": "atlas",
+          "perms": "r--p",
+          "private_clean_bytes": 0,
+          "private_dirty_bytes": 589824,
+          "pss_bytes": 1801216,
+          "rss_bytes": 4194304,
+          "shared_clean_bytes": 0,
+          "shared_dirty_bytes": 3604480,
+          "size_bytes": 4194304,
+          "start": "0x7f5a67000000",
+          "swap_bytes": 0,
+          "touched_bytes": 4194304
+        },
+        {
+          "anon_huge_bytes": 0,
+          "anonymous_bytes": 0,
+          "backing": "shmem",
+          "end": "0x7f5a67000000",
+          "name": "shmem-shared",
+          "pages_present": 256,
+          "pages_swapped": 0,
+          "pages_total": 1024,
+          "path": "memfd:atlas-probe (deleted)",
+          "perms": "rw-s",
+          "private_clean_bytes": 0,
+          "private_dirty_bytes": 1048576,
+          "pss_bytes": 1048576,
+          "rss_bytes": 1048576,
+          "shared_clean_bytes": 0,
+          "shared_dirty_bytes": 0,
+          "size_bytes": 4194304,
+          "start": "0x7f5a66c00000",
+          "swap_bytes": 0,
+          "touched_bytes": 1048576
+        }
+      ],
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "/proc/<probe>/smaps",
+        "detail": "sizes from smaps (converted from kB); pages_* from the probe's own pagemap; each region is one plain mmap placed by the kernel, the anonymous ones named \"atlas probe: <region>\""
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.status.RssAnon",
+      "value": 10285056,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "/proc/<probe>/status",
+        "field": "RssAnon",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.status.RssFile",
+      "value": 1982464,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "/proc/<probe>/status",
+        "field": "RssFile",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.status.RssShmem",
+      "value": 11165696,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "/proc/<probe>/status",
+        "field": "RssShmem",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.status.VmPTE",
+      "value": 196608,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "/proc/<probe>/status",
+        "field": "VmPTE",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.status.VmRSS",
+      "value": 23433216,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "/proc/<probe>/status",
+        "field": "VmRSS",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.status.VmSize",
+      "value": 1767178240,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "/proc/<probe>/status",
+        "field": "VmSize",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.status.VmSwap",
+      "value": 0,
+      "unit": "bytes",
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "/proc/<probe>/status",
+        "field": "VmSwap",
+        "detail": "converted from kB"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.thp.fault_alloc_delta",
+      "value": 0,
+      "unit": "count",
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "/proc/vmstat",
+        "field": "thp_fault_alloc",
+        "detail": "system-wide counter read just before and just after the write loop over anon-written; the difference includes other processes' faults in that instant"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "probe.thp.fault_fallback_delta",
+      "value": 4,
+      "unit": "count",
+      "kind": "live",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "probe",
+        "path": "/proc/vmstat",
+        "field": "thp_fault_fallback",
+        "detail": "system-wide counter read just before and just after the write loop over anon-written; the difference includes other processes' faults in that instant"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "probe"
+    },
+    {
+      "id": "session.desktop",
+      "value": "Hyprland",
+      "kind": "static",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/self/environ",
+        "field": "XDG_CURRENT_DESKTOP",
+        "detail": "atlas's own environment, read with getenv; only allow-listed names"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.session"
+    },
+    {
+      "id": "session.type",
+      "value": "wayland",
+      "kind": "static",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/self/environ",
+        "field": "XDG_SESSION_TYPE",
+        "detail": "atlas's own environment, read with getenv; only allow-listed names"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.session"
+    },
+    {
+      "id": "session.wayland_display_set",
+      "value": true,
+      "kind": "static",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/self/environ",
+        "field": "WAYLAND_DISPLAY",
+        "detail": "atlas's own environment, read with getenv; only allow-listed names; only whether it is set is kept"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.session"
+    },
+    {
+      "id": "session.x11_display_set",
+      "value": true,
+      "kind": "static",
+      "scope": "process",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/self/environ",
+        "field": "DISPLAY",
+        "detail": "atlas's own environment, read with getenv; only allow-listed names; only whether it is set is kept"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.session"
+    },
+    {
+      "id": "virt.container.containerenv",
+      "value": false,
+      "kind": "static",
+      "scope": "namespace",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/run/.containerenv",
+        "detail": "existence checked; the contents are not read"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.virt"
+    },
+    {
+      "id": "virt.container.dockerenv",
+      "value": false,
+      "kind": "static",
+      "scope": "namespace",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/.dockerenv",
+        "detail": "existence checked; the contents are not read"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.virt"
+    },
+    {
+      "id": "virt.container.systemd",
+      "value": null,
+      "kind": "static",
+      "scope": "namespace",
+      "status": "absent",
+      "source": {
+        "type": "file",
+        "path": "/run/systemd/container"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.virt",
+      "note": "open /run/systemd/container: no such file or directory"
+    },
+    {
+      "id": "virt.devicetree.model",
+      "value": null,
+      "kind": "static",
+      "scope": "kernel",
+      "status": "absent",
+      "source": {
+        "type": "file",
+        "path": "/proc/device-tree/model"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.virt",
+      "note": "no device tree: the firmware described this machine with ACPI and DMI instead"
+    },
+    {
+      "id": "virt.dmi.product_name",
+      "value": "<redacted:freetext>",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/class/dmi/id/product_name"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.virt",
+      "note": "redacted (freetext)"
+    },
+    {
+      "id": "virt.dmi.sys_vendor",
+      "value": "<redacted:freetext>",
+      "kind": "static",
+      "scope": "kernel",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/sys/class/dmi/id/sys_vendor"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.virt",
+      "note": "redacted (freetext)"
+    },
+    {
+      "id": "virt.pid1_cgroup_root",
+      "value": false,
+      "kind": "static",
+      "scope": "namespace",
+      "status": "ok",
+      "source": {
+        "type": "file",
+        "path": "/proc/1/cgroup",
+        "detail": "true when every hierarchy lists PID 1 at /"
+      },
+      "collected_at": "2026-10-06T19:21:10Z",
+      "collector": "system.virt",
+      "note": "PID 1 is in /init.scope: systemd moves itself out of the root cgroup, so false here is expected on a systemd host"
+    }
+  ]
+}

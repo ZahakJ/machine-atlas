@@ -1,0 +1,19 @@
+00400000-00af8000 r-xp 00000000 08:02 2491305                            atlas
+00af8000-0112a000 r--p 006f8000 08:02 2491305                            atlas
+0112a000-01176000 rw-p 00d2a000 08:02 2491305                            atlas
+01176000-011b9000 rw-p 00000000 00:00 0 
+c000000000-c000400000 rw-p 00000000 00:00 0                              [anon: Go: heap]
+c000400000-c004000000 ---p 00000000 00:00 0 
+7f3c88cb0000-7f3c88cc0000 rw-p 00000000 00:00 0 
+7f3c88cc0000-7f3c88ec0000 rw-p 00000000 00:00 0 
+7f3c88ec0000-7f3c88f00000 rw-p 00000000 00:00 0 
+7f3c88f00000-7f3c89000000 rw-p 00000000 00:00 0 
+7f3c89000000-7f3c89400000 rw-s 00000000 00:01 1027                       memfd:atlas-probe (deleted)
+7f3c89400000-7f3c89800000 r--p 00000000 08:02 2491305                    atlas
+7f3c89800000-7f3c89c00000 rw-p 00000000 00:00 0                          [anon: atlas probe: anon-read]
+7f3c89c00000-7f3c8a400000 rw-p 00000000 00:00 0                          [anon: atlas probe: anon-written]
+7f3c8a400000-7f3c8e400000 rw-p 00000000 00:00 0                          [anon: atlas probe: anon-untouched]
+7ffd5c280000-7ffd5c2a1000 rw-p 00000000 00:00 0                          [stack]
+7ffd5c3b2000-7ffd5c3b6000 r--p 00000000 00:00 0                          [vvar]
+7ffd5c3b6000-7ffd5c3b8000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsyscall]

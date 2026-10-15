@@ -1,0 +1,114 @@
+Node 0, zone      DMA
+  per-node stats
+      nr_inactive_anon 120345
+      nr_active_anon 230456
+      nr_inactive_file 340567
+      nr_active_file 450678
+  pages free     3840
+        boost    0
+        min      5
+        low      8
+        high     11
+        promo    14
+        spanned  4095
+        present  3998
+        managed  3840
+        cma      0
+        protection: (0, 1876, 31916, 31916, 31916)
+      nr_free_pages 3840
+      nr_zone_inactive_anon 0
+  pagesets
+    cpu: 0
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 6
+  node_unreclaimable:  0
+  start_pfn:           1
+Node 0, zone    DMA32
+  pages free     402123
+        boost    0
+        min      665
+        low      1145
+        high     1625
+        promo    2105
+        spanned  1044480
+        present  495582
+        managed  479134
+        cma      0
+        protection: (0, 0, 30039, 30039, 30039)
+      nr_free_pages 402123
+  pagesets
+    cpu: 0
+              count: 120
+              high:  378
+              batch: 63
+  node_unreclaimable:  0
+  start_pfn:           4096
+Node 0, zone   Normal
+  pages free     5123456
+        boost    0
+        min      10645
+        low      18334
+        high     26023
+        promo    33712
+        spanned  7864320
+        present  7864320
+        managed  7690123
+        cma      0
+        protection: (0, 0, 0, 0, 0)
+      nr_free_pages 5123456
+  pagesets
+    cpu: 0
+              count: 1012
+              high:  4096
+              batch: 63
+  node_unreclaimable:  0
+  start_pfn:           1048576
+Node 0, zone  Movable
+  pages free     0
+        boost    0
+        min      0
+        low      0
+        high     0
+        promo    0
+        spanned  0
+        present  0
+        managed  0
+        cma      0
+        protection: (0, 0, 0, 0, 0)
+Node 1, zone   Normal
+  per-node stats
+      nr_inactive_anon 98765
+      nr_active_anon 87654
+  pages free     6234567
+        boost    0
+        min      11290
+        low      19446
+        high     27602
+        promo    35758
+        spanned  8388608
+        present  8388608
+        managed  8256012
+        cma      0
+        protection: (0, 0, 0, 0, 0)
+      nr_free_pages 6234567
+  pagesets
+    cpu: 8
+              count: 300
+              high:  4096
+              batch: 63
+  node_unreclaimable:  0
+  start_pfn:           8912896
+Node 1, zone  Movable
+  pages free     0
+        boost    0
+        min      0
+        low      0
+        high     0
+        promo    0
+        spanned  0
+        present  0
+        managed  0
+        cma      0
+        protection: (0, 0, 0, 0, 0)

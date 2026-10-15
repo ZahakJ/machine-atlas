@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Simulations (dev)</title>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/sims.css">
+<link rel="stylesheet" href="dev.css">
+<script type="module" src="sims.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="topbar__brand" href="kit.html">Machine Atlas</a>
+  <span class="caption">Simulations, development page</span>
+  <div class="topbar__tools">
+    <button class="btn btn--small" type="button" data-set-theme="system">System</button>
+    <button class="btn btn--small" type="button" data-set-theme="light">Light</button>
+    <button class="btn btn--small" type="button" data-set-theme="dark">Dark</button>
+  </div>
+</header>
+<div class="mode-banner" data-mode="fixture" role="status">
+  <strong class="mode-banner__mode">Mock data</strong>
+  <span>Invented values for development, not a machine.</span>
+</div>
+<main class="page stack-lg">
+  <div class="field dev-narrow">
+    <label class="field__label" for="ctx">Mock context</label>
+    <select class="select" id="ctx">
+      <option value="desktop">Desktop: x86-64, swap, probe data</option>
+      <option value="rpi-noswap">Board: arm64 39-bit, no swap, no probe</option>
+      <option value="empty">Empty: no snapshot at all (defaults)</option>
+    </select>
+  </div>
+  <div id="walker"></div>
+  <div id="reclaim"></div>
+  <div id="fair-share"></div>
+</main>
+</body>
+</html>

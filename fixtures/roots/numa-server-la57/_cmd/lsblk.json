@@ -1,0 +1,58 @@
+{
+   "blockdevices": [
+      {
+         "name": "sda",
+         "type": "disk",
+         "size": 480103981056,
+         "fstype": null,
+         "children": [
+            {
+               "name": "sda1",
+               "type": "part",
+               "size": 1127219200,
+               "fstype": "vfat"
+            },
+            {
+               "name": "sda2",
+               "type": "part",
+               "size": 2147483648,
+               "fstype": "ext4"
+            },
+            {
+               "name": "sda3",
+               "type": "part",
+               "size": 476828041216,
+               "fstype": "ext4"
+            }
+         ]
+      },
+      {
+         "name": "nvme0n1",
+         "type": "disk",
+         "size": 3840755982336,
+         "fstype": null,
+         "children": [
+            {
+               "name": "nvme0n1p1",
+               "type": "part",
+               "size": 3840753885184,
+               "fstype": "xfs"
+            }
+         ]
+      },
+      {
+         "name": "nvme1n1",
+         "type": "disk",
+         "size": 3840755982336,
+         "fstype": null,
+         "children": [
+            {
+               "name": "nvme1n1p1",
+               "type": "part",
+               "size": 3840753885184,
+               "fstype": "xfs"
+            }
+         ]
+      }
+   ]
+}

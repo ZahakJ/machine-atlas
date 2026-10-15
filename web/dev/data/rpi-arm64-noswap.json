@@ -1,0 +1,2403 @@
+{
+ "derived": [
+  {
+   "basis": "arithmetic",
+   "id": "derived.cgroup.memory_limited",
+   "inputs": [
+    "mem.cgroup.memory.max",
+    "mem.cgroup.memory.high"
+   ],
+   "rule": "memory.max or memory.high of atlas's cgroup is a number rather than \"max\"",
+   "status": "ok",
+   "value": false
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.commit.over_limit",
+   "inputs": [
+    "mem.meminfo.Committed_AS",
+    "mem.meminfo.CommitLimit"
+   ],
+   "rule": "Committed_AS > CommitLimit",
+   "status": "ok",
+   "value": false
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.cpu.phys_addressable_bytes",
+   "inputs": [
+    "cpu.address_bits.physical"
+   ],
+   "reason": "cpu.address_bits.physical is absent",
+   "rule": "2^cpu.address_bits.physical",
+   "status": "unknown",
+   "unit": "bytes",
+   "value": null
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.cpu.smt",
+   "inputs": [
+    "cpu.threads_per_core"
+   ],
+   "rule": "cpu.threads_per_core > 1",
+   "status": "ok",
+   "value": false
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.dirty.kernel_threshold_bytes",
+   "inputs": [
+    "mem.vmstat.nr_dirty_threshold",
+    "kernel.page_size_bytes"
+   ],
+   "rule": "nr_dirty_threshold (pages) \u00d7 kernel.page_size_bytes",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 613150720
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.dirty.threshold_estimate_bytes",
+   "inputs": [
+    "mem.sysctl.vm.dirty_ratio",
+    "mem.meminfo.MemAvailable"
+   ],
+   "rule": "dirty_ratio% \u00d7 MemAvailable",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 594452889
+  },
+  {
+   "basis": "inference",
+   "id": "derived.env.arch_family",
+   "inputs": [
+    "kernel.arch"
+   ],
+   "rule": "kernel.arch \"aarch64\" belongs to the arm family (x86: x86_64, i?86; arm: aarch64, arm*; riscv: riscv*)",
+   "status": "ok",
+   "value": "arm"
+  },
+  {
+   "basis": "inference",
+   "id": "derived.env.kind",
+   "inputs": [
+    "virt.container.dockerenv",
+    "virt.container.containerenv",
+    "virt.pid1_cgroup_root",
+    "init.pid1_comm",
+    "cpu.flags.hypervisor",
+    "virt.dmi.sys_vendor",
+    "virt.dmi.product_name",
+    "virt.devicetree.model"
+   ],
+   "rule": "no-virtualization-evidence: no container marker file, PID 1 is at the cgroup root or is an init system, and neither the CPU flags, DMI nor the device tree name a hypervisor. This is not proof of bare metal: a hypervisor or runtime can hide every one of these signals (not available: cpu.flags.hypervisor, virt.dmi.sys_vendor, virt.dmi.product_name)",
+   "status": "ok",
+   "value": "no-virtualization-evidence"
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.mem.accounted_bytes",
+   "inputs": [
+    "mem.meminfo.MemFree",
+    "mem.meminfo.Buffers",
+    "mem.meminfo.Cached",
+    "mem.meminfo.AnonPages",
+    "mem.meminfo.Slab",
+    "mem.meminfo.KernelStack",
+    "mem.meminfo.PageTables",
+    "mem.meminfo.Percpu",
+    "mem.meminfo.VmallocUsed"
+   ],
+   "rule": "MemFree + Buffers + Cached + AnonPages + Slab + KernelStack + PageTables + Percpu + VmallocUsed",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 3922550784
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.mem.available_fraction",
+   "inputs": [
+    "mem.meminfo.MemTotal",
+    "mem.meminfo.MemAvailable"
+   ],
+   "rule": "MemAvailable / MemTotal",
+   "status": "ok",
+   "value": 0.7467568351898046
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.mem.file_cache_bytes",
+   "inputs": [
+    "mem.meminfo.Cached",
+    "mem.meminfo.Buffers",
+    "mem.meminfo.Shmem"
+   ],
+   "rule": "Cached + Buffers \u2212 Shmem",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 1296470016
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.mem.total_pages",
+   "inputs": [
+    "mem.meminfo.MemTotal",
+    "kernel.page_size_bytes"
+   ],
+   "rule": "MemTotal / kernel.page_size_bytes",
+   "status": "ok",
+   "unit": "pages",
+   "value": 971736
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.mem.unaccounted_bytes",
+   "inputs": [
+    "mem.meminfo.MemFree",
+    "mem.meminfo.Buffers",
+    "mem.meminfo.Cached",
+    "mem.meminfo.AnonPages",
+    "mem.meminfo.Slab",
+    "mem.meminfo.KernelStack",
+    "mem.meminfo.PageTables",
+    "mem.meminfo.Percpu",
+    "mem.meminfo.VmallocUsed",
+    "mem.meminfo.MemTotal"
+   ],
+   "rule": "MemTotal \u2212 (MemFree + Buffers + Cached + AnonPages + Slab + KernelStack + PageTables + Percpu + VmallocUsed); what remains is memory meminfo attributes to none of these, typically the hugetlb pool (Hugetlb), driver allocations such as graphics and network buffers, and per-CPU page lists. Overlaps between fields can make it negative",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 57679872
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.mem.used_estimate_bytes",
+   "inputs": [
+    "mem.meminfo.MemTotal",
+    "mem.meminfo.MemAvailable"
+   ],
+   "rule": "MemTotal \u2212 MemAvailable",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 1007966208
+  },
+  {
+   "basis": "inference",
+   "id": "derived.net.default_route_interface",
+   "inputs": [
+    "net.routes.ipv4"
+   ],
+   "rule": "the interface of the IPv4 default route with the lowest metric (the IPv6 one when IPv4 has none); policy routing rules, which atlas cannot read, can send some traffic elsewhere",
+   "status": "ok",
+   "value": "wlan0"
+  },
+  {
+   "basis": "inference",
+   "id": "derived.net.default_route_mtu",
+   "inputs": [
+    "net.routes.ipv4",
+    "net.interfaces"
+   ],
+   "rule": "the MTU in net.interfaces of the default route's interface",
+   "status": "ok",
+   "unit": "count",
+   "value": 1500
+  },
+  {
+   "basis": "inference",
+   "id": "derived.net.default_route_qdisc",
+   "inputs": [
+    "net.routes.ipv4",
+    "net.qdiscs"
+   ],
+   "rule": "the queueing discipline that schedules the default route's interface in net.qdiscs: its root qdisc; under a multiqueue root (mq) the per-queue qdiscs; for a bond or bridge without a queue (noqueue), its members' qdiscs (here the root, pfifo_fast)",
+   "status": "ok",
+   "value": "pfifo_fast"
+  },
+  {
+   "basis": "inference",
+   "id": "derived.net.default_route_tx_queues",
+   "inputs": [
+    "net.routes.ipv4",
+    "net.interfaces"
+   ],
+   "rule": "the transmit queue count in net.interfaces of the default route's interface",
+   "status": "ok",
+   "unit": "count",
+   "value": 1
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.net.softnet.dropped",
+   "inputs": [
+    "net.softnet"
+   ],
+   "rule": "sum of the dropped column of net.softnet over 4 CPUs",
+   "status": "ok",
+   "unit": "count",
+   "value": 0
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.numa.multi",
+   "inputs": [
+    "mem.numa.nodes"
+   ],
+   "reason": "mem.numa.nodes is absent",
+   "rule": "more than one NUMA node",
+   "status": "unknown",
+   "value": null
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.numa.node_count",
+   "inputs": [
+    "mem.numa.nodes"
+   ],
+   "reason": "mem.numa.nodes is absent",
+   "rule": "number of rows in mem.numa.nodes",
+   "status": "unknown",
+   "unit": "count",
+   "value": null
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.oom.any",
+   "inputs": [
+    "mem.vmstat.oom_kill"
+   ],
+   "rule": "mem.vmstat.oom_kill > 0",
+   "status": "ok",
+   "value": false
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.oom.kills_since_boot",
+   "inputs": [
+    "mem.vmstat.oom_kill"
+   ],
+   "rule": "mem.vmstat.oom_kill",
+   "status": "ok",
+   "unit": "count",
+   "value": 0
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.overcommit.mode_name",
+   "inputs": [
+    "mem.sysctl.vm.overcommit_memory"
+   ],
+   "rule": "overcommit_memory 0 \u2192 heuristic, 1 \u2192 always, 2 \u2192 strict",
+   "status": "ok",
+   "value": "heuristic"
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.paging.index_bits",
+   "inputs": [
+    "kernel.page_size_bytes"
+   ],
+   "rule": "log2(kernel.page_size_bytes / 8): a table fills one page with 8-byte entries",
+   "status": "ok",
+   "unit": "bits",
+   "value": 9
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.paging.leaf_table_span_bytes",
+   "inputs": [
+    "kernel.page_size_bytes"
+   ],
+   "rule": "(page size / 8) entries \u00d7 page size",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 2097152
+  },
+  {
+   "basis": "inference",
+   "id": "derived.paging.levels",
+   "inputs": [
+    "kernel.arch",
+    "kernel.page_size_bytes",
+    "probe.maps.highest_end"
+   ],
+   "rule": "aarch64 with 4 KiB pages: virtual address bits are not reported unprivileged, so they are inferred from the highest user address the probe mapped (0x7fd31c8000), which lies within 2^39; of the widths Linux offers here (39, 48) the narrowest that fits is 39 bits, and (39 \u2212 12 offset bits) / 9 index bits per level gives 3 levels. A kernel configured wider (52-bit arm64, Sv57) keeps user mappings within this range by default and reads the same",
+   "status": "ok",
+   "unit": "count",
+   "value": 3
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.paging.offset_bits",
+   "inputs": [
+    "kernel.page_size_bytes"
+   ],
+   "rule": "log2(kernel.page_size_bytes)",
+   "status": "ok",
+   "unit": "bits",
+   "value": 12
+  },
+  {
+   "basis": "inference",
+   "id": "derived.paging.profile",
+   "inputs": [
+    "kernel.arch",
+    "kernel.page_size_bytes",
+    "probe.maps.highest_end"
+   ],
+   "rule": "aarch64 with 4 KiB pages: virtual address bits are not reported unprivileged, so they are inferred from the highest user address the probe mapped (0x7fd31c8000), which lies within 2^39; of the widths Linux offers here (39, 48) the narrowest that fits is 39 bits, and (39 \u2212 12 offset bits) / 9 index bits per level gives 3 levels. A kernel configured wider (52-bit arm64, Sv57) keeps user mappings within this range by default and reads the same",
+   "status": "ok",
+   "value": "arm64-4k-39"
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.paging.upper_entry_span_bytes",
+   "inputs": [
+    "kernel.page_size_bytes"
+   ],
+   "rule": "(page size / 8)\u00b2 entries \u00d7 page size",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 1073741824
+  },
+  {
+   "basis": "inference",
+   "id": "derived.paging.user_space_bytes",
+   "inputs": [
+    "kernel.arch",
+    "kernel.page_size_bytes",
+    "probe.maps.highest_end"
+   ],
+   "rule": "2^39 bytes: the user part of a 39-bit address space (aarch64 with 4 KiB pages: virtual address bits are not reported unprivileged, so they are inferred from the highest user address the probe mapped (0x7fd31c8000), which lies within 2^39; of the widths Linux offers here (39, 48) the narrowest that fits is 39 bits, and (39 \u2212 12 offset bits) / 9 index bits per level gives 3 levels. A kernel configured wider (52-bit arm64, Sv57) keeps user mappings within this range by default and reads the same)",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 549755813888
+  },
+  {
+   "basis": "inference",
+   "id": "derived.paging.va_bits",
+   "inputs": [
+    "kernel.arch",
+    "kernel.page_size_bytes",
+    "probe.maps.highest_end"
+   ],
+   "rule": "aarch64 with 4 KiB pages: virtual address bits are not reported unprivileged, so they are inferred from the highest user address the probe mapped (0x7fd31c8000), which lies within 2^39; of the widths Linux offers here (39, 48) the narrowest that fits is 39 bits, and (39 \u2212 12 offset bits) / 9 index bits per level gives 3 levels. A kernel configured wider (52-bit arm64, Sv57) keeps user mappings within this range by default and reads the same",
+   "status": "ok",
+   "unit": "bits",
+   "value": 39
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.probe.aslr_differs",
+   "inputs": [
+    "probe.layout.runs"
+   ],
+   "rule": "any of stack, mmap_base, heap, exe differs between the probe's two runs (here: [stack mmap_base])",
+   "status": "ok",
+   "value": true
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.probe.read_region_rss_bytes",
+   "inputs": [
+    "probe.regions"
+   ],
+   "rule": "rss_bytes of the anon-read region (4 MiB only read from)",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.probe.untouched_rss_bytes",
+   "inputs": [
+    "probe.regions"
+   ],
+   "rule": "rss_bytes of the anon-untouched region (64 MiB mapped, never touched)",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.probe.written_huge_fraction",
+   "inputs": [
+    "probe.regions"
+   ],
+   "rule": "anon_huge_bytes / size_bytes of the anon-written region",
+   "status": "ok",
+   "value": 0
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.probe.written_minflt_delta",
+   "inputs": [
+    "probe.faults.minflt_after_touch",
+    "probe.faults.minflt_before_touch"
+   ],
+   "rule": "minflt_after_touch \u2212 minflt_before_touch (getrusage around the write loop)",
+   "status": "ok",
+   "unit": "count",
+   "value": 2050
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.probe.written_pages_expected",
+   "inputs": [
+    "probe.regions",
+    "kernel.page_size_bytes"
+   ],
+   "rule": "size_bytes of anon-written / kernel.page_size_bytes: one fault per page if every page faulted separately",
+   "status": "ok",
+   "unit": "pages",
+   "value": 2048
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.psi.available",
+   "inputs": [
+    "mem.psi.some.avg10"
+   ],
+   "rule": "/proc/pressure/memory could be read (mem.psi.some.avg10 is ok); absent means a kernel without CONFIG_PSI or booted with psi=0",
+   "status": "ok",
+   "value": true
+  },
+  {
+   "basis": "inference",
+   "id": "derived.reclaim.lru_kind",
+   "inputs": [
+    "mem.lru_gen.enabled"
+   ],
+   "rule": "mglru if bit 0 of /sys/kernel/mm/lru_gen/enabled is set, otherwise classic; an absent file means an older kernel or one built without MGLRU, both classic",
+   "status": "ok",
+   "value": "mglru"
+  },
+  {
+   "basis": "inference",
+   "id": "derived.storage.root_disk",
+   "inputs": [
+    "mounts.filesystems"
+   ],
+   "rule": "the disk column of the mount at / in mounts.filesystems: mmcblk0, which holds / through mmcblk0p2",
+   "status": "ok",
+   "value": "mmcblk0"
+  },
+  {
+   "basis": "inference",
+   "id": "derived.storage.root_disk_kind",
+   "inputs": [
+    "mounts.filesystems"
+   ],
+   "rule": "the kernel's naming scheme for the root disk (mmcblk0, which holds / through mmcblk0p2): nvme* NVMe, sd* SCSI (SATA, SAS, USB), vd* virtio, xvd* Xen, mmcblk* MMC, dm-* device-mapper, md* software RAID, zram*, loop*, nbd*",
+   "status": "ok",
+   "value": "mmc"
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.storage.root_fstype",
+   "inputs": [
+    "mounts.filesystems"
+   ],
+   "rule": "the fstype of the mount at / in mounts.filesystems",
+   "status": "ok",
+   "value": "ext4"
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.storage.root_hw_queues",
+   "inputs": [
+    "mounts.filesystems",
+    "block.queues"
+   ],
+   "rule": "the hardware queue count in block.queues of the root disk (mmcblk0, which holds / through mmcblk0p2)",
+   "status": "ok",
+   "unit": "count",
+   "value": 1
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.storage.root_max_request_bytes",
+   "inputs": [
+    "mounts.filesystems",
+    "block.queues"
+   ],
+   "rule": "the largest request size in block.queues of the root disk (mmcblk0, which holds / through mmcblk0p2)",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 1048576
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.storage.root_nr_requests",
+   "inputs": [
+    "mounts.filesystems",
+    "block.queues"
+   ],
+   "rule": "the nr_requests in block.queues of the root disk (mmcblk0, which holds / through mmcblk0p2)",
+   "status": "ok",
+   "unit": "count",
+   "value": 128
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.storage.root_options",
+   "inputs": [
+    "mounts.filesystems"
+   ],
+   "rule": "the allow-listed options of the mount at / in mounts.filesystems",
+   "status": "ok",
+   "value": "rw,noatime"
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.storage.root_read_ahead_bytes",
+   "inputs": [
+    "mounts.filesystems",
+    "block.queues"
+   ],
+   "rule": "the readahead window in block.queues of the root disk (mmcblk0, which holds / through mmcblk0p2)",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 131072
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.storage.root_scheduler",
+   "inputs": [
+    "mounts.filesystems",
+    "block.queues"
+   ],
+   "rule": "the selected I/O scheduler in block.queues of the root disk (mmcblk0, which holds / through mmcblk0p2)",
+   "status": "ok",
+   "value": "mq-deadline"
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.storage.root_schedulers",
+   "inputs": [
+    "mounts.filesystems",
+    "block.queues"
+   ],
+   "rule": "the available I/O schedulers in block.queues of the root disk (mmcblk0, which holds / through mmcblk0p2)",
+   "status": "ok",
+   "value": "mq-deadline kyber bfq none"
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.storage.root_write_cache",
+   "inputs": [
+    "mounts.filesystems",
+    "block.queues"
+   ],
+   "rule": "the write cache mode in block.queues of the root disk (mmcblk0, which holds / through mmcblk0p2)",
+   "status": "ok",
+   "value": "write through"
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.swap.compressed",
+   "inputs": [
+    "mem.zswap.enabled",
+    "mem.zram.devices"
+   ],
+   "rule": "zswap enabled or a zram device present (here neither; an absent interface means the kernel lacks the feature)",
+   "status": "ok",
+   "value": false
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.swap.configured",
+   "inputs": [
+    "mem.meminfo.SwapTotal"
+   ],
+   "rule": "SwapTotal > 0",
+   "status": "ok",
+   "value": false
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.swap.total_bytes",
+   "inputs": [
+    "mem.meminfo.SwapTotal"
+   ],
+   "rule": "SwapTotal",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.swap.used_fraction",
+   "inputs": [
+    "mem.meminfo.SwapTotal",
+    "mem.meminfo.SwapFree"
+   ],
+   "reason": "no swap is configured (SwapTotal is 0), so a used fraction is undefined",
+   "rule": "(SwapTotal \u2212 SwapFree) / SwapTotal",
+   "status": "unknown",
+   "value": null
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.thp.enabled",
+   "inputs": [
+    "mem.thp.enabled"
+   ],
+   "rule": "THP mode is not never; an absent THP interface means a kernel built without THP, so no",
+   "status": "ok",
+   "value": true
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.thp.mode",
+   "inputs": [
+    "mem.thp.enabled"
+   ],
+   "rule": "the bracketed choice in /sys/kernel/mm/transparent_hugepage/enabled",
+   "status": "ok",
+   "value": "madvise"
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.zones.free_bytes",
+   "inputs": [
+    "mem.zones",
+    "kernel.page_size_bytes"
+   ],
+   "rule": "sum of the free column over all 4 zones \u00d7 page size: the free pages",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 1769308160
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.zones.high_bytes",
+   "inputs": [
+    "mem.zones",
+    "kernel.page_size_bytes"
+   ],
+   "rule": "sum of the high column over all 4 zones \u00d7 page size: the high watermarks",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 69324800
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.zones.low_bytes",
+   "inputs": [
+    "mem.zones",
+    "kernel.page_size_bytes"
+   ],
+   "rule": "sum of the low column over all 4 zones \u00d7 page size: the low watermarks",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 57794560
+  },
+  {
+   "basis": "arithmetic",
+   "id": "derived.zones.min_bytes",
+   "inputs": [
+    "mem.zones",
+    "kernel.page_size_bytes"
+   ],
+   "rule": "sum of the min column over all 4 zones \u00d7 page size: the min watermarks",
+   "status": "ok",
+   "unit": "bytes",
+   "value": 46264320
+  }
+ ],
+ "fixture": "rpi-arm64-noswap",
+ "note": "Generated from fixtures/roots/rpi-arm64-noswap (atlas serve --fixture, /api/snapshot and /api/derived), trimmed to the ids the diagrams read.",
+ "observations": [
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "sched.topology",
+   "id": "cpu.cache_domains",
+   "kind": "static",
+   "scope": "kernel",
+   "source": {
+    "detail": "cpu*/cache/index*/level, type, size, shared_cpu_list; one row per distinct cache",
+    "path": "/sys/devices/system/cpu",
+    "type": "file"
+   },
+   "status": "ok",
+   "value": [
+    {
+     "cpus": 1,
+     "level": 1,
+     "shared_cpu_list": "0",
+     "size_bytes": 32768,
+     "type": "Data"
+    },
+    {
+     "cpus": 1,
+     "level": 1,
+     "shared_cpu_list": "1",
+     "size_bytes": 32768,
+     "type": "Data"
+    },
+    {
+     "cpus": 1,
+     "level": 1,
+     "shared_cpu_list": "2",
+     "size_bytes": 32768,
+     "type": "Data"
+    },
+    {
+     "cpus": 1,
+     "level": 1,
+     "shared_cpu_list": "3",
+     "size_bytes": 32768,
+     "type": "Data"
+    },
+    {
+     "cpus": 1,
+     "level": 1,
+     "shared_cpu_list": "0",
+     "size_bytes": 49152,
+     "type": "Instruction"
+    },
+    {
+     "cpus": 1,
+     "level": 1,
+     "shared_cpu_list": "1",
+     "size_bytes": 49152,
+     "type": "Instruction"
+    },
+    {
+     "cpus": 1,
+     "level": 1,
+     "shared_cpu_list": "2",
+     "size_bytes": 49152,
+     "type": "Instruction"
+    },
+    {
+     "cpus": 1,
+     "level": 1,
+     "shared_cpu_list": "3",
+     "size_bytes": 49152,
+     "type": "Instruction"
+    },
+    {
+     "cpus": 4,
+     "level": 2,
+     "shared_cpu_list": "0-3",
+     "size_bytes": 1048576,
+     "type": "Unified"
+    }
+   ]
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "sched.topology",
+   "id": "cpu.hybrid.efficiency_cpus",
+   "kind": "static",
+   "note": "no hybrid core list: the processor's cores are all of one kind, it is not an x86 hybrid part, or the kernel predates hybrid support (Linux 5.13) (open /sys/devices/cpu_atom/cpus: no such file or directory)",
+   "scope": "kernel",
+   "source": {
+    "path": "/sys/devices/cpu_atom/cpus",
+    "type": "file"
+   },
+   "status": "absent",
+   "value": null
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "sched.topology",
+   "id": "cpu.hybrid.performance_cpus",
+   "kind": "static",
+   "note": "no hybrid core list: the processor's cores are all of one kind, it is not an x86 hybrid part, or the kernel predates hybrid support (Linux 5.13) (open /sys/devices/cpu_core/cpus: no such file or directory)",
+   "scope": "kernel",
+   "source": {
+    "path": "/sys/devices/cpu_core/cpus",
+    "type": "file"
+   },
+   "status": "absent",
+   "value": null
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "sched.topology",
+   "id": "cpu.isolated",
+   "kind": "static",
+   "scope": "kernel",
+   "source": {
+    "path": "/sys/devices/system/cpu/isolated",
+    "type": "file"
+   },
+   "status": "ok",
+   "value": ""
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "sched.topology",
+   "id": "cpu.topology",
+   "kind": "static",
+   "scope": "kernel",
+   "source": {
+    "detail": "online; cpuN/topology/physical_package_id, die_id, cluster_id, core_id, thread_siblings_list; cpuN/cpu_capacity; /sys/devices/cpu_core|cpu_atom/cpus",
+    "path": "/sys/devices/system/cpu",
+    "type": "file"
+   },
+   "status": "ok",
+   "value": [
+    {
+     "capacity": 1024,
+     "cluster": 0,
+     "core_id": 0,
+     "cpu": 0,
+     "die": 0,
+     "package": 0,
+     "thread_siblings": "0"
+    },
+    {
+     "capacity": 1024,
+     "cluster": 0,
+     "core_id": 1,
+     "cpu": 1,
+     "die": 0,
+     "package": 0,
+     "thread_siblings": "1"
+    },
+    {
+     "capacity": 1024,
+     "cluster": 0,
+     "core_id": 2,
+     "cpu": 2,
+     "die": 0,
+     "package": 0,
+     "thread_siblings": "2"
+    },
+    {
+     "capacity": 1024,
+     "cluster": 0,
+     "core_id": 3,
+     "cpu": 3,
+     "die": 0,
+     "package": 0,
+     "thread_siblings": "3"
+    }
+   ]
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "system.kernel",
+   "id": "kernel.page_size_bytes",
+   "kind": "static",
+   "scope": "kernel",
+   "source": {
+    "path": "getpagesize",
+    "type": "syscall"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 4096
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.lru_gen",
+   "id": "mem.lru_gen.enabled",
+   "kind": "static",
+   "scope": "kernel",
+   "source": {
+    "path": "/sys/kernel/mm/lru_gen/enabled",
+    "type": "file"
+   },
+   "status": "ok",
+   "value": "0x0007"
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Active",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Active",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 1056225280
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Active_anon",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Active(anon)",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 472817664
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Active_file",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Active(file)",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 583407616
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.AnonHugePages",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "AnonHugePages",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.AnonPages",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "AnonPages",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 626094080
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Bounce",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Bounce",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Buffers",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Buffers",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 94633984
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Cached",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Cached",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 1251205120
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.CmaFree",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "CmaFree",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 61554688
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.CmaTotal",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "CmaTotal",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 67108864
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.CommitLimit",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "CommitLimit",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 1990115328
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Committed_AS",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Committed_AS",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 1517813760
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Dirty",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Dirty",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 126976
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.FileHugePages",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "FileHugePages",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.FilePmdMapped",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "FilePmdMapped",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.HugePages_Free",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "field": "HugePages_Free",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "count",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.HugePages_Rsvd",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "field": "HugePages_Rsvd",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "count",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.HugePages_Surp",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "field": "HugePages_Surp",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "count",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.HugePages_Total",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "field": "HugePages_Total",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "count",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Hugepagesize",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Hugepagesize",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 2097152
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Hugetlb",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Hugetlb",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Inactive",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Inactive",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 915691520
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Inactive_anon",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Inactive(anon)",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 202637312
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Inactive_file",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Inactive(file)",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 713054208
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.KReclaimable",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "KReclaimable",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 90320896
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.KernelStack",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "KernelStack",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 4308992
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Mapped",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Mapped",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 247128064
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.MemAvailable",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "MemAvailable",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 2972264448
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.MemFree",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "MemFree",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 1769308160
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.MemTotal",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "MemTotal",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 3980230656
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Mlocked",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Mlocked",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 16384
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.NFS_Unstable",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "NFS_Unstable",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.PageTables",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "PageTables",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 10059776
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Percpu",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Percpu",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 1048576
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.SReclaimable",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "SReclaimable",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 90320896
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.SUnreclaim",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "SUnreclaim",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 53645312
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.SecPageTables",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "SecPageTables",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Shmem",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Shmem",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 49369088
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.ShmemHugePages",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "ShmemHugePages",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.ShmemPmdMapped",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "ShmemPmdMapped",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Slab",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Slab",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 143966208
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.SwapCached",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "SwapCached",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.SwapFree",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "SwapFree",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.SwapTotal",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "SwapTotal",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Unevictable",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Unevictable",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 16384
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.VmallocChunk",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "VmallocChunk",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.VmallocTotal",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "VmallocTotal",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 265885319168
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.VmallocUsed",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "VmallocUsed",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 21925888
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Writeback",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Writeback",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.WritebackTmp",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "WritebackTmp",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Zswap",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Zswap",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.meminfo",
+   "id": "mem.meminfo.Zswapped",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "detail": "converted from kB",
+    "field": "Zswapped",
+    "path": "/proc/meminfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "memory.zoneinfo",
+   "id": "mem.zones",
+   "kind": "live",
+   "scope": "kernel",
+   "source": {
+    "path": "/proc/zoneinfo",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "pages",
+   "value": [
+    {
+     "free": 51318,
+     "high": 4058,
+     "low": 3382,
+     "managed": 233472,
+     "min": 2706,
+     "node": 0,
+     "present": 242688,
+     "spanned": 262144,
+     "zone": "DMA"
+    },
+    {
+     "free": 380642,
+     "high": 12835,
+     "low": 10696,
+     "managed": 738264,
+     "min": 8557,
+     "node": 0,
+     "present": 755968,
+     "spanned": 770048,
+     "zone": "DMA32"
+    },
+    {
+     "free": 0,
+     "high": 0,
+     "low": 0,
+     "managed": 0,
+     "min": 0,
+     "node": 0,
+     "present": 0,
+     "spanned": 0,
+     "zone": "Normal"
+    },
+    {
+     "free": 0,
+     "high": 32,
+     "low": 32,
+     "managed": 0,
+     "min": 32,
+     "node": 0,
+     "present": 0,
+     "spanned": 0,
+     "zone": "Movable"
+    }
+   ]
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "network.conntrack",
+   "id": "net.conntrack.count",
+   "kind": "live",
+   "note": "connection tracking is not loaded: no firewall or NAT rule in this namespace needs it, or the kernel lacks nf_conntrack (open /proc/sys/net/netfilter/nf_conntrack_count: no such file or directory)",
+   "scope": "namespace",
+   "source": {
+    "path": "/proc/sys/net/netfilter/nf_conntrack_count",
+    "type": "file"
+   },
+   "status": "absent",
+   "value": null
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "network.sysctl",
+   "id": "net.sysctl.core.default_qdisc",
+   "kind": "static",
+   "scope": "kernel",
+   "source": {
+    "path": "/proc/sys/net/core/default_qdisc",
+    "type": "file"
+   },
+   "status": "ok",
+   "value": "pfifo_fast"
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "network.sysctl",
+   "id": "net.sysctl.core.netdev_budget",
+   "kind": "static",
+   "scope": "kernel",
+   "source": {
+    "path": "/proc/sys/net/core/netdev_budget",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "count",
+   "value": 300
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "network.sysctl",
+   "id": "net.sysctl.core.netdev_max_backlog",
+   "kind": "static",
+   "scope": "kernel",
+   "source": {
+    "path": "/proc/sys/net/core/netdev_max_backlog",
+    "type": "file"
+   },
+   "status": "ok",
+   "unit": "count",
+   "value": 1000
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "network.sysctl",
+   "id": "net.sysctl.ipv4.tcp_congestion_control",
+   "kind": "static",
+   "scope": "namespace",
+   "source": {
+    "path": "/proc/sys/net/ipv4/tcp_congestion_control",
+    "type": "file"
+   },
+   "status": "ok",
+   "value": "cubic"
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.faults.majflt_after_touch",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "detail": "the probe touches anon-written between the two readings",
+    "path": "getrusage(RUSAGE_THREAD)",
+    "type": "probe"
+   },
+   "status": "ok",
+   "unit": "count",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.faults.majflt_before_touch",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "detail": "the probe touches anon-written between the two readings",
+    "path": "getrusage(RUSAGE_THREAD)",
+    "type": "probe"
+   },
+   "status": "ok",
+   "unit": "count",
+   "value": 0
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.faults.minflt_after_touch",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "detail": "the probe touches anon-written between the two readings",
+    "path": "getrusage(RUSAGE_THREAD)",
+    "type": "probe"
+   },
+   "status": "ok",
+   "unit": "count",
+   "value": 2283
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.faults.minflt_before_touch",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "detail": "the probe touches anon-written between the two readings",
+    "path": "getrusage(RUSAGE_THREAD)",
+    "type": "probe"
+   },
+   "status": "ok",
+   "unit": "count",
+   "value": 233
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.layout.runs",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "detail": "mmap_base is approximated by the end of the highest mapping below the stack",
+    "path": "atlas __probe report",
+    "type": "probe"
+   },
+   "status": "ok",
+   "value": [
+    {
+     "exe": "0x10000",
+     "heap": "0x4000010000",
+     "mmap_base": "0x7f8c400000",
+     "run": 1,
+     "stack": "0x7fd31c7c98"
+    },
+    {
+     "exe": "0x10000",
+     "heap": "0x4000010000",
+     "mmap_base": "0x7f9a2a6000",
+     "run": 2,
+     "stack": "0x7fe4a90e18"
+    }
+   ]
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.maps.highest_end",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "path": "/proc/<probe>/maps",
+    "type": "probe"
+   },
+   "status": "ok",
+   "value": "0x7fd31c8000"
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.maps.lowest_start",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "path": "/proc/<probe>/maps",
+    "type": "probe"
+   },
+   "status": "ok",
+   "value": "0x10000"
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.maps.sample",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "path": "/proc/<probe>/maps",
+    "type": "probe"
+   },
+   "status": "ok",
+   "value": [
+    {
+     "end": "0x708000",
+     "kind": "file",
+     "offset": "0x0",
+     "path": "atlas",
+     "perms": "r-xp",
+     "start": "0x10000"
+    },
+    {
+     "end": "0xd3a000",
+     "kind": "file",
+     "offset": "0x6f8000",
+     "path": "atlas",
+     "perms": "r--p",
+     "start": "0x708000"
+    },
+    {
+     "end": "0xd86000",
+     "kind": "file",
+     "offset": "0xd2a000",
+     "path": "atlas",
+     "perms": "rw-p",
+     "start": "0xd3a000"
+    },
+    {
+     "end": "0xdc9000",
+     "kind": "anon",
+     "offset": "0x0",
+     "path": "",
+     "perms": "rw-p",
+     "start": "0xd86000"
+    },
+    {
+     "end": "0x4000400000",
+     "kind": "anon",
+     "offset": "0x0",
+     "path": "",
+     "perms": "rw-p",
+     "start": "0x4000000000"
+    },
+    {
+     "end": "0x4004000000",
+     "kind": "anon",
+     "offset": "0x0",
+     "path": "",
+     "perms": "---p",
+     "start": "0x4000400000"
+    },
+    {
+     "end": "0x7f86cc0000",
+     "kind": "anon",
+     "offset": "0x0",
+     "path": "",
+     "perms": "rw-p",
+     "start": "0x7f86cb0000"
+    },
+    {
+     "end": "0x7f86ec0000",
+     "kind": "anon",
+     "offset": "0x0",
+     "path": "",
+     "perms": "rw-p",
+     "start": "0x7f86cc0000"
+    },
+    {
+     "end": "0x7f86f00000",
+     "kind": "anon",
+     "offset": "0x0",
+     "path": "",
+     "perms": "rw-p",
+     "start": "0x7f86ec0000"
+    },
+    {
+     "end": "0x7f87000000",
+     "kind": "anon",
+     "offset": "0x0",
+     "path": "",
+     "perms": "rw-p",
+     "start": "0x7f86f00000"
+    },
+    {
+     "end": "0x7f87400000",
+     "kind": "file",
+     "offset": "0x0",
+     "path": "memfd:atlas-probe (deleted)",
+     "perms": "rw-s",
+     "start": "0x7f87000000"
+    },
+    {
+     "end": "0x7f87800000",
+     "kind": "file",
+     "offset": "0x0",
+     "path": "atlas",
+     "perms": "r--p",
+     "start": "0x7f87400000"
+    },
+    {
+     "end": "0x7f87c00000",
+     "kind": "anon",
+     "offset": "0x0",
+     "path": "",
+     "perms": "rw-p",
+     "start": "0x7f87800000"
+    },
+    {
+     "end": "0x7f88400000",
+     "kind": "anon",
+     "offset": "0x0",
+     "path": "",
+     "perms": "rw-p",
+     "start": "0x7f87c00000"
+    },
+    {
+     "end": "0x7f8c400000",
+     "kind": "anon",
+     "offset": "0x0",
+     "path": "",
+     "perms": "rw-p",
+     "start": "0x7f88400000"
+    },
+    {
+     "end": "0x7f9e7ec000",
+     "kind": "kernel",
+     "offset": "0x0",
+     "path": "[vvar]",
+     "perms": "r--p",
+     "start": "0x7f9e7ea000"
+    },
+    {
+     "end": "0x7f9e7ee000",
+     "kind": "kernel",
+     "offset": "0x0",
+     "path": "[vdso]",
+     "perms": "r-xp",
+     "start": "0x7f9e7ec000"
+    },
+    {
+     "end": "0x7fd31c8000",
+     "kind": "stack",
+     "offset": "0x0",
+     "path": "[stack]",
+     "perms": "rw-p",
+     "start": "0x7fd31a7000"
+    }
+   ]
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.maps.vma_count",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "path": "/proc/<probe>/maps",
+    "type": "probe"
+   },
+   "status": "ok",
+   "unit": "count",
+   "value": 18
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.pagemap.pfn_visible",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "path": "/proc/self/pagemap",
+    "type": "probe"
+   },
+   "status": "ok",
+   "value": false
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.regions",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "detail": "sizes from smaps (converted from kB); pages_* from the probe's own pagemap",
+    "path": "/proc/<probe>/smaps",
+    "type": "probe"
+   },
+   "status": "ok",
+   "value": [
+    {
+     "anon_huge_bytes": 0,
+     "anonymous_bytes": 0,
+     "backing": "anon",
+     "end": "0x7f8c400000",
+     "name": "anon-untouched",
+     "pages_present": 0,
+     "pages_swapped": 0,
+     "pages_total": 16384,
+     "path": "",
+     "perms": "rw-p",
+     "private_clean_bytes": 0,
+     "private_dirty_bytes": 0,
+     "pss_bytes": 0,
+     "rss_bytes": 0,
+     "shared_clean_bytes": 0,
+     "shared_dirty_bytes": 0,
+     "size_bytes": 67108864,
+     "start": "0x7f88400000",
+     "swap_bytes": 0,
+     "touched_bytes": 0
+    },
+    {
+     "anon_huge_bytes": 0,
+     "anonymous_bytes": 8388608,
+     "backing": "anon",
+     "end": "0x7f88400000",
+     "name": "anon-written",
+     "pages_present": 2048,
+     "pages_swapped": 0,
+     "pages_total": 2048,
+     "path": "",
+     "perms": "rw-p",
+     "private_clean_bytes": 0,
+     "private_dirty_bytes": 8388608,
+     "pss_bytes": 8388608,
+     "rss_bytes": 8388608,
+     "shared_clean_bytes": 0,
+     "shared_dirty_bytes": 0,
+     "size_bytes": 8388608,
+     "start": "0x7f87c00000",
+     "swap_bytes": 0,
+     "touched_bytes": 8388608
+    },
+    {
+     "anon_huge_bytes": 0,
+     "anonymous_bytes": 0,
+     "backing": "anon",
+     "end": "0x7f87c00000",
+     "name": "anon-read",
+     "pages_present": 1024,
+     "pages_swapped": 0,
+     "pages_total": 1024,
+     "path": "",
+     "perms": "rw-p",
+     "private_clean_bytes": 0,
+     "private_dirty_bytes": 0,
+     "pss_bytes": 0,
+     "rss_bytes": 0,
+     "shared_clean_bytes": 0,
+     "shared_dirty_bytes": 0,
+     "size_bytes": 4194304,
+     "start": "0x7f87800000",
+     "swap_bytes": 0,
+     "touched_bytes": 4194304
+    },
+    {
+     "anon_huge_bytes": 0,
+     "anonymous_bytes": 0,
+     "backing": "file",
+     "end": "0x7f87800000",
+     "name": "file-private",
+     "pages_present": 1024,
+     "pages_swapped": 0,
+     "pages_total": 1024,
+     "path": "atlas",
+     "perms": "r--p",
+     "private_clean_bytes": 2318336,
+     "private_dirty_bytes": 0,
+     "pss_bytes": 3256320,
+     "rss_bytes": 4194304,
+     "shared_clean_bytes": 1875968,
+     "shared_dirty_bytes": 0,
+     "size_bytes": 4194304,
+     "start": "0x7f87400000",
+     "swap_bytes": 0,
+     "touched_bytes": 4194304
+    },
+    {
+     "anon_huge_bytes": 0,
+     "anonymous_bytes": 0,
+     "backing": "shmem",
+     "end": "0x7f87400000",
+     "name": "shmem-shared",
+     "pages_present": 256,
+     "pages_swapped": 0,
+     "pages_total": 1024,
+     "path": "memfd:atlas-probe (deleted)",
+     "perms": "rw-s",
+     "private_clean_bytes": 0,
+     "private_dirty_bytes": 1048576,
+     "pss_bytes": 1048576,
+     "rss_bytes": 1048576,
+     "shared_clean_bytes": 0,
+     "shared_dirty_bytes": 0,
+     "size_bytes": 4194304,
+     "start": "0x7f87000000",
+     "swap_bytes": 0,
+     "touched_bytes": 1048576
+    }
+   ]
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.status.RssAnon",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "detail": "converted from kB",
+    "field": "RssAnon",
+    "path": "/proc/<probe>/status",
+    "type": "probe"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 10162176
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.status.RssFile",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "detail": "converted from kB",
+    "field": "RssFile",
+    "path": "/proc/<probe>/status",
+    "type": "probe"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 10932224
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.status.RssShmem",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "detail": "converted from kB",
+    "field": "RssShmem",
+    "path": "/proc/<probe>/status",
+    "type": "probe"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 1048576
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.status.VmPTE",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "detail": "converted from kB",
+    "field": "VmPTE",
+    "path": "/proc/<probe>/status",
+    "type": "probe"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 61440
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.status.VmRSS",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "detail": "converted from kB",
+    "field": "VmRSS",
+    "path": "/proc/<probe>/status",
+    "type": "probe"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 22142976
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.status.VmSize",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "detail": "converted from kB",
+    "field": "VmSize",
+    "path": "/proc/<probe>/status",
+    "type": "probe"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 173203456
+  },
+  {
+   "collected_at": "2025-03-08T09:15:00Z",
+   "collector": "probe",
+   "id": "probe.status.VmSwap",
+   "kind": "live",
+   "scope": "process",
+   "source": {
+    "detail": "converted from kB",
+    "field": "VmSwap",
+    "path": "/proc/<probe>/status",
+    "type": "probe"
+   },
+   "status": "ok",
+   "unit": "bytes",
+   "value": 0
+  }
+ ]
+}

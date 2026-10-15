@@ -1,0 +1,92 @@
+{
+  "regions": [
+    {
+      "name": "anon-untouched",
+      "start": "0x7f6a27200000",
+      "end": "0x7f6a2b200000",
+      "size_bytes": 67108864,
+      "touched_bytes": 0,
+      "backing": "anon",
+      "pages_total": 16384,
+      "pages_present": 0,
+      "pages_swapped": 0
+    },
+    {
+      "name": "anon-written",
+      "start": "0x7f6a26a00000",
+      "end": "0x7f6a27200000",
+      "size_bytes": 8388608,
+      "touched_bytes": 8388608,
+      "backing": "anon",
+      "pages_total": 2048,
+      "pages_present": 2048,
+      "pages_swapped": 0
+    },
+    {
+      "name": "anon-read",
+      "start": "0x7f6a26600000",
+      "end": "0x7f6a26a00000",
+      "size_bytes": 4194304,
+      "touched_bytes": 4194304,
+      "backing": "anon",
+      "pages_total": 1024,
+      "pages_present": 1024,
+      "pages_swapped": 0
+    },
+    {
+      "name": "file-private",
+      "start": "0x7f6a26200000",
+      "end": "0x7f6a26600000",
+      "size_bytes": 4194304,
+      "touched_bytes": 4194304,
+      "backing": "file",
+      "pages_total": 1024,
+      "pages_present": 1024,
+      "pages_swapped": 0
+    },
+    {
+      "name": "shmem-shared",
+      "start": "0x7f6a25e00000",
+      "end": "0x7f6a26200000",
+      "size_bytes": 4194304,
+      "touched_bytes": 1048576,
+      "backing": "shmem",
+      "pages_total": 1024,
+      "pages_present": 256,
+      "pages_swapped": 0
+    }
+  ],
+  "faults": {
+    "minflt_before_touch": 455,
+    "minflt_after_touch": 2506,
+    "majflt_before_touch": 0,
+    "majflt_after_touch": 0
+  },
+  "thp_faults": {
+    "fault_alloc_delta": 0,
+    "fault_fallback_delta": 0
+  },
+  "pagemap": {
+    "readable": true,
+    "pfn_visible": false
+  },
+  "placement": "mmap",
+  "layout_runs": [
+    {
+      "run": 1,
+      "stack": "0x7ffe9c3c0000",
+      "mmap_base": "0x7f6a2b200000",
+      "heap": "0xc000000000",
+      "exe": "0x400000",
+      "heap_kind": "go-arena"
+    },
+    {
+      "run": 2,
+      "stack": "0x7ffcd0480000",
+      "mmap_base": "0x7f0e57a00000",
+      "heap": "0xc000000000",
+      "exe": "0x400000",
+      "heap_kind": "go-arena"
+    }
+  ]
+}

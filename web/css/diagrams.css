@@ -1,0 +1,475 @@
+/*
+ * Diagrams (web/js/diagrams/). The frame (.dg) first, then the SVG classes.
+ *
+ * Every colour is set here through classes: the CSP forbids style attributes,
+ * and SVG presentation attributes cannot read custom properties.
+ *
+ * Series colours. One categorical palette for everything a diagram tells
+ * apart by kind, assigned by meaning and never by rank, so "anonymous" is
+ * the same blue in the address-space map, the probe regions and the meminfo
+ * bar. The order below was checked with a colour-vision-deficiency
+ * validator against --paper-raised in both themes (adjacent pairs pass;
+ * three light-theme hues are under 3:1 against the surface, so every mark
+ * also has a text label, a legend entry and a table row).
+ */
+
+:root,
+[data-theme="light"] {
+  --dg-anon: #2a78d6;
+  --dg-file: #eb6834;
+  --dg-shmem: #1baf7a;
+  --dg-heap: #eda100;
+  --dg-stack: #e87ba4;
+  --dg-exec: #008300;
+  --dg-kernel: #4a3aa7;
+  --dg-other: #e34948;
+  --dg-neutral: #cfc8ba;
+  --dg-track: #ece8df;
+  --dg-hatch: #a3361f;
+  --dg-grid: #e4dfd5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --dg-anon: #3987e5;
+    --dg-file: #d95926;
+    --dg-shmem: #199e70;
+    --dg-heap: #c98500;
+    --dg-stack: #d55181;
+    --dg-exec: #008300;
+    --dg-kernel: #9085e9;
+    --dg-other: #e66767;
+    --dg-neutral: #4f5057;
+    --dg-track: #2a2b30;
+    --dg-hatch: #f0937a;
+    --dg-grid: #2e2f35;
+  }
+}
+
+[data-theme="dark"] {
+  --dg-anon: #3987e5;
+  --dg-file: #d95926;
+  --dg-shmem: #199e70;
+  --dg-heap: #c98500;
+  --dg-stack: #d55181;
+  --dg-exec: #008300;
+  --dg-kernel: #9085e9;
+  --dg-other: #e66767;
+  --dg-neutral: #4f5057;
+  --dg-track: #2a2b30;
+  --dg-hatch: #f0937a;
+  --dg-grid: #2e2f35;
+}
+
+/* ------------------------------------------------------------------ frame */
+.dg {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+  font-family: var(--font-ui);
+  color: var(--ink);
+}
+
+.dg__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.dg__intro,
+.dg__caption {
+  max-width: var(--measure);
+  font-size: var(--text-sm);
+  line-height: var(--leading-ui);
+  color: var(--ink-soft);
+}
+
+.dg__canvas {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.dg__svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.dg__notes {
+  margin: 0;
+  padding-left: 1.2em;
+  max-width: var(--measure);
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.dg__notes li + li {
+  margin-top: var(--space-1);
+}
+
+.dg__missing {
+  padding: var(--space-4);
+  border: 1px dashed var(--status-denied);
+  border-radius: var(--radius);
+  background: var(--paper-sunken);
+  font-size: var(--text-sm);
+}
+
+.dg__missing-lead {
+  font-weight: 650;
+}
+
+.dg__missing ul {
+  margin: var(--space-2) 0 0;
+  padding-left: 1.2em;
+  color: var(--ink-soft);
+  overflow-wrap: anywhere;
+}
+
+.dg__alt > summary {
+  width: max-content;
+  max-width: 100%;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.dg__alt > summary:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.dg__alt[open] > summary {
+  margin-bottom: var(--space-3);
+}
+
+.dg__cites {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}
+
+.dg__cites-label {
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dg__cite {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  /* Underscores in ids must not vanish into the underline. */
+  text-underline-offset: 0.32em;
+  text-decoration-skip-ink: none;
+  overflow-wrap: break-word;
+}
+
+/* A short key under a drawing: swatch + words, wrapping on narrow screens. */
+.dg__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-xs);
+  color: var(--ink-soft);
+}
+
+.dg__legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.dg__swatch {
+  display: inline-block;
+  flex: none;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 3px;
+}
+
+.dg__swatch--outline {
+  border: 1.5px solid var(--ink-soft);
+}
+
+.dg__swatch--hatch {
+  background: repeating-linear-gradient(-45deg, var(--dg-hatch) 0 2px, transparent 2px 5px);
+  border: 1px solid var(--dg-hatch);
+}
+
+.dg__swatch--huge {
+  background: repeating-linear-gradient(-45deg, var(--paper-raised) 0 2px, var(--dg-anon) 2px 5px);
+}
+
+/* Cards that explain a branch or a layer: used by the authored diagrams. */
+.dg__panel {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper-sunken);
+  font-size: var(--text-sm);
+}
+
+.dg__panel > * + * {
+  margin-top: var(--space-2);
+}
+
+.dg__panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-weight: 650;
+}
+
+/* ------------------------------------------------------------- SVG classes */
+.dg__svg text {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  fill: var(--ink-soft);
+}
+
+.dg__svg .dg-t--ink { fill: var(--ink); }
+.dg__svg .dg-t--strong { fill: var(--ink); font-weight: 650; }
+.dg__svg .dg-t--faint { fill: var(--ink-faint); }
+.dg__svg .dg-t--small { font-size: 11px; }
+.dg__svg .dg-t--title { fill: var(--ink); font-size: 13px; font-weight: 650; }
+.dg__svg .dg-t--mono { font-family: var(--font-mono); font-size: 11px; }
+.dg__svg .dg-t--italic { font-style: italic; }
+.dg__svg .dg-t--warn { fill: var(--status-denied); font-weight: 650; }
+.dg__svg .dg-t--link { fill: var(--accent); text-decoration: underline; }
+
+.dg__svg a:focus-visible { outline: 2px solid var(--focus); }
+.dg__svg a:hover .dg-box { stroke: var(--accent); }
+
+/* Fills by kind. */
+.dg-k-anon { fill: var(--dg-anon); }
+.dg-k-file { fill: var(--dg-file); }
+.dg-k-shmem { fill: var(--dg-shmem); }
+.dg-k-heap { fill: var(--dg-heap); }
+.dg-k-stack { fill: var(--dg-stack); }
+.dg-k-executable { fill: var(--dg-exec); }
+.dg-k-kernel { fill: var(--dg-kernel); }
+.dg-k-other { fill: var(--dg-other); }
+.dg-k-neutral { fill: var(--dg-neutral); }
+.dg-k-reserved { fill: var(--paper-raised); stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 3 2; }
+
+.dg__swatch.dg-k-anon { background: var(--dg-anon); }
+.dg__swatch.dg-k-file { background: var(--dg-file); }
+.dg__swatch.dg-k-shmem { background: var(--dg-shmem); }
+.dg__swatch.dg-k-heap { background: var(--dg-heap); }
+.dg__swatch.dg-k-stack { background: var(--dg-stack); }
+.dg__swatch.dg-k-executable { background: var(--dg-exec); }
+.dg__swatch.dg-k-kernel { background: var(--dg-kernel); }
+.dg__swatch.dg-k-other { background: var(--dg-other); }
+.dg__swatch.dg-k-neutral { background: var(--dg-neutral); }
+.dg__swatch.dg-k-reserved { background: var(--paper-raised); border: 1.5px dashed var(--ink-faint); }
+
+.dg-track { fill: var(--dg-track); }
+.dg-track--outline { fill: var(--dg-track); stroke: var(--rule-strong); stroke-width: 1; }
+.dg-grid { stroke: var(--dg-grid); stroke-width: 1; }
+.dg-axis { stroke: var(--rule-strong); stroke-width: 1; }
+.dg-rule { stroke: var(--ink-faint); stroke-width: 1; fill: none; }
+.dg-leader { stroke: var(--ink-faint); stroke-width: 1; fill: none; }
+.dg-hatch-line { stroke: var(--dg-hatch); stroke-width: 2; }
+.dg-huge-line { stroke: var(--paper-raised); stroke-width: 2; }
+.dg-hatch-box { fill: var(--dg-track); stroke: var(--dg-hatch); stroke-width: 1; }
+.dg-free { fill: var(--accent); }
+
+/* Breaks in a compressed axis: a zigzag drawn in the surface colour over
+   the mark, then outlined, so the cut is visible on any fill. */
+.dg-break { fill: var(--paper-raised); stroke: var(--ink-faint); stroke-width: 1; }
+.dg-gap { fill: var(--paper-sunken); }
+.dg-gap-zig { fill: none; stroke: var(--ink-faint); stroke-width: 1; }
+/* Mappings the snapshot did not keep: hatched, so it never reads as empty. */
+.dg-unsampled { fill: var(--paper-sunken); stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 2; }
+.dg-unsampled-hatch { fill: none; stroke: var(--ink-faint); stroke-width: 1; }
+
+/* Region highlight in the address-space map. */
+.dg-region { fill: none; stroke: var(--ink); stroke-width: 2; }
+.dg-bracket { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+
+/* Watermarks. */
+.dg-mark { stroke-width: 2; }
+.dg-mark--min { stroke: var(--status-failed); }
+.dg-mark--low { stroke: var(--simulated); }
+.dg-mark--high { stroke: var(--status-ok); }
+
+/* Authored diagrams: boxes, arrows, outcome cards. */
+.dg-box { fill: var(--paper-raised); stroke: var(--rule-strong); stroke-width: 1; }
+.dg-box--step { fill: var(--paper-raised); stroke: var(--ink-faint); }
+.dg-box--decision { fill: var(--accent-wash); stroke: var(--accent); }
+.dg-box--bad { fill: var(--misconception-wash); stroke: var(--misconception); }
+.dg-box--good { fill: var(--observed-wash); stroke: var(--observed); }
+.dg-box--major { fill: var(--simulated-wash); stroke: var(--simulated); }
+.dg-box--minor { fill: var(--paper-raised); stroke: var(--rule-strong); }
+.dg-box--layer { fill: var(--paper-raised); stroke: var(--rule-strong); }
+.dg-box--list { fill: var(--paper-sunken); stroke: var(--rule-strong); }
+.dg-box--active { fill: var(--accent-wash); stroke: var(--accent); }
+.dg-box--sink { fill: var(--paper-inset); stroke: var(--rule-strong); }
+.dg-arrow { fill: none; stroke: var(--ink-soft); stroke-width: 1.5; }
+.dg-arrow--accent { stroke: var(--accent); }
+.dg-arrow--bad { stroke: var(--misconception); }
+.dg-arrow--refault { stroke: var(--simulated); stroke-dasharray: 5 3; }
+.dg-arrowhead { fill: var(--ink-soft); }
+.dg-arrowhead--accent { fill: var(--accent); }
+.dg-arrowhead--bad { fill: var(--misconception); }
+.dg-arrowhead--refault { fill: var(--simulated); }
+.dg-pill { fill: var(--paper-raised); stroke: currentColor; stroke-width: 1.2; }
+.dg-pill--major { fill: var(--simulated-wash); stroke: var(--simulated); }
+.dg-pill--minor { fill: var(--paper-sunken); stroke: var(--rule-strong); }
+.dg-page { stroke: var(--paper-raised); stroke-width: 1; }
+
+@media (forced-colors: active) {
+  .dg__svg rect,
+  .dg__svg path {
+    forced-color-adjust: none;
+  }
+}
+
+/* The figure the lesson renderer (web/js/render/lesson.js) wraps around a
+   diagram: a titled card. */
+.diagram-slot {
+  margin: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  background: var(--paper-raised);
+  container-type: inline-size;
+}
+
+@media (min-width: 640px) {
+  .diagram-slot {
+    padding: var(--space-5) var(--space-6);
+  }
+}
+
+.diagram-slot__title {
+  margin-bottom: var(--space-3);
+  font-family: var(--font-prose);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+}
+
+.dg__key {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  white-space: nowrap;
+}
+
+/* The watermark key: a coloured line, the mark's name, what crossing it does. */
+.dg__marks {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: var(--measure);
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.dg__marks li {
+  display: block;
+  padding-left: 1.6rem;
+  text-indent: -1.6rem;
+}
+
+.dg__marks strong {
+  color: var(--ink);
+}
+
+.dg__mark-key,
+.dg__marks .dg__swatch {
+  display: inline-block;
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-right: 0.7rem;
+  vertical-align: -0.1em;
+  text-indent: 0;
+}
+
+.dg__swatch.dg-k-free { background: var(--accent); }
+
+.dg .datatable .num {
+  white-space: nowrap;
+}
+
+.dg-present { fill: var(--ink-soft); }
+
+.dg__swatch--present {
+  height: 0.3rem;
+  background: var(--ink-soft);
+}
+
+.dg-label-bg { fill: var(--paper-raised); }
+
+.dg__swatch--pill {
+  width: 1.4rem;
+  border-radius: 999px;
+  border: 1.2px solid var(--rule-strong);
+  background: var(--paper-sunken);
+}
+
+.dg__swatch--pill-major {
+  width: 1.4rem;
+  border-radius: 999px;
+  border: 1.2px solid var(--simulated);
+  background: var(--simulated-wash);
+}
+
+.dg__steps {
+  margin: 0;
+  padding-left: 1.4em;
+  max-width: var(--measure);
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.dg__steps li + li {
+  margin-top: var(--space-2);
+}
+
+.dg__steps ul {
+  margin-top: var(--space-2);
+  padding-left: 1.2em;
+}
+
+.dg__steps strong {
+  color: var(--ink);
+}
+
+.dg__panel-note {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+  overflow-wrap: anywhere;
+}
+
+.dg__gens {
+  max-width: 100%;
+}
+
+.dg__what {
+  display: block;
+  margin-top: 0.15em;
+  padding-left: calc(0.9rem + var(--space-2));
+  font-size: var(--text-xs);
+  color: var(--ink-soft);
+}
+
+/* cpu-topology: logical CPUs as chips inside core boxes. */
+.dg-cpu { fill: var(--accent-wash); stroke: var(--accent); stroke-width: 1; }
+.dg-cpu--isolated { fill: var(--paper-raised); stroke: var(--simulated); stroke-dasharray: 3 2; }
+.dg__swatch.dg-k-cpu { background: var(--accent-wash); border: 1px solid var(--accent); }
+.dg__swatch.dg-k-cpu-isolated { background: var(--paper-raised); border: 1px dashed var(--simulated); }

@@ -1,0 +1,63 @@
+Node 0, zone      DMA
+  per-node stats
+      nr_inactive_anon 2345
+      nr_active_anon 34567
+      nr_inactive_file 45678
+      nr_active_file 56789
+      nr_unevictable 0
+  pages free     3912
+        min      68
+        low      85
+        high     102
+        spanned  4095
+        present  3997
+        managed  3976
+        protection: (0, 1928, 1928, 1928, 1928)
+      nr_free_pages 3912
+      nr_zone_inactive_anon 0
+      numa_hit     1
+      numa_miss    0
+  pagesets
+    cpu: 0
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 4
+  node_unreclaimable:  0
+  start_pfn:           1
+Node 0, zone    DMA32
+  pages free     312345
+        min      8458
+        low      10572
+        high     12686
+        spanned  520160
+        present  520160
+        managed  494912
+        protection: (0, 0, 0, 0, 0)
+      nr_free_pages 312345
+  pagesets
+    cpu: 0
+              count: 42
+              high:  186
+              batch: 31
+  vm stats threshold: 24
+  node_unreclaimable:  0
+  start_pfn:           4096
+Node 0, zone   Normal
+  pages free     0
+        min      0
+        low      0
+        high     0
+        spanned  0
+        present  0
+        managed  0
+        protection: (0, 0, 0, 0, 0)
+Node 0, zone  Movable
+  pages free     0
+        min      0
+        low      0
+        high     0
+        spanned  0
+        present  0
+        managed  0
+        protection: (0, 0, 0, 0, 0)

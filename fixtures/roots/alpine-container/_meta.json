@@ -1,0 +1,26 @@
+{
+  "description": "Alpine 3.20 in a Docker container (512 MiB memory limit) on an EC2 host with kernel 6.8: PID 1 is sh, no systemd, host /proc/meminfo, restricted /proc and /sys",
+  "now": "2025-06-02T14:03:27Z",
+  "uname": {
+    "machine": "x86_64",
+    "release": "6.8.0-1015-aws"
+  },
+  "page_size": 4096,
+  "deny": [
+    "/proc/slabinfo",
+    "/sys/kernel/security"
+  ],
+  "env": {},
+  "commands": {
+    "lsblk --json --bytes --output NAME,TYPE,SIZE,FSTYPE": {
+      "missing": true
+    },
+    "ip -json -4 address show": {
+      "exit": 1,
+      "stderr": "ip: invalid option -- 'j'\nBusyBox v1.36.1 (2024-06-10 07:11:47 UTC) multi-call binary.\n\nUsage: ip [OPTIONS] address|route|link|tunnel|neigh|rule [ARGS]\n"
+    },
+    "tc -json -statistics qdisc show": {
+      "missing": true
+    }
+  }
+}

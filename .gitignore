@@ -1,0 +1,9 @@
+/atlas
+/dist/
+/tmp/
+*.test
+*.out
+.DS_Store
+node_modules/
+/shots-work/
+__pycache__/

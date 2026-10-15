@@ -1,0 +1,54 @@
+Name:	atlas
+Umask:	0022
+State:	S (sleeping)
+Tgid:	4242
+Ngid:	0
+Pid:	4242
+PPid:	4231
+TracerPid:	0
+Uid:	1000	1000	1000	1000
+Gid:	1000	1000	1000	1000
+FDSize:	64
+Groups:	1000 
+NStgid:	4242
+NSpid:	4242
+NSpgid:	4231
+NSsid:	4231
+VmPeak:	  182460 kB
+VmSize:	  181436 kB
+VmLck:	       0 kB
+VmPin:	       0 kB
+VmHWM:	   21624 kB
+VmRSS:	   21624 kB
+RssAnon:	    9924 kB
+RssFile:	   10676 kB
+RssShmem:	    1024 kB
+VmData:	   85580 kB
+VmStk:	     132 kB
+VmExe:	    7136 kB
+VmLib:	       8 kB
+VmPTE:	      96 kB
+VmSwap:	       0 kB
+HugetlbPages:	       0 kB
+CoreDumping:	0
+Threads:	6
+SigQ:	0/31523
+SigPnd:	0000000000000000
+ShdPnd:	0000000000000000
+SigBlk:	0000000000000000
+SigIgn:	0000000000000000
+SigCgt:	fffffffd7fc1feff
+CapInh:	0000000000000000
+CapPrm:	0000000000000000
+CapEff:	0000000000000000
+CapBnd:	0000003fffffffff
+CapAmb:	0000000000000000
+NoNewPrivs:	0
+Seccomp:	0
+Speculation_Store_Bypass:	thread vulnerable
+Cpus_allowed:	3
+Cpus_allowed_list:	0-1
+Mems_allowed:	00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001
+Mems_allowed_list:	0
+voluntary_ctxt_switches:	37
+nonvoluntary_ctxt_switches:	2

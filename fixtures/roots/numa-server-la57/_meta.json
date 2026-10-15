@@ -1,0 +1,26 @@
+{
+  "description": "Two-socket Ice Lake server (Ubuntu 24.04, kernel 6.8): two NUMA nodes, 5-level paging, 1 GiB huge pages, zswap, swap file, THP never",
+  "now": "2025-04-17T03:30:00Z",
+  "uname": {
+    "machine": "x86_64",
+    "release": "6.8.0-49-generic"
+  },
+  "page_size": 4096,
+  "deny": [
+    "/proc/slabinfo"
+  ],
+  "env": {
+    "XDG_SESSION_TYPE": "tty"
+  },
+  "commands": {
+    "lsblk --json --bytes --output NAME,TYPE,SIZE,FSTYPE": {
+      "stdout": "_cmd/lsblk.json"
+    },
+    "ip -json -4 address show": {
+      "stdout": "_cmd/ip-addr.json"
+    },
+    "tc -json -statistics qdisc show": {
+      "stdout": "_cmd/tc-qdisc.json"
+    }
+  }
+}

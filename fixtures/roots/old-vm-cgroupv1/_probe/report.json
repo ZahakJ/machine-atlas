@@ -1,0 +1,88 @@
+{
+  "regions": [
+    {
+      "name": "anon-untouched",
+      "start": "0x7f2e8ee00000",
+      "end": "0x7f2e92e00000",
+      "size_bytes": 67108864,
+      "touched_bytes": 0,
+      "backing": "anon",
+      "pages_total": 16384,
+      "pages_present": 0,
+      "pages_swapped": 0
+    },
+    {
+      "name": "anon-written",
+      "start": "0x7f2e93000000",
+      "end": "0x7f2e93800000",
+      "size_bytes": 8388608,
+      "touched_bytes": 8388608,
+      "backing": "anon",
+      "pages_total": 2048,
+      "pages_present": 2048,
+      "pages_swapped": 0
+    },
+    {
+      "name": "anon-read",
+      "start": "0x7f2e93a00000",
+      "end": "0x7f2e93e00000",
+      "size_bytes": 4194304,
+      "touched_bytes": 4194304,
+      "backing": "anon",
+      "pages_total": 1024,
+      "pages_present": 1024,
+      "pages_swapped": 0
+    },
+    {
+      "name": "file-private",
+      "start": "0x7f2e94000000",
+      "end": "0x7f2e94400000",
+      "size_bytes": 4194304,
+      "touched_bytes": 4194304,
+      "backing": "file",
+      "pages_total": 1024,
+      "pages_present": 1024,
+      "pages_swapped": 0
+    },
+    {
+      "name": "shmem-shared",
+      "start": "0x7f2e94600000",
+      "end": "0x7f2e94a00000",
+      "size_bytes": 4194304,
+      "touched_bytes": 1048576,
+      "backing": "shmem",
+      "pages_total": 1024,
+      "pages_present": 256,
+      "pages_swapped": 0
+    }
+  ],
+  "faults": {
+    "minflt_before_touch": 301,
+    "minflt_after_touch": 307,
+    "majflt_before_touch": 0,
+    "majflt_after_touch": 0
+  },
+  "thp_faults": {
+    "fault_alloc_delta": 4,
+    "fault_fallback_delta": 0
+  },
+  "pagemap": {
+    "readable": true,
+    "pfn_visible": false
+  },
+  "placement": "guarded",
+  "layout_runs": [
+    {
+      "run": 1,
+      "stack": "0x7ffdb6f90000",
+      "mmap_base": "0x7f2e94c00000",
+      "exe": "0x400000"
+    },
+    {
+      "run": 2,
+      "stack": "0x7ffc0a1c6000",
+      "mmap_base": "0x7f6c11400000",
+      "exe": "0x400000"
+    }
+  ]
+}

@@ -1,0 +1,403 @@
+{
+  "curriculum_version": "0.2.0",
+  "subsystems": [
+    {
+      "id": "cpu",
+      "title": "CPU and scheduler",
+      "layer": "hardware",
+      "status": "implemented",
+      "summary": "The processor executes instructions for every program and the kernel, on cores and hardware threads that share caches, at a frequency the kernel and the hardware keep adjusting. The scheduler decides, many times a second on every CPU, which task runs next and for how long, within the weights, quotas and CPU sets it is given.",
+      "memory_link": "Every memory access starts as a virtual address the CPU's MMU translates through page tables, and the caches and TLB of each core are why that is usually free; when the scheduler moves a task to another core, it leaves that cached state behind.",
+      "observe": ["cpu.model_name", "cpu.logical_count", "cpu.core_count", "cpu.threads_per_core", "derived.cpu.freq.governor", "sched.loadavg.avg1", "derived.sched.fair_scheduler"],
+      "track": {"title": "The CPU and scheduler track", "order": 2, "lede": "From the cores and hardware threads this machine is built from, through the clock speeds they run at and the queues of tasks waiting for them, to how the scheduler shares them out and how a container is given less than a whole CPU."},
+      "planned_concepts": [
+        {
+          "id": "privilege-levels-and-system-calls",
+          "title": "Privilege levels and system calls",
+          "summary": "Why user programs cannot touch hardware directly, and how a system call crosses into the kernel and back.",
+          "prerequisites": ["cpu-addressing"],
+          "relevance": []
+        },
+        {
+          "id": "cpu-caches",
+          "title": "CPU caches and cache lines",
+          "summary": "How a few megabytes of fast memory hide the latency of RAM, and why access patterns matter more than instruction counts.",
+          "prerequisites": ["cpu-topology"],
+          "relevance": []
+        },
+        {
+          "id": "interrupts-and-exceptions",
+          "title": "Interrupts and exceptions",
+          "summary": "How the CPU stops what it is doing to let the kernel react to a device, a timer or a faulting instruction.",
+          "prerequisites": ["privilege-levels-and-system-calls"],
+          "relevance": []
+        },
+        {
+          "id": "cpu-idle-states",
+          "title": "CPU idle states",
+          "summary": "What a core does when nothing is runnable: the C-states cpuidle chooses between, how deep sleep saves power and costs wake-up latency, and why an idle machine still takes interrupts.",
+          "prerequisites": ["cpu-frequency"],
+          "relevance": []
+        },
+        {
+          "id": "load-balancing-and-sched-domains",
+          "title": "Load balancing and scheduling domains",
+          "summary": "How the scheduler moves tasks between per-CPU run queues, level by level from SMT siblings to NUMA nodes, and where it places a task that wakes up.",
+          "prerequisites": ["fair-scheduling"],
+          "relevance": [
+            {"when": "derived.numa.multi", "note": "This machine has more than one NUMA node, so balancing has a level where moving a task also moves it away from its memory."}
+          ]
+        },
+        {
+          "id": "real-time-scheduling",
+          "title": "Real-time and deadline scheduling",
+          "summary": "SCHED_FIFO, SCHED_RR and SCHED_DEADLINE: classes that run before every ordinary task, the throttling that keeps them from starving the machine, and what PREEMPT_RT changes.",
+          "prerequisites": ["fair-scheduling"],
+          "relevance": []
+        },
+        {
+          "id": "sched-ext",
+          "title": "BPF schedulers with sched_ext",
+          "summary": "How a BPF program can replace the fair scheduler's policy at run time, what the kernel still enforces, and how it falls back when the program misbehaves.",
+          "prerequisites": ["fair-scheduling"],
+          "relevance": [
+            {"when": "derived.sched.ext_enabled", "is": true, "note": "A sched_ext BPF scheduler is running on this machine."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "memory",
+      "title": "Memory",
+      "layer": "kernel",
+      "status": "implemented",
+      "summary": "The kernel gives every process a private virtual address space and fills it with physical frames only when touched, keeping file contents cached in whatever RAM is idle. When frames run short it reclaims cache, swaps anonymous pages, and as a last resort kills a process.",
+      "memory_link": "This is the memory journey itself: from how the CPU translates an address to what the kernel does when it runs out of frames.",
+      "observe": ["kernel.page_size_bytes", "mem.meminfo.MemTotal", "mem.meminfo.MemAvailable", "mem.meminfo.SwapTotal", "mem.thp.enabled"],
+      "track": {"title": "The memory journey", "order": 1, "lede": "From the address an instruction uses to the frame of RAM behind it, and what the kernel does when frames run short."},
+      "planned_concepts": [
+        {
+          "id": "page-table-internals",
+          "title": "Page table internals",
+          "summary": "The bits of a page-table entry (present, writable, user, accessed, dirty, no-execute) and how the kernel's generic pgd/p4d/pud/pmd/pte layers map onto each architecture.",
+          "prerequisites": ["cpu-addressing", "page-faults"],
+          "relevance": [
+            {"when": "derived.paging.levels", "is": 5, "note": "This machine appears to run 5-level paging, the newer and less common layout."}
+          ]
+        },
+        {
+          "id": "tlb-and-pcid",
+          "title": "The TLB, shootdowns and PCID",
+          "summary": "How translations are cached, what it costs to invalidate them on other CPUs, and how address-space identifiers avoid flushing on every context switch.",
+          "prerequisites": ["cpu-addressing", "virtual-address-spaces"],
+          "relevance": []
+        },
+        {
+          "id": "copy-on-write-and-fork",
+          "title": "Copy-on-write and fork",
+          "summary": "How fork duplicates an address space without copying it, and what the first write to a shared page costs.",
+          "prerequisites": ["page-faults"],
+          "relevance": []
+        },
+        {
+          "id": "userfaultfd",
+          "title": "userfaultfd",
+          "summary": "Handling page faults in user space, as live migration and some garbage collectors do.",
+          "prerequisites": ["page-faults"],
+          "relevance": []
+        },
+        {
+          "id": "numa-placement",
+          "title": "NUMA placement",
+          "summary": "Why memory near a CPU is faster, how the kernel decides which node to allocate from, and how automatic NUMA balancing moves pages.",
+          "prerequisites": ["physical-memory"],
+          "relevance": [
+            {"when": "derived.numa.multi", "note": "This machine has more than one NUMA node, so where a page is allocated changes how fast it is."}
+          ]
+        },
+        {
+          "id": "slab-allocator",
+          "title": "The slab allocator",
+          "summary": "How the kernel carves frames into small objects (inodes, dentries, socket buffers) and why Slab in meminfo is split into reclaimable and not.",
+          "prerequisites": ["physical-memory"],
+          "relevance": []
+        },
+        {
+          "id": "hugetlbfs",
+          "title": "hugetlbfs and reserved huge pages",
+          "summary": "Huge pages set aside at boot or by sysctl for programs that ask for them explicitly, and how they differ from transparent huge pages.",
+          "prerequisites": ["physical-memory", "transparent-huge-pages"],
+          "relevance": [
+            {"when": "mem.sysctl.vm.nr_hugepages", "note": "A huge page pool is reserved on this machine (vm.nr_hugepages is not zero)."}
+          ]
+        },
+        {
+          "id": "memory-hotplug",
+          "title": "Memory hotplug and memory blocks",
+          "summary": "How memory is managed in blocks that can be brought online and offline, used by virtual machines that grow and shrink.",
+          "prerequisites": ["physical-memory"],
+          "relevance": []
+        },
+        {
+          "id": "ksm",
+          "title": "Kernel same-page merging",
+          "summary": "How the kernel finds identical anonymous pages and shares them copy-on-write, trading CPU time for memory.",
+          "prerequisites": ["anonymous-and-file-pages", "copy-on-write-and-fork"],
+          "relevance": []
+        },
+        {
+          "id": "compressed-swap",
+          "title": "Compressed swap: zswap and zram",
+          "summary": "Swapping to compressed RAM instead of, or in front of, a disk: what it saves and what it costs in CPU.",
+          "prerequisites": ["reclaim-and-swap"],
+          "relevance": [
+            {"when": "derived.swap.compressed", "note": "Compressed swap is in use here (zswap in front of active swap, or a zram swap area), so swapped pages may stay in RAM in compressed form."}
+          ]
+        },
+        {
+          "id": "mglru-internals",
+          "title": "Multi-Gen LRU internals",
+          "summary": "Generations, page-table scanning and the bloom filters that let MGLRU age memory more cheaply than the two-list LRU.",
+          "prerequisites": ["reclaim-and-swap"],
+          "relevance": [
+            {"when": "derived.reclaim.lru_kind", "is": "mglru", "note": "This kernel reclaims with Multi-Gen LRU."}
+          ]
+        },
+        {
+          "id": "memory-cgroups",
+          "title": "Memory cgroups",
+          "summary": "How a group of processes is given its own memory limit, its own reclaim and its own OOM killer, which is what containers and systemd slices use.",
+          "prerequisites": ["memory-pressure-and-oom"],
+          "relevance": [
+            {"when": "derived.cgroup.memory_limited", "note": "Atlas runs in a cgroup with a memory limit, so that limit, not the machine's RAM, is what it runs out of first."},
+            {"when": "derived.env.kind", "is": "container", "note": "Atlas appears to run in a container, whose memory is accounted and limited through a cgroup."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "devices-and-drivers",
+      "title": "Devices and drivers",
+      "layer": "kernel",
+      "status": "overview",
+      "summary": "Drivers turn hardware on buses (PCI, USB, platform devices described by firmware) into the uniform devices the rest of the kernel uses. The firmware tables and device tree say what is there; drivers bind to it at boot or when it appears.",
+      "memory_link": "Devices read and write RAM directly by DMA into frames the kernel pins for them, and driver allocations are much of what meminfo leaves unaccounted.",
+      "observe": ["virt.dmi.sys_vendor", "virt.dmi.product_name", "virt.devicetree.model", "block.devices"],
+      "planned_concepts": [
+        {
+          "id": "buses-and-device-model",
+          "title": "Buses and the device model",
+          "summary": "How /sys/devices mirrors the tree of buses and devices, and how a driver is matched to a device.",
+          "prerequisites": [],
+          "relevance": []
+        },
+        {
+          "id": "firmware-tables",
+          "title": "ACPI, DMI and the device tree",
+          "summary": "How firmware describes a machine to the kernel, and why arm boards and PCs do it differently.",
+          "prerequisites": ["buses-and-device-model"],
+          "relevance": []
+        },
+        {
+          "id": "interrupt-delivery",
+          "title": "Interrupt delivery and IRQ affinity",
+          "summary": "How a device signals the CPU, how interrupts are spread across cores, and what /proc/interrupts counts.",
+          "prerequisites": ["interrupts-and-exceptions", "buses-and-device-model"],
+          "relevance": []
+        },
+        {
+          "id": "dma-and-iommu",
+          "title": "DMA and the IOMMU",
+          "summary": "How devices write straight into memory, and how an IOMMU gives them their own address translation.",
+          "prerequisites": ["physical-memory", "buses-and-device-model"],
+          "relevance": []
+        }
+      ]
+    },
+    {
+      "id": "storage",
+      "title": "Storage",
+      "layer": "kernel",
+      "status": "implemented",
+      "summary": "Block devices present disks as arrays of sectors, filesystems turn those into files, and the mount table assembles them into one tree. Reads are cached and most writes are deferred, which is why durability needs fsync.",
+      "memory_link": "Every file read goes through the page cache you met in lesson 7, and swap is storage used as slow memory.",
+      "observe": ["derived.storage.root_disk", "derived.storage.root_fstype", "derived.storage.root_scheduler", "block.queues", "mounts.filesystems", "derived.dirty.threshold_used_fraction"],
+      "track": {"title": "The storage track", "order": 3, "lede": "From the request queues in front of this machine's disks, through the scheduler that orders them and the counters that time them, to the filesystem that maps files onto blocks and the writeback that decides when written data is safe."},
+      "planned_concepts": [
+        {
+          "id": "mount-namespaces",
+          "title": "Mounts and mount namespaces",
+          "summary": "How the file tree is assembled from mounts, and how a container sees a different tree.",
+          "prerequisites": ["filesystems-and-the-vfs"],
+          "relevance": [
+            {"when": "derived.env.kind", "is": "container", "note": "In a container, the mounts atlas sees are the container's own tree, not the host's."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "boot-and-init",
+      "title": "Boot and init",
+      "layer": "kernel",
+      "status": "overview",
+      "summary": "Firmware loads a bootloader, the bootloader loads the kernel and an initial filesystem, and the kernel starts one process, PID 1, which starts everything else. Which init system that is decides how services are supervised.",
+      "memory_link": "The kernel reserves memory for itself and firmware before MemTotal is counted, which is why MemTotal is less than the RAM fitted.",
+      "observe": ["kernel.release", "kernel.boot_time", "init.pid1_comm", "init.systemd_booted"],
+      "planned_concepts": [
+        {
+          "id": "firmware-and-bootloaders",
+          "title": "Firmware and bootloaders",
+          "summary": "UEFI and BIOS, the bootloader's job, and what the kernel command line is.",
+          "prerequisites": [],
+          "relevance": []
+        },
+        {
+          "id": "kernel-startup",
+          "title": "Kernel start-up and the initramfs",
+          "summary": "What the kernel does between being loaded and running PID 1, and why most distributions boot through an initial RAM filesystem.",
+          "prerequisites": ["firmware-and-bootloaders"],
+          "relevance": []
+        },
+        {
+          "id": "init-systems-and-services",
+          "title": "Init systems and services",
+          "summary": "What PID 1 is responsible for, how systemd, OpenRC and runit supervise services, and what happens when a service dies.",
+          "prerequisites": ["kernel-startup"],
+          "relevance": [
+            {"when": "init.systemd_booted", "note": "This system was booted with systemd."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "processes",
+      "title": "Processes",
+      "layer": "kernel",
+      "status": "overview",
+      "summary": "A process is an address space, a set of open files and one or more threads the scheduler runs. Namespaces and cgroups decide what a process can see and how much it may use.",
+      "memory_link": "Each process owns one address space; lessons 2 to 4 follow the probe process through its mappings and faults.",
+      "observe": ["probe.maps.vma_count", "probe.status.VmSize", "probe.status.VmRSS", "mem.sysctl.kernel.randomize_va_space"],
+      "planned_concepts": [
+        {
+          "id": "processes-and-threads",
+          "title": "Processes and threads",
+          "summary": "What the kernel keeps for each task, what threads share, and how fork, exec and exit work.",
+          "prerequisites": ["virtual-address-spaces"],
+          "relevance": []
+        },
+        {
+          "id": "signals-and-ipc",
+          "title": "Signals and inter-process communication",
+          "summary": "Signals, pipes, Unix sockets and shared memory: the ways processes talk to each other.",
+          "prerequisites": ["processes-and-threads"],
+          "relevance": []
+        },
+        {
+          "id": "namespaces-and-isolation",
+          "title": "Namespaces and isolation",
+          "summary": "How PID, mount, network and user namespaces give a group of processes its own view of the machine, which is most of what a container is.",
+          "prerequisites": ["processes-and-threads"],
+          "relevance": [
+            {"when": "derived.env.kind", "is": "container", "note": "Atlas appears to run in a container, built from exactly these namespaces."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "networking",
+      "title": "Networking",
+      "layer": "kernel",
+      "status": "implemented",
+      "summary": "Network interfaces move packets, the kernel's stack routes them and turns them into TCP and UDP streams, and sockets hand those to programs. Name resolution is done in user space.",
+      "memory_link": "Received and sent packets live in socket buffers allocated from kernel memory, which grows under load and is shown in meminfo only indirectly; TCP's buffer limits are counted in pages.",
+      "observe": ["net.interfaces", "derived.net.default_route_interface", "derived.net.default_route_qdisc", "net.sysctl.ipv4.tcp_congestion_control", "net.sockets.tcp_states", "net.sockstat.sockets_used"],
+      "track": {"title": "The network track", "order": 4, "lede": "From the interfaces where this machine meets a network to the queues where its packets wait — each step bound to readings from this machine."},
+      "planned_concepts": [
+        {
+          "id": "name-resolution",
+          "title": "Name resolution",
+          "summary": "How a host name becomes an address: nsswitch, resolvers, caching daemons and why the answer can differ between programs.",
+          "prerequisites": ["sockets-and-connections"],
+          "relevance": []
+        },
+        {
+          "id": "firewalls-and-nat",
+          "title": "Firewalls and address translation",
+          "summary": "Netfilter's hooks, nftables and iptables rules, and how NAT and connection tracking let private addresses reach the internet and containers publish ports.",
+          "prerequisites": ["packet-path"],
+          "relevance": [
+            {"when": "derived.net.global_address", "is": false, "note": "This machine has no global address, so its traffic to the internet is translated by a router or by this kernel."},
+            {"when": "net.sysctl.ipv4.ip_forward", "is": 1, "note": "This kernel forwards packets between interfaces, as container hosts and routers do."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "graphics-and-desktop",
+      "title": "Graphics and desktop",
+      "layer": "userspace",
+      "status": "overview",
+      "summary": "The kernel's DRM and input subsystems expose GPUs and devices; a display server or compositor (Wayland, or X11) owns the screen and routes input to applications. Many machines run none of this at all.",
+      "memory_link": "Graphics buffers are allocated by the GPU driver and shared between processes, and much of that memory is invisible to the per-process accounting the memory lessons use.",
+      "observe": ["session.type", "session.desktop", "session.wayland_display_set", "session.x11_display_set"],
+      "planned_concepts": [
+        {
+          "id": "drm-and-kms",
+          "title": "DRM and kernel mode setting",
+          "summary": "How the kernel drives displays and hands out GPU memory buffers.",
+          "prerequisites": ["buses-and-device-model"],
+          "relevance": []
+        },
+        {
+          "id": "input-stack",
+          "title": "The input stack",
+          "summary": "From a key press to an event: evdev, libinput and the compositor.",
+          "prerequisites": ["interrupt-delivery"],
+          "relevance": []
+        },
+        {
+          "id": "display-servers-and-compositors",
+          "title": "Display servers and compositors",
+          "summary": "What a Wayland compositor and an X server each do, and how applications get pixels onto the screen.",
+          "prerequisites": ["drm-and-kms", "input-stack"],
+          "relevance": [
+            {"when": "session.wayland_display_set", "note": "A Wayland compositor is reachable from atlas's session."},
+            {"when": "session.x11_display_set", "note": "An X display is reachable from atlas's session."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "distribution",
+      "title": "Distribution",
+      "layer": "userspace",
+      "status": "overview",
+      "summary": "A distribution chooses the kernel build, the init system, the C library and the package manager, and how they are configured. Two machines with the same kernel can behave differently because of these choices.",
+      "memory_link": "The defaults that shape memory behaviour, such as swap layout, zram, the THP mode and OOM daemons, are chosen by the distribution's kernel build and configuration, not fixed by Linux itself.",
+      "observe": ["os.release.name", "os.release.id", "os.release.id_like", "os.release.version_id"],
+      "planned_concepts": [
+        {
+          "id": "packages-and-package-managers",
+          "title": "Packages and package managers",
+          "summary": "What a package is, how dependencies are resolved, and why an installed package is not a running component.",
+          "prerequisites": [],
+          "relevance": []
+        },
+        {
+          "id": "c-library-and-dynamic-linking",
+          "title": "The C library and dynamic linking",
+          "summary": "glibc or musl, the dynamic loader, and how shared libraries end up mapped into every process.",
+          "prerequisites": ["mappings"],
+          "relevance": []
+        },
+        {
+          "id": "kernel-configuration",
+          "title": "Kernel configuration",
+          "summary": "How a distribution's kernel build options decide which features exist, and how to tell from a running system.",
+          "prerequisites": ["packages-and-package-managers"],
+          "relevance": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "description": "16-thread x86_64 desktop (Arch Linux, kernel 6.12): systemd, swap partition, THP always, MGLRU, cgroup v2, a few OOM kills since boot",
+  "now": "2025-01-20T19:42:10Z",
+  "uname": {
+    "machine": "x86_64",
+    "release": "6.12.10-arch1-1"
+  },
+  "page_size": 4096,
+  "deny": [
+    "/proc/slabinfo"
+  ],
+  "env": {
+    "XDG_SESSION_TYPE": "wayland",
+    "XDG_CURRENT_DESKTOP": "KDE",
+    "WAYLAND_DISPLAY": "wayland-0",
+    "DISPLAY": ":0"
+  },
+  "commands": {
+    "lsblk --json --bytes --output NAME,TYPE,SIZE,FSTYPE": {
+      "stdout": "_cmd/lsblk.json"
+    },
+    "ip -json -4 address show": {
+      "stdout": "_cmd/ip-addr.json"
+    },
+    "tc -json -statistics qdisc show": {
+      "stdout": "_cmd/tc-qdisc.json"
+    }
+  }
+}
