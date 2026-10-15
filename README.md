@@ -4,6 +4,40 @@ Machine Atlas is an interactive textbook of the Linux machine it runs on: it
 reads `/proc` and `/sys` without root and teaches how memory, the CPU and its
 scheduler, storage and the network work with that machine's own numbers.
 
+It is for programmers and students who know roughly what a page fault or a run
+queue is and want to see one on their own computer: where the value comes from,
+what it means here, and what it would read on a different machine. It is one Go
+binary with a local web interface, and it needs no network.
+
+## Features
+
+- **Four lesson tracks.** Memory (ten lessons), CPU and scheduler, storage and
+  network (five each), each lesson asking a question, explaining the mechanism,
+  then showing it on this machine and asking you to predict a reading before
+  you look.
+- **Values from your machine.** Numbers in a lesson are chips that open the
+  reading behind them: its value, the file and field it came from, when it was
+  read, and why it is missing if it is.
+- **Labelled claims.** Every block says whether it is OBSERVED here, DERIVED
+  from observations by a stated rule, GENERAL knowledge, or SIMULATED.
+- **Lessons that follow the machine.** Where the explanation depends on the
+  environment (a container or a VM, swap or none, transparent huge pages on or
+  off, the root filesystem and disk), the lesson shows the text that applies
+  here and keeps the other readings one click away.
+- **Simulations.** A page-table walker that splits a virtual address for nine
+  paging layouts (x86_64, arm64, RISC-V), a reclaim model with watermarks,
+  LRU lists and swap, and a fair-share scheduler showing vruntime and virtual
+  deadlines; each is seeded from this machine's settings.
+- **Explore and Inspect.** Explore lays out components by layer and marks what
+  relies on what; Inspect lists every observation and derived fact with its
+  source, status and caveat, and which lessons use it.
+- **Experiments, opt in.** `fault-count` and `page-cache-residency` run a small,
+  time-limited measurement in a child process and state their memory, disk and
+  time cost before you confirm.
+- **Shareable snapshots.** `atlas collect` writes the readings to a JSON file
+  with hostnames, usernames, addresses, serials and home paths redacted, and
+  `atlas serve --snapshot` reopens it anywhere.
+
 ## Run
 
 ```sh
@@ -18,8 +52,19 @@ go install github.com/ZahakJ/machine-atlas/cmd/atlas@latest
 atlas serve --open
 ```
 
+`--open` starts your browser on the overview, which shows what the machine is,
+a few readings per subsystem, and the lesson tracks. The memory track begins
+with how the CPU turns an address into a memory access; a lesson can also be
+read in the terminal:
+
+```sh
+go run ./cmd/atlas lesson page-faults
+```
+
 Collection needs Linux (amd64, arm64; riscv64 builds). On other systems
-`atlas serve` shows snapshots and the demonstration machines.
+`atlas serve` shows snapshots and the demonstration machines. To look at a
+different kind of machine, start with a fixture:
+`atlas serve --fixture numa-server-la57 --open`.
 
 <p align="center">
   <img src="docs/media/overview.png" width="400" alt="Overview: the inferred environment with its evidence, key readings, and the nine lessons of the memory journey">
